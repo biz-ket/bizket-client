@@ -10,6 +10,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.72.0",
     "clsx": "^2.1.1",
     "msw": "^2.7.3",
     "next": "15.2.4",
