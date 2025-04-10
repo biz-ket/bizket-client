@@ -3,7 +3,7 @@ import Flex from '@/shared/ui/layout/Flex';
 export default function Home() {
   return (
     <Flex
-      className="text-white bg-gradient-to-r from-pink-500 to-yellow-500 h-screen"
+      className="h-screen text-white bg-gradient-to-r from-pink-500 to-yellow-500"
       align="center"
       justify="center"
     >
