@@ -1,3 +1,4 @@
+import { InstagramLoginButton } from '@/features/auth/instagram/ui/InstagramLoginButton';
 import Flex from '@/shared/ui/layout/Flex';
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
       justify="center"
     >
       초기 세팅 완료 🎉
+      <InstagramLoginButton />
     </Flex>
   );
 }
