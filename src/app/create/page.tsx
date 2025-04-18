@@ -1,5 +1,12 @@
+import SidebarContainer from '@/features/create-sidebar/SidebarContainer';
+import Flex from '@/shared/ui/layout/Flex';
+
 const CreatePage = () => {
-  return <div>마케팅 생성 AI 페이지</div>;
+  return (
+    <Flex className="w-full">
+      <SidebarContainer />
+    </Flex>
+  );
 };
 
 export default CreatePage;

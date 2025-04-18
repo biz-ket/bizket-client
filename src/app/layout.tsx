@@ -13,7 +13,7 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <RootLayoutProvider>
-          <div className="w-full">
+          <div className="w-full min-w-[1920px]">
             <Header />
             {children}
           </div>
