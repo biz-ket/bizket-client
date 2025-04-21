@@ -182,6 +182,11 @@ module.exports = {
           lineHeight: '150%',
           fontWeight: '300',
         },
+        '.body-sm-light': {
+          fontSize: '14px',
+          lineHeight: '150%',
+          fontWeight: '300',
+        },
         '.body-sm-regular': {
           fontSize: '14px',
           lineHeight: '150%',
