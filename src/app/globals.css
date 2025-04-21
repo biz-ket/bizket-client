@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: none;
+    border-radius: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #dfdfdf;
+    border-radius: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+}
+
 @font-face {
   font-family: 'Pretendard';
   src: url('/fonts/Pretendard-Light.woff') format('woff');
