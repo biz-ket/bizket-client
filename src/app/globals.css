@@ -50,3 +50,9 @@ textarea {
 pre {
   white-space: pre-wrap;
 }
+
+/* react-day-picker */
+.rdp-root {
+  --rdp-accent-color: #ff7900;
+  --rdp-accent-background-color: #ffefe4;
+}

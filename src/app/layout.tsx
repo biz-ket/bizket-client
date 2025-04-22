@@ -1,8 +1,9 @@
 'use client';
 
 import Header from '@/shared/ui/layout/Header';
-import './globals.css';
 import RootLayoutProvider from './provider/RootLayoutProvider';
+import 'react-day-picker/style.css';
+import './globals.css';
 
 export default function RootLayout({
   children,
