@@ -2,7 +2,7 @@
 
 export const InstagramLoginButton = () => {
   const handleLogin = () => {
-    window.location.href = '/api/auth/instagram/login';
+    window.location.href = `${process.env.NEXT_PUBLIC_BIZKET_API_BASE_URL}/auth/instagram/login`;
   };
 
   return (

@@ -11,11 +11,14 @@ export default function InstagramCallbackPage() {
   useEffect(() => {
     if (!code) return;
 
-    fetch('/api/auth/instagram/exchange', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code }),
-    })
+    fetch(
+      `${process.env.NEXT_PUBLIC_BIZKET_API_BASE_URL}/auth/instagram/exchange`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code }),
+      },
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log('✅ 로그인 성공:', data);
