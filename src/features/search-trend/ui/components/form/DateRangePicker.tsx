@@ -25,9 +25,9 @@ const DateRangePicker = ({ control }: DateRangePickerProps) => {
             className="flex-1 flex flex-row justify-between cursor-pointer body-lg-regular text-font-40"
             onClick={() => setShowDatePicker((prev) => !prev)}
           >
-            <span className="block flex-1">{formatDate(value.from)}</span>
-            <span>~</span>
-            <span className="block flex-1">
+            <span className="block">{formatDate(value.from)}</span>
+            <span className='block'>~</span>
+            <span className="block">
               {value.to ? formatDate(value.to) : formatDate(value.from)}
             </span>
           </div>
