@@ -1,37 +1,48 @@
 import { useState } from 'react';
 import CalendarIcon from '../../icons/CalendarIcon';
 import Card from '../shared/Card';
-import { DateRange, DayPicker } from 'react-day-picker';
-import { formatDate } from '@/shared/utils/formatDate';
+import { DayPicker } from 'react-day-picker';
+import { formatDate } from '@/shared/utils/dateUtils';
+import { Control, Controller, useController } from 'react-hook-form';
+import { TrendSearchFormValues } from '@/features/search-trend/model/types';
 
-const DateRangePicker = () => {
+interface DateRangePickerProps {
+  control: Control<TrendSearchFormValues, any, TrendSearchFormValues>;
+}
+
+const DateRangePicker = ({ control }: DateRangePickerProps) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selected, setSelected] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: new Date(),
-  });
 
   return (
-    <Card className="w-full h-full justify-center items-center pl-15 pr-35 gap-[30px] relative">
-      <CalendarIcon fill="#CFCFCF" />
-      <div
-        className="flex-1 flex flex-row justify-between cursor-pointer body-lg-regular text-font-40"
-        onClick={() => setShowDatePicker((prev) => !prev)}
-      >
-        <span>{selected?.from ? formatDate(selected.from) : ''}</span>
-        <span>~</span>
-        <div>{selected?.to ? formatDate(selected.to) : ''}</div>
-      </div>
-      {showDatePicker && (
-        <Card className="absolute left-1/2 -translate-x-1/2 top-full p-10">
-          <DayPicker
-            mode="range"
-            selected={selected}
-            onSelect={(selected) => setSelected(selected)}
-          />
+    <Controller
+      control={control}
+      name="dateRange"
+      rules={{ required: true }}
+      render={({ field: { value, onChange } }) => (
+        <Card className="w-full h-full justify-center items-center pl-15 pr-35 gap-[30px] relative">
+          <CalendarIcon fill="#CFCFCF" />
+          <div
+            className="flex-1 flex flex-row justify-between cursor-pointer body-lg-regular text-font-40"
+            onClick={() => setShowDatePicker((prev) => !prev)}
+          >
+            <span className="block flex-1">{formatDate(value.from)}</span>
+            <span>~</span>
+            <span className="block flex-1">
+              {value.to ? formatDate(value.to) : ''}
+            </span>
+          </div>
+          {showDatePicker && (
+            <Card className="absolute left-1/2 -translate-x-1/2 top-full p-10">
+              <DayPicker
+                mode="range"
+                selected={value}
+                onSelect={(selected) => onChange(selected)}
+              />
+            </Card>
+          )}
         </Card>
       )}
-    </Card>
+    />
   );
 };
 

@@ -1,22 +1,27 @@
+import { Control, Controller } from 'react-hook-form';
 import RangeSlider from './RangeSlider';
+import { TrendSearchFormValues } from '@/features/search-trend/model/types';
+import { AGE_RANGE_LABELS } from '@/features/search-trend/model/constants';
 
-const ageRange = [
-  '0',
-  '13',
-  '19',
-  '25',
-  '30',
-  '35',
-  '40',
-  '45',
-  '50',
-  '55',
-  '60',
-  '60+',
-];
+interface AgeSliderProps {
+  control: Control<TrendSearchFormValues, any, TrendSearchFormValues>;
+}
 
-const AgeSlider = () => {
-  return <RangeSlider range={ageRange} />;
+const AgeSlider = ({ control }: AgeSliderProps) => {
+  return (
+    <Controller
+      control={control}
+      name="ages"
+      rules={{ required: true }}
+      render={({ field: { value, onChange } }) => (
+        <RangeSlider
+          value={value}
+          onValueChange={(value) => onChange(value)}
+          range={AGE_RANGE_LABELS}
+        />
+      )}
+    />
+  );
 };
 
 export default AgeSlider;

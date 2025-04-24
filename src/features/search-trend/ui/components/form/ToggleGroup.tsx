@@ -31,7 +31,7 @@ interface RootProps {
   children: ReactNode;
   defaultValue: string;
   value?: string;
-  onValueChange?: (value: string | undefined) => void;
+  onValueChange?: (value: string) => void;
   className?: string;
 }
 
@@ -78,10 +78,11 @@ const Item = ({ children, value, className }: ItemProps) => {
         isSelected
           ? 'bg-primary-10 text-primary-50 border-primary-[#F67824]'
           : 'bg-white text-font-20 border-line-30',
-        'border rounded-12 label-lg-medium flex justify-center items-center',
+        'border rounded-12 label-lg-medium flex justify-center items-center cursor-pointer',
         className,
       )}
       onClick={() => setSelected(value)}
+      type='button'
     >
       {children}
     </button>

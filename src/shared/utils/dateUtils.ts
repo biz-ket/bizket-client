@@ -5,3 +5,9 @@ export function formatDate(date: Date): string {
 
   return `${year}-${month}-${day}`;
 }
+
+export function getYesterday(): Date {
+  const today = new Date();
+  const yesterday = today.setDate(today.getDate() - 1);
+  return new Date(yesterday);
+}

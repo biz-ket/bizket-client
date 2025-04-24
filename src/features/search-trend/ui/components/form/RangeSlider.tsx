@@ -63,7 +63,7 @@ const RangeSlider = ({
       minIndex: minIndex,
       maxIndex: maxIndex,
     });
-  }, [minIndex, maxIndex, onValueChange]);
+  }, [minIndex, maxIndex]);
 
   return (
     <RangeSliderContext.Provider

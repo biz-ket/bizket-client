@@ -2,36 +2,38 @@
 
 import Flex from '@/shared/ui/layout/Flex';
 import Card from '../shared/Card';
-import { ReactNode } from 'react';
+import { ReactNode, useCallback } from 'react';
 import DeviceToggleGroup from './DeviceToggleGroup';
 import DateRangePicker from './DateRangePicker';
 import GenderToggleGroup from './GenderToggleGroup';
 import AgeSlider from './AgeSlider';
 import InitiateIcon from '../../icons/InitiateIcon';
+import { Control } from 'react-hook-form';
+import { TrendSearchFormValues } from '@/features/search-trend/model/types';
 
-const SearchFilters = () => {
-  const onClickInitiateButton = () => {
-    // 초기화하기
-  };
+interface SearchFiltersProps {
+  control: Control<TrendSearchFormValues, any, TrendSearchFormValues>;
+}
 
-  const onClickSearchButton = () => {
-    // 검색하기
-  };
+const SearchFilters = ({ control }: SearchFiltersProps) => {
+  const onClickInitiateButton = useCallback(() => {
+    control._reset();
+  }, [control]);
 
   return (
     <Card className="w-full h-[310px] mt-80 flex-col justify-center items-center">
       <div className="w-[905px] h-[127px] grid grid-cols-2 grid-rows-2">
         <Item title="기간">
-          <DateRangePicker />
+          <DateRangePicker control={control} />
         </Item>
         <Item title="범위">
-          <DeviceToggleGroup />
+          <DeviceToggleGroup control={control} />
         </Item>
         <Item title="성별">
-          <GenderToggleGroup />
+          <GenderToggleGroup control={control} />
         </Item>
         <Item title="연령선택">
-          <AgeSlider />
+          <AgeSlider control={control} />
         </Item>
       </div>
 
@@ -44,12 +46,13 @@ const SearchFilters = () => {
         <button
           className="flex gap-2 items-center"
           onClick={onClickInitiateButton}
+          type="button"
         >
           <span className="body-md-regular text-font-20">초기화하기</span>
           <InitiateIcon fill="#999999" />
         </button>
         <button
-          onClick={onClickSearchButton}
+          type="submit"
           className="bg-font-40 text-white label-xl-semibold rounded-[50px] flex justify-center items-center px-50 py-10 ml-22"
         >
           검색하기
