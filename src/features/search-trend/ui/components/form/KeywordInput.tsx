@@ -16,7 +16,7 @@ const KeywordInput = ({ control }: KeywordInputProps) => {
 
   return (
     <Flex
-      className="bg-white w-[793px] h-[75px] rounded-[100px] px-38"
+      className="bg-white w-full h-[75px] rounded-[100px] px-38"
       align="center"
     >
       <input

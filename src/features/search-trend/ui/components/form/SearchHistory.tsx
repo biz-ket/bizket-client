@@ -1,24 +1,51 @@
-import Flex from '@/shared/ui/layout/Flex';
-import { ReactNode } from 'react';
+'use client';
 
-const data = [
-  '검색기록',
-  '검색기록기록',
-  '검색기록기록',
-  '검색기록',
-  '검색기록',
-];
+import useSearchHistoryQuery from '@/features/search-trend/hooks/useSearchHistoryQuery';
+import Flex from '@/shared/ui/layout/Flex';
+import clsx from 'clsx';
+import { ReactNode, useLayoutEffect, useRef } from 'react';
 
 const SearchHistory = () => {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const { data } = useSearchHistoryQuery();
+
+  // 가운데 정렬
+  useLayoutEffect(() => {
+    if (!ref.current) {
+      return;
+    }
+
+    const keywordBoxes = document.getElementsByClassName(
+      'search_history_keyword_box',
+    );
+    if (keywordBoxes.length === 0) {
+      return;
+    }
+
+    let maxRight = 0;
+    for (const element of keywordBoxes) {
+      maxRight = Math.max(maxRight, element.getBoundingClientRect().right);
+    }
+    const realWidth = maxRight - ref.current.getBoundingClientRect().left;
+    ref.current.style.transform = `translateX(-${realWidth / 2}px)`;
+  }, [data]);
+
+  if (!data || data.length === 0) {
+    return null;
+  }
+
   return (
-    <Flex align="center" gap={6} className="mt-15">
-      <span className="body-lg-regular">검색기록 :</span>
-      <Flex align="center" gap={6}>
+    <div
+      ref={ref}
+      className="flex justify-center items-start gap-6 max-w-full mt-15 mx-auto relative left-[50%] overflow-hidden"
+    >
+      <span className="body-lg-regular whitespace-nowrap">검색기록 :</span>
+      <div className="flex flex-wrap gap-6">
         {data.map((content, idx) => (
           <KeywordBox key={`history-${idx}`}>{content}</KeywordBox>
         ))}
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   );
 };
 
@@ -31,9 +58,12 @@ const KeywordBox = ({ children }: KeywordBoxProps) => {
     <Flex
       align="center"
       justify="center"
-      className="bg-white body-md-regular text-20 border border-line-30 rounded-[100px] h-[39px] px-[13px]"
+      className={clsx(
+        'search_history_keyword_box',
+        'bg-white body-md-regular text-20 border border-line-30 rounded-[100px] max-w-[350px] h-[39px] px-[13px]',
+      )}
     >
-      {children}
+      <span className="truncate">{children}</span>
     </Flex>
   );
 };
