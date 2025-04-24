@@ -1,5 +1,6 @@
 'use client';
 
+import Header from '@/shared/ui/layout/Header';
 import './globals.css';
 import RootLayoutProvider from './provider/RootLayoutProvider';
 
@@ -11,7 +12,12 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <RootLayoutProvider>{children}</RootLayoutProvider>
+        <RootLayoutProvider>
+          <div className="w-full">
+            <Header />
+            {children}
+          </div>
+        </RootLayoutProvider>
       </body>
     </html>
   );
