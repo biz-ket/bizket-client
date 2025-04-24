@@ -74,7 +74,7 @@ const Header = () => {
           </li>
           <li>
             <Link
-              href={'#'}
+              href={'/login'}
               className="flex items-center gap-6 body-md-regular"
             >
               <LoginIcon fill={isDark ? 'white' : 'black'} />
