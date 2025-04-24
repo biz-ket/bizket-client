@@ -3,7 +3,7 @@ import CalendarIcon from '../../icons/CalendarIcon';
 import Card from '../shared/Card';
 import { DayPicker } from 'react-day-picker';
 import { formatDate } from '@/shared/utils/dateUtils';
-import { Control, Controller, useController } from 'react-hook-form';
+import { Control, Controller } from 'react-hook-form';
 import { TrendSearchFormValues } from '@/features/search-trend/model/types';
 
 interface DateRangePickerProps {
@@ -28,7 +28,7 @@ const DateRangePicker = ({ control }: DateRangePickerProps) => {
             <span className="block flex-1">{formatDate(value.from)}</span>
             <span>~</span>
             <span className="block flex-1">
-              {value.to ? formatDate(value.to) : ''}
+              {value.to ? formatDate(value.to) : formatDate(value.from)}
             </span>
           </div>
           {showDatePicker && (

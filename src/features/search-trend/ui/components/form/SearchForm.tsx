@@ -12,6 +12,7 @@ import { transformToSearchParams } from '@/features/search-trend/utils/transform
 import { addSearchHistory } from '@/features/search-trend/utils/searchHistoryUtils';
 import dynamic from 'next/dynamic';
 import { useQueryClient } from '@tanstack/react-query';
+import { validateFormValues } from '@/features/search-trend/utils/validateFormValues';
 
 const SearchHistory = dynamic(() => import('./SearchHistory'), { ssr: false });
 
@@ -35,6 +36,10 @@ const SearchForm = ({ onSearch }: SearchFormProps) => {
   const queryClient = useQueryClient();
 
   const onSubmit = (data: TrendSearchFormValues) => {
+    if (!validateFormValues(data)) {
+      return;
+    }
+
     // 검색 기록 추가
     addSearchHistory(data.keyword);
     queryClient.invalidateQueries({
