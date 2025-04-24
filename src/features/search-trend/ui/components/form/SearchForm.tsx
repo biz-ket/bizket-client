@@ -5,7 +5,7 @@ import {
 import SearchInput from './KeywordInput';
 import SearchFilters from './SearchFilters';
 import { useForm } from 'react-hook-form';
-import { getYesterday } from '@/shared/utils/dateUtils';
+import { getYesterday } from '@/features/search-trend/utils/dateUtils';
 import { memo } from 'react';
 import { AGE_RANGE_LABELS } from '@/features/search-trend/model/constants';
 import { transformToSearchParams } from '@/features/search-trend/utils/transformToSearchParams';

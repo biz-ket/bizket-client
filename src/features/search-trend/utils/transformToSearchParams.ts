@@ -1,4 +1,4 @@
-import { formatDate } from '@/shared/utils/dateUtils';
+import { formatDate } from '@/features/search-trend/utils/dateUtils';
 import {
   AgeCategory,
   Ages,

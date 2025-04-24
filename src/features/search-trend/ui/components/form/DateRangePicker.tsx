@@ -2,7 +2,7 @@ import { useState } from 'react';
 import CalendarIcon from '../../icons/CalendarIcon';
 import Card from '../shared/Card';
 import { DayPicker } from 'react-day-picker';
-import { formatDate } from '@/shared/utils/dateUtils';
+import { formatDate } from '@/features/search-trend/utils/dateUtils';
 import { Control, Controller } from 'react-hook-form';
 import { TrendSearchFormValues } from '@/features/search-trend/model/types';
 
