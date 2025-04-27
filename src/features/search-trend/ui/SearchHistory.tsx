@@ -37,7 +37,7 @@ const SearchHistory = () => {
   return (
     <div
       ref={ref}
-      className="flex justify-center items-start gap-6 max-w-full mt-15 mx-auto relative left-[50%] overflow-hidden"
+      className="flex items-start gap-6 max-w-full mt-15 mx-auto relative left-[50%] overflow-hidden"
     >
       <span className="body-lg-regular whitespace-nowrap inline-flex h-39 items-center">검색기록 :</span>
       <div className="flex flex-wrap gap-6">
