@@ -1,8 +1,8 @@
 'use client';
 
 import Flex from '@/shared/ui/layout/Flex';
-import Card from '../shared/Card';
-import ArrowDownIcon from '../../icons/ArrowDownIcon';
+import Card from './Card';
+import ArrowDownIcon from './ArrowDownIcon';
 
 const data: {
   name: string;

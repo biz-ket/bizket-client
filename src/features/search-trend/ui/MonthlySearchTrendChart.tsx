@@ -10,7 +10,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import Card from '../shared/Card';
+import Card from './Card';
 
 const data: {
   name: string;

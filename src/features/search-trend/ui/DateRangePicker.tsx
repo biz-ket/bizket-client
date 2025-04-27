@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import CalendarIcon from '../../icons/CalendarIcon';
-import Card from '../shared/Card';
+import CalendarIcon from './CalendarIcon';
+import Card from './Card';
 import { DayPicker } from 'react-day-picker';
 import { formatDate } from '@/features/search-trend/utils/dateUtils';
 import { Control, Controller } from 'react-hook-form';
@@ -26,7 +26,7 @@ const DateRangePicker = ({ control }: DateRangePickerProps) => {
             onClick={() => setShowDatePicker((prev) => !prev)}
           >
             <span className="block">{formatDate(value.from)}</span>
-            <span className='block'>~</span>
+            <span className="block">~</span>
             <span className="block">
               {value.to ? formatDate(value.to) : formatDate(value.from)}
             </span>

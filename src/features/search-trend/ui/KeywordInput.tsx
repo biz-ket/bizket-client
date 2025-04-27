@@ -1,5 +1,5 @@
 import Flex from '@/shared/ui/layout/Flex';
-import SearchIcon from '../../icons/SearchIcon';
+import SearchIcon from './SearchIcon';
 import { Control, useController } from 'react-hook-form';
 import { TrendSearchFormValues } from '@/features/search-trend/model/types';
 

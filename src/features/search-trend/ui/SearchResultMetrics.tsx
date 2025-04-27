@@ -1,5 +1,5 @@
 import Flex from '@/shared/ui/layout/Flex';
-import Card from '../shared/Card';
+import Card from './Card';
 
 const SearchResultMetrics = () => {
   return (

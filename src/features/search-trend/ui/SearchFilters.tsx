@@ -1,13 +1,13 @@
 'use client';
 
 import Flex from '@/shared/ui/layout/Flex';
-import Card from '../shared/Card';
+import Card from './Card';
 import { ReactNode, useCallback } from 'react';
 import DeviceToggleGroup from './DeviceToggleGroup';
 import DateRangePicker from './DateRangePicker';
 import GenderToggleGroup from './GenderToggleGroup';
 import AgeSlider from './AgeSlider';
-import InitiateIcon from '../../icons/InitiateIcon';
+import InitiateIcon from './InitiateIcon';
 import { Control } from 'react-hook-form';
 import { TrendSearchFormValues } from '@/features/search-trend/model/types';
 
