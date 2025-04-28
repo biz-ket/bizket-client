@@ -15,14 +15,14 @@ const Header = () => {
   return (
     <header
       className={clsx(
-        'flex items-center w-full h-72 border-b',
+        'flex items-center w-full h-60 border-b',
         isDark ? 'border-line-40 bg-black' : 'border-line-20 bg-white',
       )}
     >
       <div
         className={clsx(
           'flex items-center justify-between  m-auto transition-[0.3s]',
-          isFull ? 'w-full pl-18 pr-28' : 'w-[1200px]',
+          isFull ? 'w-full pl-74 pr-84' : 'w-[1200px]',
         )}
       >
         <Flex align="center" gap={40}>

@@ -24,10 +24,10 @@ export default function Textarea({
   return (
     <div className="relative w-full">
       <textarea
-        style={{ width: width || '100%', height: height || '166px' }}
+        style={{ width: width || '100%', height: height || '140px' }}
         placeholder={placeholder}
         className={clsx(
-          'resize-none rounded-10 bg-white px-24 py-18 text-font-60 body-md-light placeholder:text-font-20 border border-line-40',
+          'resize-none rounded-10 bg-white px-20 py-16 text-font-60 body-sm-light placeholder:text-font-20 border border-line-40',
           className,
         )}
         value={value}

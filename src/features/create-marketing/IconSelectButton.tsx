@@ -18,16 +18,16 @@ const IconSelectButton = ({
 }: IconSelectButtonProps) => {
   return (
     <button
-      style={{ width: width || '100px', height: height || '92px' }}
+      style={{ width: width || '70px', height: height || '84px' }}
       className={clsx(
-        'border label-lg-medium rounded-10 relative flex px-12 py-10',
+        'border body-sm-regular rounded-10 relative flex px-12 py-10',
         isActive
           ? 'border-primary-50 text-primary-50 bg-primary-10'
           : 'border-line-40 text-font-20 bg-white',
       )}
     >
       {label}
-      <div className="absolute bottom-10 right-12">{icon}</div>
+      <div className="absolute bottom-10 right-10">{icon}</div>
     </button>
   );
 };

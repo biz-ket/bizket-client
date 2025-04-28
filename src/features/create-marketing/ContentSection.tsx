@@ -13,7 +13,7 @@ const ContentSection = () => {
     open: {
       x: 0,
       opacity: 1,
-      width: '526px',
+      width: 'auto',
       transition: {
         type: 'spring',
         stiffness: 300,
@@ -36,16 +36,22 @@ const ContentSection = () => {
     <AnimatePresence>
       {isTabOpen && (
         <motion.div
-          className="relative h-[calc(100vh-72px)] overflow-x-hidden overflow-y-auto bg-white py-55 bg-primary-40 "
+          className="relative h-[calc(100vh-72px)] overflow-x-hidden overflow-y-auto bg-white py-30 bg-primary-40 "
           initial="closed"
           animate="open"
           exit="closed"
           variants={variants}
         >
-          <div className="w-[526px] px-48">
-            {activeTab === 'create' && <CreateContent />}
-            {activeTab === 'history' && <CreateHistory />}
-          </div>
+          {activeTab === 'create' && (
+            <div className="w-[360px] px-24">
+              <CreateContent />
+            </div>
+          )}
+          {activeTab === 'history' && (
+            <div className="w-[526px] px-50">
+              <CreateHistory />
+            </div>
+          )}
         </motion.div>
       )}
     </AnimatePresence>

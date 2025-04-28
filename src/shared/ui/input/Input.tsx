@@ -13,7 +13,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       <div
         style={{
           width: width || '100%',
-          height: height || '50px',
+          height: height || '48px',
         }}
       >
         <input

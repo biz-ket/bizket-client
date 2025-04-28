@@ -15,9 +15,9 @@ const PlatformSelectButton = ({
 }: PlatformSelectButtonProps) => {
   return (
     <button
-      style={{ width: width || '210px', height: height || '50px' }}
+      style={{ width: width || '151px', height: height || '48px' }}
       className={clsx(
-        'border rounded-10 label-lg-medium',
+        'border rounded-10 body-sm-regular',
         isActive
           ? 'border-primary-50 bg-primary-10 text-primary-50'
           : 'border-line-40 text-font-20 bg-white',
