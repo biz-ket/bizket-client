@@ -2,7 +2,10 @@
 
 import Header from '@/shared/ui/layout/Header';
 import RootLayoutProvider from './provider/RootLayoutProvider';
+import 'react-day-picker/style.css';
+import './globals.css';
 import Footer from '@/shared/ui/layout/Footer';
+import { usePathname } from 'next/navigation';
 
 export default function RootLayout({
   children,
@@ -10,17 +13,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  // 헤더를 숨기고 싶은 경로들
-  const hideHeaderOn = ['/login'];
-  const showHeader = !hideHeaderOn.includes(pathname);
+
+  // 헤더,푸터를 숨기고 싶은 경로들
+  const hideLayoutOn = ['/login'];
+  const shouldHideLayout = hideLayoutOn.includes(pathname);
   return (
     <html lang="ko">
       <body>
         <RootLayoutProvider>
           <div className="w-full">
-            {showHeader && <Header />}
+            {!shouldHideLayout && <Header />}
             {children}
-            <Footer />
+            {!shouldHideLayout && <Footer />}
           </div>
         </RootLayoutProvider>
       </body>
