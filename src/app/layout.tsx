@@ -4,6 +4,7 @@ import Header from '@/shared/ui/layout/Header';
 import './globals.css';
 import RootLayoutProvider from './provider/RootLayoutProvider';
 import { usePathname } from 'next/navigation';
+import Footer from '@/shared/ui/layout/Footer';
 
 export default function RootLayout({
   children,
@@ -21,6 +22,7 @@ export default function RootLayout({
           <div className="w-full">
             {showHeader && <Header />}
             {children}
+            <Footer />
           </div>
         </RootLayoutProvider>
       </body>
