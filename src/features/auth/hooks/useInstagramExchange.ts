@@ -1,4 +1,3 @@
-// src/features/auth/hooks/useInstagramExchange.ts
 'use client';
 import { fetchApi } from '@/shared/utils/fetchApi';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
