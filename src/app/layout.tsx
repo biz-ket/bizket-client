@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   const pathname = usePathname();
   // 헤더를 숨기고 싶은 경로들
-  const hideHeaderOn = ['/login', '/login/callback'];
+  const hideHeaderOn = ['/login'];
   const showHeader = !hideHeaderOn.includes(pathname);
   return (
     <html lang="ko">
