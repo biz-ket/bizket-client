@@ -59,11 +59,15 @@ const RangeSlider = ({
   }, [value, setMinIndex, setMaxIndex]);
 
   useEffect(() => {
+    if (minIndex === value?.minIndex && maxIndex === value.maxIndex) {
+      return;
+    }
+
     onValueChange?.({
       minIndex: minIndex,
       maxIndex: maxIndex,
     });
-  }, [minIndex, maxIndex]);
+  }, [value, minIndex, maxIndex, onValueChange]);
 
   return (
     <RangeSliderContext.Provider
@@ -125,6 +129,7 @@ const Point = memo(({ label, size }: PointProps) => {
     </div>
   );
 });
+Point.displayName = 'Point';
 
 const SelectedRange = () => {
   const { minIndex, maxIndex, range } = useRangeSliderContext();
@@ -188,7 +193,15 @@ const Thumb = ({ type, size }: ThumbProps) => {
         setMaxIndex(index);
       }
     },
-    [type, sliderRef, minIndex, setMinIndex, maxIndex, setMaxIndex],
+    [
+      type,
+      sliderRef,
+      minIndex,
+      setMinIndex,
+      maxIndex,
+      setMaxIndex,
+      range.length,
+    ],
   );
 
   const onMouseMove = useCallback(

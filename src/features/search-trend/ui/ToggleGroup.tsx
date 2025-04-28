@@ -52,7 +52,7 @@ const Root = ({
 
   useEffect(() => {
     onValueChange?.(selected);
-  }, [selected]);
+  }, [selected, onValueChange]);
 
   return (
     <ToggleGroupContext.Provider value={{ selected, setSelected }}>
@@ -82,14 +82,16 @@ const Item = ({ children, value, className }: ItemProps) => {
         className,
       )}
       onClick={() => setSelected(value)}
-      type='button'
+      type="button"
     >
       {children}
     </button>
   );
 };
 
-export default {
+const ToggleGroup = {
   Root,
   Item,
 };
+
+export default ToggleGroup;
