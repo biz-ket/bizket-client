@@ -75,7 +75,7 @@ const Header = () => {
         >
           <li>
             <Link
-              href={'/mypage'}
+              href={'/my'}
               className="flex items-center gap-6 body-md-regular"
             >
               <MyIcon fill={isDark ? 'white' : 'black'} />

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 
-export function InstagramLoginButton() {
+export const InstagramLoginButton = () => {
   const handleLogin = () => {
     const frontend =
       process.env.NEXT_PUBLIC_FRONTEND_URL ?? window.location.origin;
@@ -27,4 +27,4 @@ export function InstagramLoginButton() {
       인스타그램 로그인
     </button>
   );
-}
+};

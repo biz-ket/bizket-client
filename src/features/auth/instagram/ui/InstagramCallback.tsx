@@ -4,13 +4,13 @@ import { useEffect } from 'react';
 import { useAuthStore } from '../../model/useAuthStore';
 import { useInstagramExchange } from '../../hooks/useInstagramExchange';
 
-export function InstagramCallback({
+export const InstagramCallback = ({
   code,
   onSuccess,
 }: {
   code: string | null;
   onSuccess: () => void;
-}) {
+}) => {
   const { setToken, setMemberId } = useAuthStore.getState();
   const { mutate, isPending, isError, error } = useInstagramExchange();
 
@@ -46,4 +46,4 @@ export function InstagramCallback({
   }
 
   return null;
-}
+};

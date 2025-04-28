@@ -8,12 +8,12 @@ interface ExchangeResponse {
   memberId: number;
 }
 
-export function useInstagramExchange(): UseMutationResult<
+export const useInstagramExchange = (): UseMutationResult<
   ExchangeResponse,
   Error,
   { code: string },
   unknown
-> {
+> => {
   return useMutation<ExchangeResponse, Error, { code: string }>({
     mutationFn: ({ code }) =>
       fetchApi('/api/auth/instagram/exchange', {
@@ -22,4 +22,4 @@ export function useInstagramExchange(): UseMutationResult<
         credentials: 'include',
       }) as Promise<ExchangeResponse>,
   });
-}
+};

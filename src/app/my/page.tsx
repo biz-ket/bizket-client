@@ -5,7 +5,7 @@ import Container from '@/shared/ui/layout/Container';
 import { useIsLoggedIn } from '@/features/auth/hooks/useIsLoggedIn';
 import { useEffect } from 'react';
 
-export default function MyPage() {
+const MyPage = () => {
   const isLoggedIn = useIsLoggedIn();
 
   const router = useRouter();
@@ -24,4 +24,5 @@ export default function MyPage() {
       <p>로그인 상태입니다 🙂</p>
     </Container>
   );
-}
+};
+export default MyPage;
