@@ -2,22 +2,22 @@
 
 import { useRouter } from 'next/navigation';
 import Container from '@/shared/ui/layout/Container';
-import { useIsLoggedIn } from '@/features/auth/hooks/useIsLoggedIn';
 import { useEffect } from 'react';
+import { useAuthStore } from '@/features/auth/model/useAuthStore';
 
 const MyPage = () => {
-  const isLoggedIn = useIsLoggedIn();
-
   const router = useRouter();
+  const hasHydrated = useAuthStore((s) => s._hasHydrated);
+  const isLoggedIn = useAuthStore((s) => Boolean(s.token));
+
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (hasHydrated && !isLoggedIn) {
       router.push('/login');
     }
-  }, [isLoggedIn, router]);
-  if (!isLoggedIn) {
-    return null;
-  }
+  }, [hasHydrated, isLoggedIn, router]);
 
+  if (!hasHydrated) return null;
+  if (!isLoggedIn) return null;
   return (
     <Container>
       <h1>내 정보</h1>

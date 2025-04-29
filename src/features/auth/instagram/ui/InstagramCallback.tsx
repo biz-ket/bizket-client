@@ -20,6 +20,7 @@ export const InstagramCallback = ({
         { code },
         {
           onSuccess: (data) => {
+            localStorage.setItem('accessToken', data.jwtToken);
             setToken(data.jwtToken);
             setMemberId(data.memberId);
             onSuccess();
