@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
         source: '/api/members/me',
         destination: `${process.env.NEXT_PUBLIC_BIZKET_API_BASE_URL}/members/me`,
       },
+      {
+        source: '/api/instagram/insight/me/:path*',
+        destination: `${process.env.NEXT_PUBLIC_BIZKET_API_BASE_URL}/instagram/insight/me/:path*`,
+      },
     ];
   },
 };
