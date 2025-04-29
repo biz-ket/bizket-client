@@ -40,7 +40,6 @@ export default function InsightPage() {
             <p>
               <strong>Caption:</strong> {item.caption}
             </p>
-            {/* …다른 필드 렌더링 */}
           </li>
         ))}
       </ul>
