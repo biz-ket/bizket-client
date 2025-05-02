@@ -1,13 +1,13 @@
 'use client';
 
-import ContentTitle from '@/features/create-marketing/ContentTitle';
-import DesignIcon from '@/features/create-marketing/DesignIcon';
-import IconSelectButton from '@/features/create-marketing/IconSelectButton';
-import InputBox from '@/features/create-marketing/InputBox';
-import PlatformSelectButton from '@/features/create-marketing/PlatformSelectButton';
-import PriceIcon from '@/features/create-marketing/PriceIcon';
-import QuilityIcon from '@/features/create-marketing/QuilityIcon';
-import TrendIcon from '@/features/create-marketing/TrendIcon';
+import ContentTitle from '@/features/create-marketing/ui/ContentTitle';
+import DesignIcon from '@/features/create-marketing/ui/DesignIcon';
+import IconSelectButton from '@/features/create-marketing/ui/IconSelectButton';
+import InputBox from '@/features/create-marketing/ui/InputBox';
+import PlatformSelectButton from '@/features/create-marketing/ui/PlatformSelectButton';
+import PriceIcon from '@/features/create-marketing/ui/PriceIcon';
+import QuilityIcon from '@/features/create-marketing/ui/QuilityIcon';
+import TrendIcon from '@/features/create-marketing/ui/TrendIcon';
 import ToggleIcon from '@/shared/ui/icons/ToggleIcon';
 import Input from '@/shared/ui/input/Input';
 import Flex from '@/shared/ui/layout/Flex';
@@ -15,8 +15,8 @@ import Textarea from '@/shared/ui/textarea/Textarea';
 import { ChangeEvent, useState } from 'react';
 import { motion } from 'framer-motion';
 import SelectBox from '@/shared/ui/input/SelectBox';
-import CategorySelectBox from '@/features/create-marketing/CategorySelectBox';
-import AgeSelectBox from '@/features/create-marketing/AgeSelectBox';
+import CategorySelectBox from '@/features/create-marketing/ui/CategorySelectBox';
+import AgeSelectBox from '@/features/create-marketing/ui/AgeSelectBox';
 import { useSelectBoxStore } from '@/shared/store/useSelectBoxStore';
 
 const CreateContent = () => {
@@ -24,6 +24,9 @@ const CreateContent = () => {
   const [isBusinessInfoOpen, setIsBusinessInfoOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedAge, setSelectedAge] = useState('');
+  const [platform, setPlatform] = useState<'instagram' | 'threads'>(
+    'instagram',
+  );
 
   const toggleBox = useSelectBoxStore((state) => state.toggleBox);
 
@@ -48,10 +51,14 @@ const CreateContent = () => {
     setIsBusinessInfoOpen((prev) => !prev);
   };
 
+  const handleChangePlatform = (platform: 'instagram' | 'threads') => {
+    setPlatform(platform);
+  };
+
   return (
     <Flex direction="col" gap={40} className="w-full">
       <Flex direction="col" gap={24} className="w-full">
-        <Flex direction="col" gap={18} className="w-full">
+        <Flex direction="col" className="w-full">
           <button
             className="flex items-center justify-between w-full pb-12 border-b border-line-20"
             onClick={toggleBusinessInfo}
@@ -77,6 +84,10 @@ const CreateContent = () => {
             transition={{
               duration: 0.3,
               ease: 'easeInOut',
+            }}
+            style={{
+              pointerEvents: isBusinessInfoOpen ? 'auto' : 'none',
+              overflow: 'hidden',
             }}
           >
             <Flex justify="between" className="w-full">
@@ -112,11 +123,21 @@ const CreateContent = () => {
             </InputBox>
           </motion.div>
         </Flex>
-        <Flex direction="col" gap={14} className="w-full">
+        <Flex direction="col" gap={14} className="relative w-full z-dropdown">
           <ContentTitle title="플랫폼 선택" />
           <Flex justify="between" align="center" className="w-full">
-            <PlatformSelectButton label="인스타그램" isActive />
-            <PlatformSelectButton label="스레드" />
+            <PlatformSelectButton
+              label="인스타그램"
+              name="instagram"
+              isActive={platform === 'instagram'}
+              onClick={handleChangePlatform}
+            />
+            <PlatformSelectButton
+              label="스레드"
+              name="threads"
+              isActive={platform === 'threads'}
+              onClick={handleChangePlatform}
+            />
           </Flex>
         </Flex>
         <Flex direction="col" gap={14} className="w-full">
@@ -136,7 +157,11 @@ const CreateContent = () => {
         <Flex direction="col" gap={14} className="w-full">
           <ContentTitle title="강조하기" />
           <Flex justify="between" align="center" className="w-full">
-            <IconSelectButton label="퀄리티" icon={<QuilityIcon />} isActive />
+            <IconSelectButton
+              label="퀄리티"
+              icon={<QuilityIcon isActive />}
+              isActive
+            />
             <IconSelectButton label="가격" icon={<PriceIcon />} />
             <IconSelectButton label="디자인" icon={<DesignIcon />} />
             <IconSelectButton label="트렌드" icon={<TrendIcon />} />

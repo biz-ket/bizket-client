@@ -1,11 +1,11 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import CreateContent from '@/features/create-marketing/CreateContent';
-import CreateHistory from '@/features/create-marketing/CreateHistory';
+import CreateContent from '@/features/create-marketing/ui/CreateContent';
+import CreateHistory from '@/features/create-marketing/ui/CreateHistory';
 import { useTabStore } from '@/shared/store/useTabStore';
 
-const ContentSection = () => {
+const FormSection = () => {
   const { activeTab, isTabOpen } = useTabStore();
 
   // 애니메이션 변수 설정
@@ -58,4 +58,4 @@ const ContentSection = () => {
   );
 };
 
-export default ContentSection;
+export default FormSection;

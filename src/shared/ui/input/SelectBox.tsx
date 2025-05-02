@@ -8,7 +8,7 @@ import { createPortal } from 'react-dom';
 import { useSelectBoxStore } from '@/shared/store/useSelectBoxStore';
 
 interface SelectBoxProps {
-  id: string; // 각 SelectBox를 구분하기 위한 고유 ID 추가
+  id: string;
   placeholder: string;
   value?: string;
   isActive?: boolean;
@@ -41,15 +41,14 @@ const SelectBox = ({
     toggleBox(id);
   };
 
-  // 핵심 수정: 드롭다운 클릭 이벤트 중지
+  // 드롭다운 영역 클릭 시 이벤트 버블링 중지
   const handleDropdownClick = (e: React.MouseEvent) => {
-    // 이벤트 버블링 중지
     e.stopPropagation();
   };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // 드롭다운과 버튼 영역 모두 확인
+      // 버튼 영역과 드롭다운 영역 체크
       const isClickInsideBox =
         selectBoxRef.current &&
         selectBoxRef.current.contains(event.target as Node);
@@ -57,13 +56,13 @@ const SelectBox = ({
         dropdownRef.current &&
         dropdownRef.current.contains(event.target as Node);
 
-      // 두 영역 모두 아닌 경우에만 닫기
+      // 두 영역 모두 아닌 곳 클릭 시 드롭다운 닫기
       if (!isClickInsideBox && !isClickInsideDropdown) {
         closeAllBoxes();
       }
     };
 
-    // 이벤트 리스너 추가
+    // 드롭다운이 열린 경우에만 이벤트 리스너 등록
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
@@ -73,7 +72,7 @@ const SelectBox = ({
     };
   }, [closeAllBoxes, isOpen]);
 
-  // 드롭다운의 위치 계산을 위한 함수
+  // 드롭다운 위치 계산
   const getDropdownPosition = () => {
     if (selectBoxRef.current) {
       const rect = selectBoxRef.current.getBoundingClientRect();
@@ -107,30 +106,32 @@ const SelectBox = ({
       </button>
 
       {mounted &&
-        isOpen &&
         createPortal(
-          <div
-            ref={dropdownRef}
-            onClick={handleDropdownClick}
-            className="fixed z-50"
-            style={{
-              top: `${getDropdownPosition().top}px`,
-              left: `${getDropdownPosition().left}px`,
-              width: `${getDropdownPosition().width}px`,
-            }}
-          >
-            <AnimatePresence>
-              <motion.div
-                className="overflow-hidden bg-white border rounded-8 border-primary-50"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.2, ease: 'easeInOut' }}
+          <AnimatePresence>
+            {isOpen && (
+              <div
+                ref={dropdownRef}
+                onClick={handleDropdownClick}
+                style={{
+                  position: 'fixed',
+                  top: `${getDropdownPosition().top}px`,
+                  left: `${getDropdownPosition().left}px`,
+                  width: `${getDropdownPosition().width}px`,
+                  zIndex: 9999,
+                }}
               >
-                {children}
-              </motion.div>
-            </AnimatePresence>
-          </div>,
+                <motion.div
+                  className="overflow-hidden bg-white border rounded-8 border-primary-50"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2, ease: 'easeInOut' }}
+                >
+                  {children}
+                </motion.div>
+              </div>
+            )}
+          </AnimatePresence>,
           document.body,
         )}
     </div>

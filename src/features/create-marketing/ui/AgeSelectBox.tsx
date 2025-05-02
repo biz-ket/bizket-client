@@ -1,4 +1,4 @@
-import AgeCheckbox from '@/features/create-marketing/AgeCheckbox';
+import AgeCheckbox from '@/features/create-marketing/ui/AgeCheckbox';
 
 interface AgeSelectBoxProps {
   age: string;

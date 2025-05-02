@@ -1,5 +1,5 @@
-import HistoryCard from '@/features/create-marketing/HistoryCard';
-import SearchIcon from '@/features/create-marketing/SearchIcon';
+import HistoryCard from '@/features/create-marketing/ui/HistoryCard';
+import SearchIcon from '@/features/create-marketing/ui/SearchIcon';
 import Input from '@/shared/ui/input/Input';
 import Flex from '@/shared/ui/layout/Flex';
 

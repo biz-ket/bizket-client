@@ -1,9 +1,9 @@
 'use client';
 
-import CreateIcon from '@/features/create-sidebar/CreateIcon';
-import HistoryIcon from '@/features/create-sidebar/HistoryIcon';
-import SidebarIcon from '@/features/create-sidebar/SidebarIcon';
-import SideButton from '@/features/create-sidebar/SideButton';
+import CreateIcon from '@/features/create-sidebar/ui/CreateIcon';
+import HistoryIcon from '@/features/create-sidebar/ui/HistoryIcon';
+import SidebarIcon from '@/features/create-sidebar/ui/SidebarIcon';
+import SideButton from '@/features/create-sidebar/ui/SideButton';
 import { useTabStore } from '@/shared/store/useTabStore';
 import Flex from '@/shared/ui/layout/Flex';
 

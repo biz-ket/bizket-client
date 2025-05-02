@@ -1,5 +1,5 @@
-import HistoryTag from '@/features/create-marketing/HistoryTag';
-import XIcon from '@/features/create-marketing/XIcon';
+import HistoryTag from '@/features/create-marketing/ui/HistoryTag';
+import XIcon from '@/features/create-marketing/ui/XIcon';
 import Flex from '@/shared/ui/layout/Flex';
 
 interface HistoryCardProps {

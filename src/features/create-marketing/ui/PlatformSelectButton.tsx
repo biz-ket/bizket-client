@@ -5,6 +5,8 @@ interface PlatformSelectButtonProps {
   height?: string;
   label: string;
   isActive?: boolean;
+  name: 'instagram' | 'threads';
+  onClick: (platform: 'instagram' | 'threads') => void;
 }
 
 const PlatformSelectButton = ({
@@ -12,9 +14,12 @@ const PlatformSelectButton = ({
   height,
   label,
   isActive,
+  name,
+  onClick,
 }: PlatformSelectButtonProps) => {
   return (
     <button
+      onClick={() => onClick(name)}
       style={{ width: width || '151px', height: height || '48px' }}
       className={clsx(
         'border rounded-10 body-sm-regular',
