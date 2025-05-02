@@ -9,7 +9,6 @@ const CreatePage = () => {
       <SidebarContainer />
       <FormSection />
       <ContentSection />
-      <div className="flex-1 bg-red-200"></div>
     </Flex>
   );
 };

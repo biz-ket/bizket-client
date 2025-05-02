@@ -70,7 +70,9 @@ textarea {
 }
 
 pre {
+  font-family: 'Pretendard', sans-serif;
   white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 /* react-day-picker */

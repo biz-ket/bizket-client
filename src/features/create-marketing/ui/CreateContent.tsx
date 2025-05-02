@@ -27,6 +27,9 @@ const CreateContent = () => {
   const [platform, setPlatform] = useState<'instagram' | 'threads'>(
     'instagram',
   );
+  const [accent, setAccent] = useState<
+    'quality' | 'price' | 'design' | 'trend'
+  >('quality');
 
   const toggleBox = useSelectBoxStore((state) => state.toggleBox);
 
@@ -36,6 +39,12 @@ const CreateContent = () => {
     console.log(age);
     setSelectedAge(age);
     toggleBox('age');
+  };
+
+  const handleChangeAccent = (
+    accent: 'quality' | 'price' | 'design' | 'trend',
+  ) => {
+    setAccent(accent);
   };
 
   const handleCategoryChange = (value: string) => {
@@ -159,16 +168,36 @@ const CreateContent = () => {
           <Flex justify="between" align="center" className="w-full">
             <IconSelectButton
               label="퀄리티"
-              icon={<QuilityIcon isActive />}
-              isActive
+              name="quality"
+              icon={<QuilityIcon isActive={accent === 'quality'} />}
+              isActive={accent === 'quality'}
+              onClick={handleChangeAccent}
             />
-            <IconSelectButton label="가격" icon={<PriceIcon />} />
-            <IconSelectButton label="디자인" icon={<DesignIcon />} />
-            <IconSelectButton label="트렌드" icon={<TrendIcon />} />
+            <IconSelectButton
+              label="가격"
+              name="price"
+              icon={<PriceIcon isActive={accent === 'price'} />}
+              isActive={accent === 'price'}
+              onClick={handleChangeAccent}
+            />
+            <IconSelectButton
+              label="디자인"
+              name="design"
+              icon={<DesignIcon isActive={accent === 'design'} />}
+              isActive={accent === 'design'}
+              onClick={handleChangeAccent}
+            />
+            <IconSelectButton
+              label="트렌드"
+              name="trend"
+              icon={<TrendIcon isActive={accent === 'trend'} />}
+              isActive={accent === 'trend'}
+              onClick={handleChangeAccent}
+            />
           </Flex>
         </Flex>
       </Flex>
-      <button className="w-full h-48 text-white bg-primary-50 rounded-10 body-md-medium">
+      <button className="w-full h-48 text-white bg-primary-50 rounded-10 body-md-medium disabled:opacity-50">
         생성하기
       </button>
     </Flex>

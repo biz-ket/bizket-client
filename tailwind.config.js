@@ -31,6 +31,10 @@ module.exports = {
           40: '#cfcfcf',
           50: '#000000',
         },
+
+        bg: {
+          10: '#f6f6f6',
+        },
       },
       backgroundColor: {},
       fontSize: (() => {

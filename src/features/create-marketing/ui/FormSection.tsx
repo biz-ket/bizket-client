@@ -48,7 +48,7 @@ const FormSection = () => {
             </div>
           )}
           {activeTab === 'history' && (
-            <div className="w-[526px] px-50">
+            <div className="w-[526px] px-48">
               <CreateHistory />
             </div>
           )}

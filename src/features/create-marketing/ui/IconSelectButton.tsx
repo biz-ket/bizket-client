@@ -7,6 +7,8 @@ interface IconSelectButtonProps {
   label: string;
   icon: ReactNode;
   isActive?: boolean;
+  name: 'quality' | 'price' | 'design' | 'trend';
+  onClick: (accent: 'quality' | 'price' | 'design' | 'trend') => void;
 }
 
 const IconSelectButton = ({
@@ -15,6 +17,8 @@ const IconSelectButton = ({
   label,
   icon,
   isActive,
+  name,
+  onClick,
 }: IconSelectButtonProps) => {
   return (
     <button
@@ -25,6 +29,7 @@ const IconSelectButton = ({
           ? 'border-primary-50 text-primary-50 bg-primary-10'
           : 'border-line-40 text-font-20 bg-white',
       )}
+      onClick={() => onClick(name)}
     >
       {label}
       <div className="absolute bottom-10 right-10">{icon}</div>
