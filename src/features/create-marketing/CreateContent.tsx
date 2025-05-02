@@ -16,22 +16,28 @@ import { ChangeEvent, useState } from 'react';
 import { motion } from 'framer-motion';
 import SelectBox from '@/shared/ui/input/SelectBox';
 import CategorySelectBox from '@/features/create-marketing/CategorySelectBox';
+import AgeSelectBox from '@/features/create-marketing/AgeSelectBox';
+import { useSelectBoxStore } from '@/shared/store/useSelectBoxStore';
 
 const CreateContent = () => {
   const [prompt, setPrompt] = useState('');
   const [isBusinessInfoOpen, setIsBusinessInfoOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [selectedAge, setSelectedAge] = useState('');
+
+  const toggleBox = useSelectBoxStore((state) => state.toggleBox);
 
   console.log(selectedCategory);
 
-  const handleToggleCategory = () => {
-    setIsCategoryOpen((prev) => !prev);
+  const handleClickAge = (age: string) => {
+    console.log(age);
+    setSelectedAge(age);
+    toggleBox('age');
   };
 
   const handleCategoryChange = (value: string) => {
     setSelectedCategory(value);
-    setIsCategoryOpen(false);
+    toggleBox('category');
   };
 
   const handleChangePrompt = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -75,7 +81,7 @@ const CreateContent = () => {
           >
             <Flex justify="between" className="w-full">
               <InputBox label="상호명" width="151px">
-                <Input placeholder="상호명명" />
+                <Input placeholder="상호명" />
               </InputBox>
               <InputBox label="계정" width="151px">
                 <Input placeholder="@bizket" />
@@ -83,10 +89,10 @@ const CreateContent = () => {
             </Flex>
             <InputBox label="업종">
               <SelectBox
-                isActive={isCategoryOpen}
+                id="category"
                 placeholder="업종을 선택해주세요."
                 value={selectedCategory}
-                handleClick={handleToggleCategory}
+                isSelected={!!selectedCategory}
               >
                 <CategorySelectBox
                   onSelect={handleCategoryChange}
@@ -95,7 +101,14 @@ const CreateContent = () => {
               </SelectBox>
             </InputBox>
             <InputBox label="고객 연령층">
-              <Input />
+              <SelectBox
+                id="age"
+                placeholder="고객 연령층 선택"
+                value={selectedAge}
+                isSelected={!!selectedAge}
+              >
+                <AgeSelectBox age={selectedAge} handleClick={handleClickAge} />
+              </SelectBox>
             </InputBox>
           </motion.div>
         </Flex>

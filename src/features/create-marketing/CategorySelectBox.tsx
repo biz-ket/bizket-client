@@ -1,5 +1,6 @@
 'use client';
 
+import { useSelectBoxStore } from '@/shared/store/useSelectBoxStore';
 import { useState, useEffect } from 'react';
 
 interface CategorySelectBoxProps {
@@ -112,8 +113,9 @@ const CategorySelectBox: React.FC<CategorySelectBoxProps> = ({
   ];
 
   const [selectedMainIndex, setSelectedMainIndex] = useState(0);
-
   const [selectedSubIndex, setSelectedSubIndex] = useState(0);
+
+  const toggleBox = useSelectBoxStore((state) => state.toggleBox);
 
   useEffect(() => {
     if (currentValue) {
@@ -158,7 +160,7 @@ const CategorySelectBox: React.FC<CategorySelectBoxProps> = ({
   };
 
   const handleBack = () => {
-    // 뒤로가기 로직 추가 예정정
+    toggleBox('category');
   };
 
   return (
