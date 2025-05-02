@@ -1,5 +1,4 @@
 'use client';
-
 import { useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { InstagramCallback } from '@/features/auth/instagram/ui/InstagramCallback';
