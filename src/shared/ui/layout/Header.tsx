@@ -1,3 +1,7 @@
+'use client';
+
+import { useIsLoggedIn } from '@/features/auth/hooks/useIsLoggedIn';
+import { useAuthStore } from '@/features/auth/model/useAuthStore';
 import LoginIcon from '@/shared/ui/icons/LoginIcon';
 import MyIcon from '@/shared/ui/icons/MyIcon';
 import Flex from '@/shared/ui/layout/Flex';
@@ -5,13 +9,19 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const Header = () => {
   const pathname = usePathname();
-
+  const isLoggedIn = useIsLoggedIn();
+  const logout = useAuthStore((s) => s.logout);
+  const router = useRouter();
   const isDark = pathname.includes('/report') || pathname.includes('/my');
   const isFull = pathname.includes('/create');
-
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
   return (
     <header
       className={clsx(
@@ -73,13 +83,23 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <Link
-              href={'#'}
-              className="flex items-center gap-6 body-md-regular"
-            >
-              <LoginIcon fill={isDark ? 'white' : 'black'} />
-              로그인
-            </Link>
+            {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-6 body-md-regular"
+              >
+                <LoginIcon fill={isDark ? 'white' : 'black'} />
+                로그아웃
+              </button>
+            ) : (
+              <Link
+                href={'/login'}
+                className="flex items-center gap-6 body-md-regular"
+              >
+                <LoginIcon fill={isDark ? 'white' : 'black'} />
+                로그인
+              </Link>
+            )}
           </li>
         </ul>
       </div>
