@@ -1,27 +1,33 @@
 'use client';
 
-import { useIsLoggedIn } from '@/features/auth/hooks/useIsLoggedIn';
+import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
+import clsx from 'clsx';
+
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
+import Flex from '@/shared/ui/layout/Flex';
 import LoginIcon from '@/shared/ui/icons/LoginIcon';
 import MyIcon from '@/shared/ui/icons/MyIcon';
-import Flex from '@/shared/ui/layout/Flex';
-import clsx from 'clsx';
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/navigation';
 
 const Header = () => {
   const pathname = usePathname();
-  const isLoggedIn = useIsLoggedIn();
-  const logout = useAuthStore((s) => s.logout);
   const router = useRouter();
+
+  const hasHydrated = useAuthStore((s) => s._hasHydrated);
+  const token = useAuthStore((s) => s.token);
+  const logout = useAuthStore((s) => s.logout);
+
+  const isLoggedIn = Boolean(token);
+
   const isDark = pathname.includes('/report') || pathname.includes('/my');
   const isFull = pathname.includes('/create');
+
   const handleLogout = () => {
     logout();
-    router.push('/login');
+    router.push('/');
   };
+
   return (
     <header
       className={clsx(
@@ -31,7 +37,7 @@ const Header = () => {
     >
       <div
         className={clsx(
-          'flex items-center justify-between  m-auto transition-[0.3s]',
+          'flex items-center justify-between m-auto transition-[0.3s]',
           isFull ? 'w-full pl-18 pr-28' : 'w-[1200px]',
         )}
       >
@@ -50,23 +56,24 @@ const Header = () => {
               )}
             >
               <li>
-                <Link href={'/create'} className="body-md-regular">
+                <Link href="/create" className="body-md-regular">
                   마케팅 콘텐츠 생성 AI
                 </Link>
               </li>
               <li>
-                <Link href={'/insight'} className="body-md-regular">
+                <Link href={'/report'} className="body-md-regular">
                   비즈니스 보고서
                 </Link>
               </li>
               <li>
-                <Link href={'/search-trend'} className="body-md-regular">
+                <Link href="/search-trend" className="body-md-regular">
                   검색어 트렌드
                 </Link>
               </li>
             </ul>
           </nav>
         </Flex>
+
         <ul
           className={clsx(
             'flex items-center gap-20',
@@ -75,7 +82,7 @@ const Header = () => {
         >
           <li>
             <Link
-              href={'/my'}
+              href="/my"
               className="flex items-center gap-6 body-md-regular"
             >
               <MyIcon fill={isDark ? 'white' : 'black'} />
@@ -83,7 +90,10 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            {isLoggedIn ? (
+            {/* hydrating 중엔 빈 공간(또는 스켈레톤) */}
+            {!hasHydrated ? (
+              <div style={{ width: 100, height: 24 }} />
+            ) : isLoggedIn ? (
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-6 body-md-regular"
@@ -93,7 +103,7 @@ const Header = () => {
               </button>
             ) : (
               <Link
-                href={'/login'}
+                href="/login"
                 className="flex items-center gap-6 body-md-regular"
               >
                 <LoginIcon fill={isDark ? 'white' : 'black'} />

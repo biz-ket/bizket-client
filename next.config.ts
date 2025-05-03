@@ -12,8 +12,12 @@ const nextConfig: NextConfig = {
         destination: `${process.env.NEXT_PUBLIC_BIZKET_API_BASE_URL}/members/:path*`,
       },
       {
-        source: '/api/members/me',
-        destination: `${process.env.NEXT_PUBLIC_BIZKET_API_BASE_URL}/members/me`,
+        source: '/api/mypage/me',
+        destination: `${process.env.NEXT_PUBLIC_BIZKET_API_BASE_URL}/mypage/me`,
+      },
+      {
+        source: '/api/member/me',
+        destination: `${process.env.NEXT_PUBLIC_BIZKET_API_BASE_URL}/member/me`,
       },
       {
         source: '/api/instagram/insight/me/media-with-insights',

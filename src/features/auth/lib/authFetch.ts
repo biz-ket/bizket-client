@@ -17,9 +17,10 @@ export const authFetch = async (url: string, opts: RequestInit = {}) => {
   try {
     return await makeRequest();
   } catch (err: any) {
-    if (err.message.includes('401')) {
+    if (err.status === 401) {
       try {
         // TODO: 리프레시 토큰으로 재발급 시도 (리프레시토큰 api 나오면)
+        // TODO: 토큰 만료 시 401 Unauthorized로 내려달라고 백엔드에 요청
         const { jwtToken: newToken } = await fetchApi('/api/auth/refresh', {
           method: 'POST',
           credentials: 'include',

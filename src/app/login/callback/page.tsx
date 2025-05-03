@@ -1,17 +1,13 @@
 'use client';
 
-import { useCallback } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { InstagramCallback } from '@/features/auth/instagram/ui/InstagramCallback';
+import React, { Suspense } from 'react';
+import CallbackContent from './callbackContent';
 
-const CallbackPage = () => {
-  const code = useSearchParams().get('code'); //인가코드
-  const router = useRouter();
-  const onSuccess = useCallback(() => {
-    router.push('/my');
-  }, [router]);
-
-  return <InstagramCallback code={code} onSuccess={onSuccess} />;
-};
-
-export default CallbackPage;
+export default function CallbackPage() {
+  return (
+    // 추후 스피너로 교체
+    <Suspense fallback={<div>로그인 처리 중…</div>}>
+      <CallbackContent />
+    </Suspense>
+  );
+}
