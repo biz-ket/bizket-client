@@ -23,6 +23,10 @@ const nextConfig: NextConfig = {
         source: '/api/instagram/insight/me/media-with-insights',
         destination: `${process.env.NEXT_PUBLIC_BIZKET_API_BASE_URL}/instagram/insight/me/media-with-insights`,
       },
+      {
+        source: '/api/business-report/me/profile',
+        destination: `${process.env.NEXT_PUBLIC_BIZKET_API_BASE_URL}/business-report/me/profile`,
+      },
     ];
   },
 };
