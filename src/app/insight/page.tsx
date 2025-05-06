@@ -25,6 +25,14 @@ export default function InsightPage() {
     error: profileError,
   } = useBusinessProfile();
 
+  useEffect(() => {
+    console.log('▶️ insights:', insights);
+  }, [insights]);
+
+  useEffect(() => {
+    console.log('▶️ profile:', profile);
+  }, [profile]);
+
   // ─── 페이지네이션 세팅 ────────────────────────────────────
   const [page, setPage] = useState(1);
   const pageSize = 10;
@@ -114,7 +122,7 @@ export default function InsightPage() {
               style={{ borderSpacing: 0 }}
             >
               <thead className="bg-black text-white">
-                <tr className="bg-black text-white">
+                <tr className="bg-black text-white text-center">
                   <th className="body-sm-regular p-3 ">게시일</th>
                   <th className="p-3 body-sm-regular">플랫폼</th>
                   <th className="p-3 body-sm-regular">게시내용</th>
@@ -128,13 +136,15 @@ export default function InsightPage() {
                 {visibleInsights.map((item) => (
                   <tr
                     key={item.id}
-                    className="hover:bg-gray-50 transition-colors"
+                    className="hover:bg-gray-50 transition-colors text-center"
                   >
                     <td className="p-3">
                       {new Date(item.timestamp).toLocaleDateString()}
                     </td>
                     <td className="p-3">{item.platform}</td>
-                    <td className="p-3 truncate">{item.caption}</td>
+                    <td className="p-3 max-w-xs overflow-hidden whitespace-nowrap text-ellipsis truncate">
+                      {item.caption}
+                    </td>
                     <td className="p-3">+{item.likes}</td>
                     <td className="p-3">+{item.comments}</td>
                     <td className="p-3">+{item.shares}</td>
