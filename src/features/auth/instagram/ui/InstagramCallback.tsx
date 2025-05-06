@@ -1,6 +1,5 @@
 'use client';
 import { useEffect } from 'react';
-
 import { useAuthStore } from '../../model/useAuthStore';
 import { useInstagramExchange } from '../../hooks/useInstagramExchange';
 
@@ -11,7 +10,7 @@ export const InstagramCallback = ({
   code: string | null;
   onSuccess: () => void;
 }) => {
-  const { setToken, setMemberId } = useAuthStore.getState();
+  const { setToken, setRefreshToken, setMemberId } = useAuthStore.getState();
   const { mutate, isPending, isError, error } = useInstagramExchange();
 
   useEffect(() => {
@@ -20,15 +19,16 @@ export const InstagramCallback = ({
         { code },
         {
           onSuccess: (data) => {
-            localStorage.setItem('accessToken', data.jwtToken);
+            console.log('✅ exchange response:', data);
             setToken(data.jwtToken);
+            setRefreshToken(data.refreshToken);
             setMemberId(data.memberId);
             onSuccess();
           },
         },
       );
     }
-  }, [code, mutate, onSuccess, setToken, setMemberId]);
+  }, [code, mutate, onSuccess, setToken, setRefreshToken, setMemberId]);
 
   if (isPending) {
     return (

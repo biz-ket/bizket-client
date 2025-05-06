@@ -9,8 +9,7 @@ const MyPage = () => {
   const router = useRouter();
   const { data: user, isError, isLoading } = useCurrentUser();
   const hasHydrated = useAuthStore((s) => s._hasHydrated);
-  const token = useAuthStore((s) => s.token);
-  console.log('[MyPage]', { hasHydrated, token, isError, user, isLoading });
+
   useEffect(() => {
     if (!hasHydrated || isLoading) return;
 

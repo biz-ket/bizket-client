@@ -4,6 +4,7 @@ import { useMutation, UseMutationResult } from '@tanstack/react-query';
 
 interface ExchangeResponse {
   jwtToken: string;
+  refreshToken: string;
   memberId: number;
 }
 
