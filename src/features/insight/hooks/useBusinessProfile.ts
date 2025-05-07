@@ -45,7 +45,7 @@ export const useBusinessProfile = () => {
       if (!token) return defaultProfile;
 
       try {
-        return await authFetch('/api/business-report/me/profile');
+        return await authFetch('/business-report/me/profile');
       } catch {
         // 에러나도 기본값 리턴
         return defaultProfile;

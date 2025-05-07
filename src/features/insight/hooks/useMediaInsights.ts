@@ -18,7 +18,7 @@ export function useMediaInsights() {
   return useQuery<MediaWithInsights[], Error>({
     queryKey: ['mediaInsights'],
     queryFn: () =>
-      authFetch('/api/instagram/insight/me/media-with-insights') as Promise<
+      authFetch('/instagram/insight/me/media-with-insights') as Promise<
         MediaWithInsights[]
       >,
     enabled: Boolean(useAuthStore.getState().token),
