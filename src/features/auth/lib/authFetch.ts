@@ -2,11 +2,12 @@ import { fetchApi } from '@/shared/utils/fetchApi';
 import { useAuthStore } from '../model/useAuthStore';
 
 export const authFetch = async (url: string, opts: RequestInit = {}) => {
-  const { token, logout, setToken } = useAuthStore.getState();
+  const { logout, setToken, setRefreshToken } = useAuthStore.getState();
 
   const makeRequest = () => {
+    const { token: currentToken } = useAuthStore.getState();
     const headers = new Headers(opts.headers);
-    if (token) headers.set('Authorization', `Bearer ${token}`);
+    if (currentToken) headers.set('Authorization', `Bearer ${currentToken}`);
     return fetchApi(url, {
       ...opts,
       headers,
@@ -17,15 +18,18 @@ export const authFetch = async (url: string, opts: RequestInit = {}) => {
   try {
     return await makeRequest();
   } catch (err: any) {
-    if (err.message.includes('401')) {
+    if (err.status === 401) {
       try {
-        // TODO: 리프레시 토큰으로 재발급 시도 (리프레시토큰 api 나오면)
-        const { jwtToken: newToken } = await fetchApi('/api/auth/refresh', {
+        const { refreshToken: currentRefresh } = useAuthStore.getState();
+        const data = await fetchApi('/auth/instagram/refresh', {
           method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ refreshToken: currentRefresh }),
           credentials: 'include',
         });
-        //전역 스토어에 새 토큰 저장
-        setToken(newToken);
+        // 새 토큰 저장
+        setToken(data.jwtToken);
+        setRefreshToken(data.refreshToken);
         //원래 요청 다시 시도
         return await makeRequest();
       } catch {
