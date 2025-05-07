@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '../model/useAuthStore';
-import { authFetch } from '../lib/authFetch';
+import { fetchApi } from '@/shared/utils/fetchApi';
 
 export interface Member {
   id: number;
@@ -12,7 +12,7 @@ export const useMemberInfo = () => {
   const token = useAuthStore((s) => s.token);
   return useQuery<Member, Error>({
     queryKey: ['member', memberId],
-    queryFn: () => authFetch(`/api/member/me`) as Promise<Member>,
+    queryFn: () => fetchApi(`/member/me`, { auth: true }) as Promise<Member>,
     enabled: Boolean(token), // 토큰이 있어야만 호출
     staleTime: 1000 * 60 * 5,
   });

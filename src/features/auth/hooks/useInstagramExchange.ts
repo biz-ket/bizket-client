@@ -16,10 +16,9 @@ export const useInstagramExchange = (): UseMutationResult<
 > => {
   return useMutation<ExchangeResponse, Error, { code: string }>({
     mutationFn: ({ code }) =>
-      fetchApi('/api/auth/instagram/exchange', {
+      fetchApi('/auth/instagram/exchange', {
         method: 'POST',
         body: { code },
-        credentials: 'include',
       }) as Promise<ExchangeResponse>,
   });
 };
