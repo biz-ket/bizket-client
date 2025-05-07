@@ -1,27 +1,33 @@
 'use client';
-
 import { useRouter } from 'next/navigation';
 import Container from '@/shared/ui/layout/Container';
 import { useEffect } from 'react';
+import { useCurrentUser } from '@/features/auth/hooks/useCurrentUser';
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
 
 const MyPage = () => {
   const router = useRouter();
+  const { data: user, isError, isLoading } = useCurrentUser();
   const hasHydrated = useAuthStore((s) => s._hasHydrated);
-  const isLoggedIn = useAuthStore((s) => Boolean(s.token));
 
   useEffect(() => {
-    if (hasHydrated && !isLoggedIn) {
-      router.push('/login');
-    }
-  }, [hasHydrated, isLoggedIn, router]);
+    if (!hasHydrated || isLoading) return;
 
-  if (!hasHydrated) return null;
-  if (!isLoggedIn) return null;
+    if (isError || !user) {
+      router.push('/');
+    }
+  }, [hasHydrated, isLoading, isError, user, router]);
+
+  if (!hasHydrated || isLoading) {
+    return null;
+  }
+  if (isError || !user) {
+    return null;
+  }
   return (
     <Container>
       <h1>내 정보</h1>
-      <p>로그인 상태입니다 🙂</p>
+      <p>닉네임: {user.nickname}</p>
     </Container>
   );
 };
