@@ -11,8 +11,8 @@ const ShareIcon = () => {
         d="M29.7652 6.33203L16.7881 19.3091"
         stroke="#CFCFCF"
         strokeWidth="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M29.765 6.33203L21.438 30.1234L16.6797 19.4173L5.97363 14.659L29.765 6.33203Z"

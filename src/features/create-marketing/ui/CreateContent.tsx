@@ -18,6 +18,8 @@ import SelectBox from '@/shared/ui/input/SelectBox';
 import CategorySelectBox from '@/features/create-marketing/ui/CategorySelectBox';
 import AgeSelectBox from '@/features/create-marketing/ui/AgeSelectBox';
 import { useSelectBoxStore } from '@/shared/store/useSelectBoxStore';
+import Image from 'next/image';
+import { useFileUpload } from '@/shared/hooks/useFileUpload';
 
 const CreateContent = () => {
   const [prompt, setPrompt] = useState('');
@@ -31,9 +33,19 @@ const CreateContent = () => {
     'quality' | 'price' | 'design' | 'trend'
   >('quality');
 
+  const { files, previews, addFiles } = useFileUpload(3);
+
+  console.log(files);
+  console.log(previews);
+
   const toggleBox = useSelectBoxStore((state) => state.toggleBox);
 
-  console.log(selectedCategory);
+  const handleChangeFiles = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+
+    const files = Array.from(e.target.files);
+    addFiles(files);
+  };
 
   const handleClickAge = (age: string) => {
     console.log(age);
@@ -151,9 +163,32 @@ const CreateContent = () => {
         </Flex>
         <Flex direction="col" gap={14} className="w-full">
           <ContentTitle title="게시 이미지 업로드" />
-          <button className="w-full h-48 rounded-10 bg-primary-10 body-sm-regular text-primary-50">
-            이미지 업로드
-          </button>
+          <div className="w-full">
+            <input
+              id="content-file-upload"
+              type="file"
+              multiple
+              className="hidden"
+              onChange={handleChangeFiles}
+            />
+            <label
+              htmlFor="content-file-upload"
+              className="flex items-center justify-center w-full h-48 rounded-10 bg-primary-10 body-sm-regular text-primary-50"
+            >
+              이미지 업로드
+            </label>
+          </div>
+          <Flex gap={10}>
+            {previews.map((preview, index) => (
+              <div
+                key={`preview-${index}`}
+                style={{ width: '97.5px', height: '97.5px' }}
+                className="relative overflow-hidden border rounded-8 border-line-20"
+              >
+                <Image src={preview} fill alt="미리보기 이미지" />
+              </div>
+            ))}
+          </Flex>
         </Flex>
         <Flex direction="col" gap={14} className="w-full">
           <ContentTitle title="프롬프트 입력" />
