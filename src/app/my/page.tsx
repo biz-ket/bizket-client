@@ -32,7 +32,7 @@ const MyPage = () => {
       <Header />
       <div className="w-[1200px] py-80 mx-auto">
         <section className="w-full h-[210px] flex gap-24">
-          <UserProfile />
+          <UserProfile user={user} />
           <AdditionalInfo />
         </section>
         <CreationHistory />

@@ -3,8 +3,9 @@ import { useAuthStore } from '../model/useAuthStore';
 import { fetchApi } from '@/shared/utils/fetchApi';
 
 export interface CurrentUser {
-  id: number;
   nickname: string;
+  placeEmail: string;
+  placePhoneNumber: string;
 }
 
 export const useCurrentUser = () => {

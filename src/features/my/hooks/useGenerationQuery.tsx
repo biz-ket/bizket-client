@@ -1,82 +1,60 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useAuthStore } from '@/features/auth/model/useAuthStore';
+import { MarketingContentsGeneration } from '../model/types';
+import { fetchAllGenerations } from '../api/fetchAllGenerations';
 
-type ContentGeneration = {
-  title: string;
-  platform: string;
-  prompt: string;
-};
-
-const sample: ContentGeneration[] = [
+const sample: MarketingContentsGeneration[] = [
   {
-    title: '모카무스 메이크업',
+    generatedContent: '누드톤으로 고급스러운 데일리 룩 ✨ #누드톤메이크업 #직장인메이크업',
+    hashtags: [],
     platform: '인스타그램',
-    prompt:
-      '20대 여성의 말투로 메이크업 컨셉, 컬러 특징을 포함해서 메이크업에 대한 설명을 간략히 작성해줘',
+    imageUrls: [],
+    createdAt: '',
   },
   {
-    title: '프로필 촬영 메이크업',
+    generatedContent: '프로필 촬영 메이크업',
+    hashtags: [],
     platform: '인스타그램',
-    prompt:
-      '20대 여성의 말투로 메이크업 컨셉, 컬러 특징을 포함해서 메이크업에 대한 설명을 간략히 작성해줘',
+    imageUrls: [],
+    createdAt: '',
   },
   {
-    title: '러블리 방송 메이크업',
+    generatedContent: '러블리 방송 메이크업',
+    hashtags: [],
     platform: '인스타그램',
-    prompt:
-      '20대 여성의 말투로 메이크업 컨셉, 컬러 특징을 포함해서 메이크업에 대한 설명을 간략히 작성해줘',
+    imageUrls: [],
+    createdAt: '',
   },
   {
-    title: '데일리 메이크업',
+    generatedContent: '데일리 메이크업',
+    hashtags: [],
     platform: '인스타그램',
-    prompt:
-      '20대 여성의 말투로 메이크업 컨셉, 컬러 특징을 포함해서 메이크업에 대한 설명을 간략히 작성해줘',
+    imageUrls: [],
+    createdAt: '',
   },
 ];
-
-const limit = 4;
 
 interface useGenerationQueryProps {
   keyword: string;
 }
 
 const useGenerationQuery = ({ keyword }: useGenerationQueryProps) => {
-  const { data, isLoading, isError, hasNextPage, fetchNextPage, error } =
-    useInfiniteQuery({
-      queryKey: ['marketing-contents', keyword],
-      queryFn: () => {
-        // TODO: api 호출 코드로 변경
+  const memberId = useAuthStore((s) => s.memberId);
+  const hasHydrated = useAuthStore((s) => s._hasHydrated);
+
+  return useQuery({
+      queryKey: ['marketing-contents', memberId, keyword],
+      queryFn: async () => {
+        if (keyword === '') {
+          return await fetchAllGenerations(memberId!);
+        }
+        // TODO: keyword에 따른 검색 결과 반환
         return sample;
       },
-      initialPageParam: 0,
-      getNextPageParam: (lastPage, _, lastPageParam) => {
-        if (lastPage.length < limit) {
-          return undefined;
-        }
-        return lastPageParam + 1;
-      },
+      enabled: memberId !== null && hasHydrated,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
     });
-
-  const generations = useMemo(() => {
-    if (!data) {
-      return [];
-    }
-
-    let result: ContentGeneration[] = [];
-    data.pages.forEach((page) => {
-      result = [...result, ...page];
-    });
-    return result;
-  }, [data]);
-
-  return {
-    generations,
-    isLoading,
-    isError,
-    error,
-    hasNextPage,
-    fetchNextPage,
-  };
 };
 
 export default useGenerationQuery;
