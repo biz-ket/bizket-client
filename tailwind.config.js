@@ -144,6 +144,11 @@ module.exports = {
           lineHeight: '130%',
           fontWeight: '600',
         },
+        '.title-md-bold': {
+          fontSize: '24px',
+          lineHeight: '130%',
+          fontWeight: '700',
+        },
         '.title-sm': {
           fontSize: '22px',
           lineHeight: '150%',
@@ -195,6 +200,11 @@ module.exports = {
           fontSize: '14px',
           lineHeight: '150%',
           fontWeight: '400',
+        },
+        '.body-sm-light': {
+          fontSize: '14px',
+          lineHeight: '150%',
+          fontWeight: '300',
         },
         '.body-sm-semibold': {
           fontSize: '14px',

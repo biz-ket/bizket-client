@@ -1,7 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import AdditionalInfo from '@/features/my/ui/AdditionalInfo';
+import CreationHistory from '@/features/my/ui/GenerationHistory';
 import Header from '@/features/my/ui/Header';
-import Container from '@/shared/ui/layout/Container';
+import UserProfile from '@/features/my/ui/UserProfile';
 import { useEffect } from 'react';
 import { useCurrentUser } from '@/features/auth/hooks/useCurrentUser';
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
@@ -28,10 +30,13 @@ const MyPage = () => {
   return (
     <div>
       <Header />
-      <Container>
-        <h1>내 정보</h1>
-        <p>닉네임: {user.nickname}</p>
-      </Container>{' '}
+      <div className="w-[1200px] py-80 mx-auto">
+        <section className="w-full h-[210px] flex gap-24">
+          <UserProfile />
+          <AdditionalInfo />
+        </section>
+        <CreationHistory />
+      </div>
     </div>
   );
 };
