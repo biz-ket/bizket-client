@@ -12,8 +12,7 @@ export const useMemberInfo = () => {
   const token = useAuthStore((s) => s.token);
   return useQuery<Member, Error>({
     queryKey: ['member', memberId],
-    queryFn: () =>
-      fetchApi(`/api/member/me`, { auth: true }) as Promise<Member>,
+    queryFn: () => fetchApi(`/member/me`, { auth: true }) as Promise<Member>,
     enabled: Boolean(token), // 토큰이 있어야만 호출
     staleTime: 1000 * 60 * 5,
   });

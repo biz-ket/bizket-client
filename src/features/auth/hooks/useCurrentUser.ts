@@ -14,7 +14,7 @@ export const useCurrentUser = () => {
   return useQuery<CurrentUser, Error>({
     queryKey: ['currentUser'],
     queryFn: () =>
-      fetchApi('/api/mypage/me', {
+      fetchApi('/mypage/me', {
         auth: true,
       }) as Promise<CurrentUser>,
     enabled: Boolean(token) && hasHydrated, // 토큰이 있어야만 호출
