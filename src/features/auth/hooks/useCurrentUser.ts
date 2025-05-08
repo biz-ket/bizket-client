@@ -4,8 +4,7 @@ import { fetchApi } from '@/shared/utils/fetchApi';
 
 export interface CurrentUser {
   id: number;
-  placeEmail: string;
-  placePhoneNumber: string;
+  nickname: string;
 }
 
 export const useCurrentUser = () => {
