@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { authFetch } from '@/features/auth/lib/authFetch';
+import { fetchApi } from '@/shared/utils/fetchApi';
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
 export interface MediaWithInsights {
   id: string;
@@ -15,13 +15,14 @@ export interface MediaWithInsights {
 }
 
 export function useMediaInsights() {
+  const token = useAuthStore((s) => s.token);
   return useQuery<MediaWithInsights[], Error>({
     queryKey: ['mediaInsights'],
     queryFn: () =>
-      authFetch('/instagram/insight/me/media-with-insights') as Promise<
-        MediaWithInsights[]
-      >,
-    enabled: Boolean(useAuthStore.getState().token),
+      fetchApi('/instagram/insight/me/media-with-insights', {
+        auth: true,
+      }) as Promise<MediaWithInsights[]>,
+    enabled: Boolean(token),
     retry: false,
   });
 }

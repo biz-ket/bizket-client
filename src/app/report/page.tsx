@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useMediaInsights } from '@/features/report/hooks/useMediaInsights';
 import { useBusinessProfile } from '@/features/report/hooks/useBusinessProfile';
+import { useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
 import Container from '@/shared/ui/layout/Container';
 import Image from 'next/image';
 import Flex from '@/shared/ui/layout/Flex';
@@ -25,6 +26,7 @@ export default function InsightPage() {
     error: profileError,
   } = useBusinessProfile();
 
+  const { data: member } = useMemberInfo();
   useEffect(() => {
     console.log('▶️ insights:', insights);
   }, [insights]);
@@ -32,6 +34,10 @@ export default function InsightPage() {
   useEffect(() => {
     console.log('▶️ profile:', profile);
   }, [profile]);
+
+  useEffect(() => {
+    console.log('▶️ member:', member);
+  }, [member]);
 
   // ─── 페이지네이션 세팅 ────────────────────────────────────
   const [page, setPage] = useState(1);
@@ -103,6 +109,12 @@ export default function InsightPage() {
                 인스타그램
               </span>
               {profile?.instagramAccountId}
+            </p>
+            <p className="body-md-regular">
+              <span className="text-primary-10 w-[70px] inline-block mr-15">
+                스레드
+              </span>
+              {member?.threadsAccountId}
             </p>
           </div>
 

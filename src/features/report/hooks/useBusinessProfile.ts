@@ -1,59 +1,53 @@
-// features/insight/hooks/useBusinessProfile.ts
 import { useQuery } from '@tanstack/react-query';
-import { authFetch } from '@/features/auth/lib/authFetch';
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
+import { fetchApi } from '@/shared/utils/fetchApi';
 
 export interface BusinessProfile {
   placeName: string;
+  customerAgeGroupId: number;
   customerAgeGroupLabel: string;
+  businessCategoryId: number;
+  businessCategoryName: string;
+  businessSubCategoryId: number;
+  businessSubCategoryName: string;
+  businessDetailCategoryId: number;
+  businessDetailCategoryName: string;
   openDate: string;
   address: string;
+  placeEmail: string;
+  placePhoneNumber: string;
   followerCount: number;
   instagramAccountId: string;
-  businessSubCategoryName: string;
 }
 const defaultProfile: BusinessProfile = {
-  placeName: '행복합니다',
+  placeName: '우리 가게',
+  customerAgeGroupId: 2,
   customerAgeGroupLabel: '20대',
-  openDate: '2025-02-05',
-  address: '서울시 은평구 신사동',
-  followerCount: 121,
-  instagramAccountId: 'bizkit',
-  businessSubCategoryName: '메이크업',
+  businessCategoryId: 1,
+  businessCategoryName: '요식업',
+  businessSubCategoryId: 13,
+  businessSubCategoryName: '카페',
+  businessDetailCategoryId: 16,
+  businessDetailCategoryName: '로스터리/핸드드립',
+  openDate: '2023-05-01',
+  address: '서울시 강남구 역삼동 123-45',
+  placeEmail: 'owner@urigaegae.com',
+  placePhoneNumber: '010-1234-5678',
+  followerCount: 1,
+  instagramAccountId: 'bizket27',
 };
 
-// export const useBusinessProfile = () => {
-//   const token = useAuthStore((s) => s.token);
-
-//   return useQuery<BusinessProfile, Error, BusinessProfile>({
-//     queryKey: ['businessProfile'],
-//     queryFn: () => authFetch('/api/business-report/me/profile'),
-//     staleTime: 5 * 60 * 1000,
-//     enabled: Boolean(token),
-//     initialData: defaultProfile,
-//     onError: () => {},
-//   });
-// };
 export const useBusinessProfile = () => {
   const token = useAuthStore((s) => s.token);
 
-  return useQuery<BusinessProfile>({
-    // token 변화를 key에 포함시켜, 토큰이 발급되면 재실행되도록
-    queryKey: ['businessProfile', token],
-    queryFn: async () => {
-      // 토큰 없으면 기본값 바로 리턴
-      if (!token) return defaultProfile;
-
-      try {
-        return await authFetch('/business-report/me/profile');
-      } catch {
-        // 에러나도 기본값 리턴
-        return defaultProfile;
-      }
-    },
-    // 5분 동안 stale 처리
+  return useQuery<BusinessProfile, Error>({
+    queryKey: ['businessProfile'],
+    queryFn: () =>
+      fetchApi('/business-report/me/profile', {
+        auth: true,
+      }) as Promise<BusinessProfile>,
     staleTime: 5 * 60 * 1000,
-    // 기본적으로 재시도하지 않음
-    retry: false,
+    enabled: Boolean(token),
+    placeholderData: defaultProfile,
   });
 };
