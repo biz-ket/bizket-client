@@ -1,6 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import Container from '@/shared/ui/layout/Container';
+import AdditionalInfo from '@/features/my/ui/AdditionalInfo';
+import CreationHistory from '@/features/my/ui/GenerationHistory';
+import Header from '@/features/my/ui/Header';
+import UserProfile from '@/features/my/ui/UserProfile';
 import { useEffect } from 'react';
 import { useCurrentUser } from '@/features/auth/hooks/useCurrentUser';
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
@@ -25,10 +28,23 @@ const MyPage = () => {
     return null;
   }
   return (
-    <Container>
-      <h1>내 정보</h1>
-      <p>닉네임: {user.nickname}</p>
-    </Container>
+    <div>
+      <Header
+        title="마이페이지"
+        userName={user.nickname}
+        action={{
+          label: '내 정보 수정',
+          onClick: () => router.push('/my/edit'),
+        }}
+      />
+      <div className="w-[1200px] py-80 mx-auto">
+        <section className="w-full h-[210px] flex gap-24">
+          <UserProfile user={user} />
+          <AdditionalInfo />
+        </section>
+        <CreationHistory />
+      </div>
+    </div>
   );
 };
 export default MyPage;

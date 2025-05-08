@@ -61,7 +61,7 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/report" className="body-md-regular">
+                <Link href={'/report'} className="body-md-regular">
                   비즈니스 보고서
                 </Link>
               </li>
