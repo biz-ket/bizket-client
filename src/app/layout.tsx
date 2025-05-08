@@ -26,6 +26,7 @@ export default function RootLayout({
             {children}
             {!shouldHideLayout && <Footer />}
           </div>
+          <div id='modal-root' />
         </RootLayoutProvider>
       </body>
     </html>
