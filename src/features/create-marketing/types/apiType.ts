@@ -1,4 +1,4 @@
-type Tags = 'TREND' | 'PRICE' | 'QUALITY' | 'DESIGN';
+export type Tags = 'TREND' | 'PRICE' | 'QUALITY' | 'DESIGN';
 
 export interface CreateMarketingRequestType {
   userType: 'GUEST' | 'MEMBER' | 'BUSINESS';
@@ -15,6 +15,8 @@ export interface CreateMarketingRequestType {
 }
 
 export interface CreateMarketingResponseType {
+  id: number;
+  prompt: string;
   generatedContent: string;
   hashtags: string[];
   platform?: string;

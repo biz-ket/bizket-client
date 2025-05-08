@@ -5,8 +5,8 @@ interface PlatformSelectButtonProps {
   height?: string;
   label: string;
   isActive?: boolean;
-  name: 'INSTAGRAM' | 'THREADS';
-  onClick: (platform: 'INSTAGRAM' | 'THREADS') => void;
+  name: 'instagram' | 'threads';
+  onClick: (platform: 'instagram' | 'threads') => void;
 }
 
 const PlatformSelectButton = ({

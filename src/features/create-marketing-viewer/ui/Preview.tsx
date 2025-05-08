@@ -3,19 +3,20 @@ import MenuIcon from '@/features/create-marketing-viewer/ui/MenuIcon';
 import SaveIcon from '@/features/create-marketing-viewer/ui/SaveIcon';
 import ShareIcon from '@/features/create-marketing-viewer/ui/ShareIcon';
 import WishIcon from '@/features/create-marketing-viewer/ui/WishIcon';
+import { useMarketingLoadingStore } from '@/shared/store/useMarketingStore';
 import Flex from '@/shared/ui/layout/Flex';
 import Image from 'next/image';
 
 const testText =
   '여리여리 분위기 가득 Mocha mousse 🤎\n올해의 팬톤 컬러 #모카무스 메이크업 🤎☕️\n\nmakeup @makeup_jin \nhair @._.oh.in. \n\n💌메이크업 예약 및 문의 \n👉🏻프로필링크 카카오채널';
 
-const isSuccess = false;
-
 interface PreviewProps {
   isHistory?: boolean;
 }
 
 export const Preview = ({ isHistory }: PreviewProps) => {
+  const { isSuccess } = useMarketingLoadingStore();
+
   return isSuccess || isHistory ? (
     <div className="overflow-hidden rounded-10">
       <div className="w-[425px]  bg-white h-[820px] overflow-auto ">
@@ -31,7 +32,7 @@ export const Preview = ({ isHistory }: PreviewProps) => {
             src="/images/create-marketing/preview.png"
             style={{ objectFit: 'cover' }}
             fill
-            alt="미리보기 이미지지"
+            alt="미리보기 이미지"
           />
         </div>
         <Flex direction="col" gap={12} className="w-full px-16 py-12">

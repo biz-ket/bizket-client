@@ -21,28 +21,41 @@ import { useSelectBoxStore } from '@/shared/store/useSelectBoxStore';
 import Image from 'next/image';
 import { useFileUpload } from '@/shared/hooks/useFileUpload';
 import { useCreateMarketingMutation } from '@/features/create-marketing/hooks/useCreateMarketingMutation';
-import { CreateMarketingRequestType } from '@/features/create-marketing/types/apiType';
+import {
+  CreateMarketingRequestType,
+  Tags,
+} from '@/features/create-marketing/types/apiType';
 import { useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
+import { useAuthStore } from '@/features/auth/model/useAuthStore';
 
 const CreateContent = () => {
   const [prompt, setPrompt] = useState('');
   const [isBusinessInfoOpen, setIsBusinessInfoOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedAge, setSelectedAge] = useState('');
-  const [platform, setPlatform] = useState<'INSTAGRAM' | 'THREADS'>(
-    'INSTAGRAM',
+  const [platform, setPlatform] = useState<'instagram' | 'threads'>(
+    'instagram',
   );
-  const [accent, setAccent] = useState<
-    'QUALITY' | 'PRICE' | 'DESIGN' | 'TREND'
-  >('QUALITY');
+  const [accent, setAccent] = useState<Tags[]>(['QUALITY']);
+  const [account, setAccount] = useState('');
+  const [brandName, setBrandName] = useState('');
 
   const { files, previews, addFiles } = useFileUpload(3);
 
   const { data: userData } = useMemberInfo();
+  const { token } = useAuthStore();
   const { mutate } = useCreateMarketingMutation();
 
   console.log(userData);
   console.log(files);
+
+  const handleChangeAccount = (e: ChangeEvent<HTMLInputElement>) => {
+    setAccount(e.target.value);
+  };
+
+  const handleChangeBrandName = (e: ChangeEvent<HTMLInputElement>) => {
+    setBrandName(e.target.value);
+  };
 
   const toggleBox = useSelectBoxStore((state) => state.toggleBox);
 
@@ -60,9 +73,11 @@ const CreateContent = () => {
   };
 
   const handleChangeAccent = (
-    accent: 'QUALITY' | 'PRICE' | 'DESIGN' | 'TREND',
+    acc: 'QUALITY' | 'PRICE' | 'DESIGN' | 'TREND',
   ) => {
-    setAccent(accent);
+    setAccent((prev) =>
+      prev.includes(acc) ? prev.filter((item) => item !== acc) : [...prev, acc],
+    );
   };
 
   const handleCategoryChange = (value: string) => {
@@ -78,24 +93,26 @@ const CreateContent = () => {
     setIsBusinessInfoOpen((prev) => !prev);
   };
 
-  const handleChangePlatform = (platform: 'INSTAGRAM' | 'THREADS') => {
+  const handleChangePlatform = (platform: 'instagram' | 'threads') => {
     setPlatform(platform);
   };
 
   const handleSubmit = () => {
     const data: CreateMarketingRequestType = {
-      userType: 'MEMBER',
-      memberId: 1,
-      brandName: null,
-      account: null,
-      industry: null,
-      clientToken: null,
-      platform: 'instagram',
+      userType: token ? 'BUSINESS' : 'GUEST',
+      memberId: token ? 1 : null,
+      brandName: token ? brandName : null,
+      account: token ? account : null,
+      industry: token ? selectedCategory : null,
+      clientToken: token ? null : 'test',
+      platform: token ? platform : null,
       targetAgeGroup: null,
-      prompt: '가을 감성의 인테리어 소품 추천 문구를 생성해주세요.',
-      emphasisTags: ['DESIGN', 'QUALITY'],
-      imageUrls: [],
+      prompt,
+      emphasisTags: accent,
+      imageUrls: files,
     };
+
+    console.log(data);
 
     try {
       mutate(data);
@@ -141,10 +158,18 @@ const CreateContent = () => {
           >
             <Flex justify="between" className="w-full">
               <InputBox label="상호명" width="151px">
-                <Input placeholder="상호명" />
+                <Input
+                  placeholder="상호명"
+                  value={brandName}
+                  onChange={handleChangeBrandName}
+                />
               </InputBox>
               <InputBox label="계정" width="151px">
-                <Input placeholder="@bizket" />
+                <Input
+                  placeholder="@bizket"
+                  value={account}
+                  onChange={handleChangeAccount}
+                />
               </InputBox>
             </Flex>
             <InputBox label="업종">
@@ -177,14 +202,14 @@ const CreateContent = () => {
           <Flex justify="between" align="center" className="w-full">
             <PlatformSelectButton
               label="인스타그램"
-              name="INSTAGRAM"
-              isActive={platform === 'INSTAGRAM'}
+              name="instagram"
+              isActive={platform === 'instagram'}
               onClick={handleChangePlatform}
             />
             <PlatformSelectButton
               label="스레드"
-              name="THREADS"
-              isActive={platform === 'THREADS'}
+              name="threads"
+              isActive={platform === 'threads'}
               onClick={handleChangePlatform}
             />
           </Flex>
@@ -232,29 +257,29 @@ const CreateContent = () => {
             <IconSelectButton
               label="퀄리티"
               name="QUALITY"
-              icon={<QuilityIcon isActive={accent === 'QUALITY'} />}
-              isActive={accent === 'QUALITY'}
+              icon={<QuilityIcon isActive={accent.includes('QUALITY')} />}
+              isActive={accent.includes('QUALITY')}
               onClick={handleChangeAccent}
             />
             <IconSelectButton
               label="가격"
               name="PRICE"
-              icon={<PriceIcon isActive={accent === 'PRICE'} />}
-              isActive={accent === 'PRICE'}
+              icon={<PriceIcon isActive={accent.includes('PRICE')} />}
+              isActive={accent.includes('PRICE')}
               onClick={handleChangeAccent}
             />
             <IconSelectButton
               label="디자인"
               name="DESIGN"
-              icon={<DesignIcon isActive={accent === 'DESIGN'} />}
-              isActive={accent === 'DESIGN'}
+              icon={<DesignIcon isActive={accent.includes('DESIGN')} />}
+              isActive={accent.includes('DESIGN')}
               onClick={handleChangeAccent}
             />
             <IconSelectButton
               label="트렌드"
               name="TREND"
-              icon={<TrendIcon isActive={accent === 'TREND'} />}
-              isActive={accent === 'TREND'}
+              icon={<TrendIcon isActive={accent.includes('TREND')} />}
+              isActive={accent.includes('TREND')}
               onClick={handleChangeAccent}
             />
           </Flex>
