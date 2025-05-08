@@ -1,13 +1,16 @@
 import TextViewBox from '@/features/create-marketing-viewer/ui/TextViewBox';
-import { useMarketingLoadingStore } from '@/shared/store/useMarketingStore';
+import {
+  useMarketingDataStore,
+  useMarketingLoadingStore,
+} from '@/shared/store/useMarketingStore';
 import Flex from '@/shared/ui/layout/Flex';
 import Image from 'next/image';
 
 const TextViewList = () => {
-  const testContent = '테스트 글자 \n테스트 테스트 \n\n테스트 테스트';
-  const testHash = '#테스트 #좋아요 #인스타';
-
   const { isLoading, isSuccess } = useMarketingLoadingStore();
+  const { data } = useMarketingDataStore();
+
+  console.log(data);
 
   return (
     <Flex direction="col" gap={10}>
@@ -65,8 +68,8 @@ const TextViewList = () => {
 
       {isSuccess && (
         <Flex direction="col" gap={16} className="w-[380px]">
-          <TextViewBox content={testContent} />
-          <TextViewBox content={testHash} />
+          <TextViewBox content={data?.generatedContent || ''} />
+          <TextViewBox content={data?.hashtags.join(' ') || ''} />
         </Flex>
       )}
     </Flex>

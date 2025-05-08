@@ -46,9 +46,6 @@ const CreateContent = () => {
   const { token } = useAuthStore();
   const { mutate } = useCreateMarketingMutation();
 
-  console.log(userData);
-  console.log(files);
-
   const handleChangeAccount = (e: ChangeEvent<HTMLInputElement>) => {
     setAccount(e.target.value);
   };
@@ -100,7 +97,7 @@ const CreateContent = () => {
   const handleSubmit = () => {
     const data: CreateMarketingRequestType = {
       userType: token ? 'BUSINESS' : 'GUEST',
-      memberId: token ? 1 : null,
+      memberId: token && userData ? userData?.id : null,
       brandName: token ? brandName : null,
       account: token ? account : null,
       industry: token ? selectedCategory : null,
@@ -129,7 +126,7 @@ const CreateContent = () => {
             className="flex items-center justify-between w-full pb-12 border-b border-line-20"
             onClick={toggleBusinessInfo}
           >
-            <ContentTitle title="사업장 정보" />
+            <ContentTitle title="사업장 정보" isLogin={!token} />
             <motion.div
               initial={false}
               animate={{
@@ -162,6 +159,7 @@ const CreateContent = () => {
                   placeholder="상호명"
                   value={brandName}
                   onChange={handleChangeBrandName}
+                  disabled={!token}
                 />
               </InputBox>
               <InputBox label="계정" width="151px">
@@ -169,6 +167,7 @@ const CreateContent = () => {
                   placeholder="@bizket"
                   value={account}
                   onChange={handleChangeAccount}
+                  disabled={!token}
                 />
               </InputBox>
             </Flex>
@@ -178,6 +177,7 @@ const CreateContent = () => {
                 placeholder="업종을 선택해주세요."
                 value={selectedCategory}
                 isSelected={!!selectedCategory}
+                disabled={!token}
               >
                 <CategorySelectBox
                   onSelect={handleCategoryChange}
@@ -191,6 +191,7 @@ const CreateContent = () => {
                 placeholder="고객 연령층 선택"
                 value={selectedAge}
                 isSelected={!!selectedAge}
+                disabled={!token}
               >
                 <AgeSelectBox age={selectedAge} handleClick={handleClickAge} />
               </SelectBox>
@@ -198,19 +199,21 @@ const CreateContent = () => {
           </motion.div>
         </Flex>
         <Flex direction="col" gap={14} className="relative w-full z-dropdown">
-          <ContentTitle title="플랫폼 선택" />
+          <ContentTitle title="플랫폼 선택" isLogin={!token} />
           <Flex justify="between" align="center" className="w-full">
             <PlatformSelectButton
               label="인스타그램"
               name="instagram"
               isActive={platform === 'instagram'}
               onClick={handleChangePlatform}
+              disabled={!token}
             />
             <PlatformSelectButton
               label="스레드"
               name="threads"
               isActive={platform === 'threads'}
               onClick={handleChangePlatform}
+              disabled={!token}
             />
           </Flex>
         </Flex>

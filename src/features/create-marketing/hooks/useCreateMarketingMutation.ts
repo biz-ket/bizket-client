@@ -1,7 +1,7 @@
 import { createMarketing } from '@/features/create-marketing/api/createMarketing';
 import { CreateMarketingRequestType } from '@/features/create-marketing/types/apiType';
 import {
-  // useMarketingDataStore,
+  useMarketingDataStore,
   useMarketingLoadingStore,
 } from '@/shared/store/useMarketingStore';
 import { useMutation } from '@tanstack/react-query';
@@ -20,8 +20,7 @@ export const useCreateMarketingMutation = () => {
       setLoading(false);
     },
     onSuccess: (data) => {
-      console.log(data);
-      // useMarketingDataStore.getState().setData(data);
+      useMarketingDataStore.getState().setData(data);
       setIsSuccess(true);
     },
   });

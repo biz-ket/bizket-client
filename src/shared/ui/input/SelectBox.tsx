@@ -15,6 +15,7 @@ interface SelectBoxProps {
   isSelected?: boolean;
   children: ReactNode;
   handleClick?: () => void;
+  disabled?: boolean;
 }
 
 const SelectBox = ({
@@ -23,6 +24,7 @@ const SelectBox = ({
   value,
   isSelected,
   children,
+  disabled,
 }: SelectBoxProps) => {
   const selectBoxRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -38,6 +40,7 @@ const SelectBox = ({
   }, []);
 
   const handleToggleOpen = () => {
+    if (disabled) return;
     toggleBox(id);
   };
 
@@ -93,6 +96,7 @@ const SelectBox = ({
           isOpen || isSelected
             ? 'bg-primary-10 text-primary-50 border-primary-50'
             : 'bg-white text-font-20 border-line-40',
+          disabled && '!border-none !bg-bg-10 cursor-default',
         )}
         onClick={handleToggleOpen}
       >

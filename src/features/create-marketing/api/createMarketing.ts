@@ -6,7 +6,7 @@ import { fetchApi } from '@/shared/utils/fetchApi';
 
 export const createMarketing = async (
   data: CreateMarketingRequestType,
-): Promise<CreateMarketingResponseType[]> => {
+): Promise<CreateMarketingResponseType> => {
   const formData = new FormData();
   const { imageUrls, ...requestData } = data;
 
