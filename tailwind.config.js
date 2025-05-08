@@ -105,12 +105,12 @@ module.exports = {
         '.heading-lg': {
           fontSize: '46px',
           lineHeight: '130%',
-          fontWeight: '600',
+          fontWeight: '700',
         },
         '.heading-md': {
           fontSize: '36px',
           lineHeight: '130%',
-          fontWeight: '600',
+          fontWeight: '700',
         },
         '.heading-sm': {
           fontSize: '35px',

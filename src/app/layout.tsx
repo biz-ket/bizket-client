@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <RootLayoutProvider>
-          <div className="w-full">
+          <div className="w-full pt-60">
             {!shouldHideLayout && <Header />}
             {children}
             {!shouldHideLayout && <Footer />}
