@@ -38,7 +38,7 @@ const Header = () => {
       <div
         className={clsx(
           'flex items-center justify-between m-auto transition-[0.3s]',
-          isFull ? 'w-full pl-18 pr-28' : 'w-[1200px]',
+          isFull ? 'min-w-[1200px] w-full pl-18 pr-28' : 'w-[1200px]',
         )}
       >
         <Flex align="center" gap={40}>

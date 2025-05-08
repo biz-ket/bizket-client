@@ -117,11 +117,11 @@ const SelectBox = ({
                 ref={dropdownRef}
                 onClick={handleDropdownClick}
                 style={{
-                  position: 'fixed',
+                  position: 'absolute',
                   top: `${getDropdownPosition().top}px`,
                   left: `${getDropdownPosition().left}px`,
                   width: `${getDropdownPosition().width}px`,
-                  zIndex: 9999,
+                  zIndex: 100,
                 }}
               >
                 <motion.div
