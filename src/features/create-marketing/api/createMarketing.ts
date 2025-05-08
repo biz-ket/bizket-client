@@ -2,6 +2,7 @@ import {
   CreateMarketingRequestType,
   CreateMarketingResponseType,
 } from '@/features/create-marketing/types/apiType';
+import { convertToFormData } from '@/shared/utils/convertToFormData';
 import { fetchApi } from '@/shared/utils/fetchApi';
 
 export const createMarketing = async (
@@ -9,7 +10,7 @@ export const createMarketing = async (
 ): Promise<CreateMarketingResponseType[]> => {
   const result = await fetchApi('/marketing/contents', {
     method: 'POST',
-    body: data,
+    body: convertToFormData(data),
   });
 
   return result.data;

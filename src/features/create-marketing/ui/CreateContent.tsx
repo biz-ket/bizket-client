@@ -22,6 +22,7 @@ import Image from 'next/image';
 import { useFileUpload } from '@/shared/hooks/useFileUpload';
 import { useCreateMarketingMutation } from '@/features/create-marketing/hooks/useCreateMarketingMutation';
 import { CreateMarketingRequestType } from '@/features/create-marketing/types/apiType';
+import { useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
 
 const CreateContent = () => {
   const [prompt, setPrompt] = useState('');
@@ -37,10 +38,11 @@ const CreateContent = () => {
 
   const { files, previews, addFiles } = useFileUpload(3);
 
+  const { data: userData } = useMemberInfo();
   const { mutate } = useCreateMarketingMutation();
 
+  console.log(userData);
   console.log(files);
-  console.log(previews);
 
   const toggleBox = useSelectBoxStore((state) => state.toggleBox);
 
@@ -82,20 +84,17 @@ const CreateContent = () => {
 
   const handleSubmit = () => {
     const data: CreateMarketingRequestType = {
-      userType: 'GUEST',
-      // memberId: 1,
-      // brandName: '브랜드',
-      // account: '운영계정',
-      // industry: '산업군',
-      clientToken: 'guest-token',
-      // platform: 'INSTAGRAM',
-      // targetAgeGroup: '20대',
+      userType: 'MEMBER',
+      memberId: 1,
+      brandName: null,
+      account: null,
+      industry: null,
+      clientToken: null,
+      platform: 'instagram',
+      targetAgeGroup: null,
       prompt: '가을 감성의 인테리어 소품 추천 문구를 생성해주세요.',
-      emphasisTags: ['TREND'],
-      // rawImageUrls: files,
-      rawImageUrls: [
-        'https://storage.googleapis.com/nangpago-9d371.firebasestorage.app/dc137676-6240-4920-97d3-727c4b7d6d8d_360_F_517535712_q7f9QC9X6TQxWi6xYZZbMmw5cnLMr279.jpg',
-      ],
+      emphasisTags: ['DESIGN', 'QUALITY'],
+      imageUrls: [],
     };
 
     try {

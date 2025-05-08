@@ -12,6 +12,8 @@ export const fetchApi = async (
   const { logout, setToken, setRefreshToken } = useAuthStore.getState();
   const isFormData = options.body instanceof FormData;
 
+  console.log(isFormData);
+
   const buildHeaders = () => {
     const headers = new Headers(
       options.headers as Record<string, string> | Headers | undefined,

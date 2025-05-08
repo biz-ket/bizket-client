@@ -2,16 +2,16 @@ type Tags = 'TREND' | 'PRICE' | 'QUALITY' | 'DESIGN';
 
 export interface CreateMarketingRequestType {
   userType: 'GUEST' | 'MEMBER' | 'BUSINESS';
-  memberId?: number;
-  brandName?: string;
-  account?: string;
-  industry?: string;
-  clientToken?: string;
-  platform?: 'INSTAGRAM' | 'THREADS';
-  targetAgeGroup?: string;
+  memberId?: number | null;
+  brandName?: string | null;
+  account?: string | null;
+  industry?: string | null;
+  clientToken?: string | null;
+  platform?: 'instagram' | 'threads' | null;
+  targetAgeGroup?: string | null;
   prompt: string;
-  emphasisTags: Tags[];
-  rawImageUrls: string[];
+  emphasisTags: Tags[] | null;
+  imageUrls: File[] | null;
 }
 
 export interface CreateMarketingResponseType {

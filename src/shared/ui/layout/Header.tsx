@@ -42,12 +42,14 @@ const Header = () => {
         )}
       >
         <Flex align="center" gap={40}>
-          <Image
-            src={`/images/shared/${isDark ? 'logo-white.svg' : 'logo.svg'}`}
-            width={117}
-            height={25}
-            alt="비즈킷 로고"
-          />
+          <Link href="/">
+            <Image
+              src={`/images/shared/${isDark ? 'logo-white.svg' : 'logo.svg'}`}
+              width={117}
+              height={25}
+              alt="비즈킷 로고"
+            />
+          </Link>
           <nav>
             <ul
               className={clsx(
