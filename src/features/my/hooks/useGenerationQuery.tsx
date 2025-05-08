@@ -1,38 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
 import { MarketingContentsGeneration } from '../model/types';
-import { fetchAllGenerations } from '../api/fetchAllGenerations';
+import { useMemo } from 'react';
+import { fetchGenerationsByKeyword } from '../api/fetchGenerationsByKeyword';
 
-const sample: MarketingContentsGeneration[] = [
-  {
-    generatedContent: '누드톤으로 고급스러운 데일리 룩 ✨ #누드톤메이크업 #직장인메이크업',
-    hashtags: [],
-    platform: '인스타그램',
-    imageUrls: [],
-    createdAt: '',
-  },
-  {
-    generatedContent: '프로필 촬영 메이크업',
-    hashtags: [],
-    platform: '인스타그램',
-    imageUrls: [],
-    createdAt: '',
-  },
-  {
-    generatedContent: '러블리 방송 메이크업',
-    hashtags: [],
-    platform: '인스타그램',
-    imageUrls: [],
-    createdAt: '',
-  },
-  {
-    generatedContent: '데일리 메이크업',
-    hashtags: [],
-    platform: '인스타그램',
-    imageUrls: [],
-    createdAt: '',
-  },
-];
+const limit = 4;
 
 interface useGenerationQueryProps {
   keyword: string;
@@ -42,19 +14,38 @@ const useGenerationQuery = ({ keyword }: useGenerationQueryProps) => {
   const memberId = useAuthStore((s) => s.memberId);
   const hasHydrated = useAuthStore((s) => s._hasHydrated);
 
-  return useQuery({
-      queryKey: ['marketing-contents', memberId, keyword],
-      queryFn: async () => {
-        if (keyword === '') {
-          return await fetchAllGenerations(memberId!);
-        }
-        // TODO: keyword에 따른 검색 결과 반환
-        return sample;
-      },
-      enabled: memberId !== null && hasHydrated,
-      staleTime: 1000 * 60 * 5,
-      gcTime: 1000 * 60 * 10,
-    });
+  const { data, ...others } = useInfiniteQuery({
+    queryKey: ['marketing-contents', memberId, keyword],
+    queryFn: async ({ pageParam }) => {
+      return await fetchGenerationsByKeyword(
+        memberId!,
+        keyword,
+        pageParam,
+        limit,
+      );
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, _, lastPageParam) => {
+      if (lastPage.last) {
+        return undefined;
+      }
+      return lastPageParam + 1;
+    },
+    enabled: memberId !== null && hasHydrated,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10,
+  });
+
+  const generations = useMemo(() => {
+    const result: MarketingContentsGeneration[] = [];
+    data?.pages.forEach((page) => result.push(...page.content));
+    return result;
+  }, [data]);
+
+  return {
+    generations,
+    ...others
+  };
 };
 
 export default useGenerationQuery;

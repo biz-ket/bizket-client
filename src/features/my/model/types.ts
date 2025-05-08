@@ -1,7 +1,9 @@
 export type MarketingContentsGeneration = {
+  id: number;
+  prompt: string;
   generatedContent: string;
-  hashtags: string[];
   platform?: string;
+  hashtags: string[];
   imageUrls?: string[];
   createdAt: string;
 };
