@@ -13,3 +13,19 @@ export interface CreateMarketingRequestType {
   emphasisTags: Tags[];
   rawImageUrls: string[];
 }
+
+export interface CreateMarketingResponseType {
+  generatedContent: string;
+  hashtags: string[];
+  platform?: string;
+  imageUrls: string[];
+  createdAt: string;
+}
+
+export interface MarketingHistoryResponse {
+  generatedContent: string;
+  hashtags: string[];
+  platform: string;
+  imageUrls: string[];
+  createdAt: string;
+}

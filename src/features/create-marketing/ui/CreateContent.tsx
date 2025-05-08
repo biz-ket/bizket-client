@@ -202,7 +202,7 @@ const CreateContent = () => {
             />
             <label
               htmlFor="content-file-upload"
-              className="flex items-center justify-center w-full h-48 rounded-10 bg-primary-10 body-sm-regular text-primary-50"
+              className="flex items-center justify-center w-full h-48 cursor-pointer rounded-10 bg-primary-10 body-sm-regular text-primary-50"
             >
               이미지 업로드
             </label>
