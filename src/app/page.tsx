@@ -1,5 +1,5 @@
-import Flex from '@/shared/ui/layout/Flex';
+import MainSection from '@/features/main/ui/MainSection';
 
 export default function Home() {
-  return <Flex>메인페이지</Flex>;
+  return <MainSection />;
 }

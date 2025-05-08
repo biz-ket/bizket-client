@@ -31,7 +31,7 @@ const Header = () => {
   return (
     <header
       className={clsx(
-        'flex items-center w-full h-60 border-b',
+        'flex items-center w-full h-60 border-b fixed left-0 top-0 z-sticky',
         isDark ? 'border-line-40 bg-black' : 'border-line-20 bg-white',
       )}
     >

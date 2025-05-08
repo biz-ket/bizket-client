@@ -21,11 +21,12 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <RootLayoutProvider>
-          <div className="w-full min-w-[1500px]">
+          <div className="w-full min-w-[1500px] pt-60">
             {!shouldHideLayout && <Header />}
             {children}
             {!shouldHideLayout && <Footer />}
           </div>
+          <div id="modal-root" />
         </RootLayoutProvider>
       </body>
     </html>
