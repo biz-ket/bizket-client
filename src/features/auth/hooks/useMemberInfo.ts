@@ -8,6 +8,7 @@ export interface Member {
   email: string;
   instagramAccountId: string;
   threadsAccountId: string;
+  profileImageUrl: string;
 }
 
 export const useMemberInfo = () => {

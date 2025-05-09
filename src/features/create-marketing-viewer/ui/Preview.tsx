@@ -1,3 +1,4 @@
+import { useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
 import CommentIcon from '@/features/create-marketing-viewer/ui/CommentIcon';
 import MenuIcon from '@/features/create-marketing-viewer/ui/MenuIcon';
 import SaveIcon from '@/features/create-marketing-viewer/ui/SaveIcon';
@@ -15,14 +16,29 @@ interface PreviewProps {
 
 export const Preview = ({ isHistory, data }: PreviewProps) => {
   const { isSuccess } = useMarketingLoadingStore();
+  const { data: userData } = useMemberInfo();
+
+  console.log(userData);
 
   return isSuccess || isHistory ? (
     <div className="overflow-hidden rounded-10">
       <div className="w-[425px]  bg-white h-[820px] overflow-auto ">
         <Flex justify="between" align="center" className="w-full px-16 py-17">
           <Flex align="center" gap={8}>
-            <div className="bg-gray-300 rounded-full w-35 h-35"></div>
-            <p className="body-lg-semibold text-font-50">김비즈</p>
+            <div className="relative overflow-hidden border-gray-300 rounded-full w-35 h-35">
+              <Image
+                style={{ objectFit: 'cover' }}
+                fill
+                src={
+                  userData?.profileImageUrl ||
+                  '/images/shared/default_profile.png'
+                }
+                alt="유저 프로필 이미지"
+              />
+            </div>
+            <p className="body-lg-semibold text-font-50">
+              {userData?.instagramAccountId}
+            </p>
           </Flex>
           <MenuIcon />
         </Flex>
@@ -50,7 +66,9 @@ export const Preview = ({ isHistory, data }: PreviewProps) => {
             <SaveIcon />
           </Flex>
           <div>
-            <span className="mr-5 label-lg-semibold text-font-50">김비즈</span>{' '}
+            <span className="mr-5 label-lg-semibold text-font-50">
+              {userData?.instagramAccountId}
+            </span>{' '}
             <pre className="inline">{data?.generatedContent}</pre>
             <p className="body-sm-regular text-font-50 mt-15">
               {data?.hashtags.join(' ')}
