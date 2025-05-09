@@ -5,11 +5,6 @@ const createTrendQueryKey = (params: TrendSearchParams) => {
   return [
     'trend-search',
     params.keyword,
-    params.startDate,
-    params.endDate,
-    params.device ?? 'all',
-    params.gender ?? 'all',
-    params.ages?.join(',') ?? 'all',
   ];
 };
 
