@@ -88,6 +88,7 @@ const SelectBox = ({
   return (
     <div className="relative w-full" ref={selectBoxRef}>
       <button
+        type="button"
         className={clsx(
           'flex items-center justify-between w-full h-48 px-20 border body-sm-regular rounded-8',
           isOpen || isSelected

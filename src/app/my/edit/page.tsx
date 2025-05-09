@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+
 import { Controller } from 'react-hook-form';
 import Flex from '@/shared/ui/layout/Flex';
 import Input from '@/shared/ui/input/Input';
@@ -22,6 +22,8 @@ import AgeCheckbox from '@/features/create-marketing/ui/AgeCheckbox';
 import { useRouter } from 'next/navigation';
 import Container from '@/shared/ui/layout/Container';
 import Label from '@/features/my/ui/Label';
+import { useRef, useEffect } from 'react';
+import { useSelectBoxStore } from '@/shared/store/useSelectBoxStore';
 
 export default function MyPageEdit() {
   const { data: member, isLoading: memLoading } = useMemberInfo();
@@ -30,29 +32,50 @@ export default function MyPageEdit() {
   const { mutate: updateBusinessProfile } = useUpdateBusinessProfile();
 
   const router = useRouter();
+  const { closeAllBoxes } = useSelectBoxStore();
 
   const { data: ageOptions = [] } = useCustomerAgeGroups();
   const { data: categories = [] } = useBusinessCategories();
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-    null,
-  );
-  const { data: subCategories = [] } = useSubCategories(
-    selectedCategoryId ?? 0,
-  );
-  const [selectedSubCategoryId, setSelectedSubCategoryId] = useState<
-    number | null
-  >(null);
-  const { data: detailCategories = [] } = useDetailCategories(
-    selectedSubCategoryId ?? 0,
-  );
+  const methods = useProfileForm(member!, profile!);
 
-  const methods = useProfileForm(member, profile);
   const {
-    register,
+    watch,
+    setValue,
     control,
+    register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, dirtyFields },
   } = methods;
+
+  const watchedCategoryId = watch('categoryId') ?? 0;
+  const watchedSubCategoryId = watch('subCategoryId') ?? 0;
+
+  const isFirstCat = useRef(true);
+  const isFirstSub = useRef(true);
+
+  // 대분류가 실제 변경됐을 때에만 중/소분류 초기화
+  useEffect(() => {
+    if (isFirstCat.current) {
+      isFirstCat.current = false;
+      return; // 첫 마운트 때는 초기화하지 않음
+    }
+    setValue('subCategoryId', null);
+    setValue('detailCategoryId', null);
+  }, [watchedCategoryId, setValue]);
+
+  // 중분류가 실제 변경됐을 때에만 소분류 초기화
+  useEffect(() => {
+    if (isFirstSub.current) {
+      isFirstSub.current = false;
+      return;
+    }
+    setValue('detailCategoryId', null);
+  }, [watchedSubCategoryId, setValue]);
+
+  // 훅 호출
+  const { data: subCategories = [] } = useSubCategories(watchedCategoryId);
+  const { data: detailCategories = [] } =
+    useDetailCategories(watchedSubCategoryId);
 
   if (memLoading || profLoading) return <div>로딩 중...</div>;
 
@@ -126,6 +149,7 @@ export default function MyPageEdit() {
           onSubmit={handleSubmit(onSubmit)}
           className="flex gap-60 pt-56 pb-[165px]"
         >
+          {/* 오른쪽 */}
           <Flex className="flex-1" direction="col" gap={38} align="stretch">
             {/* 이름 */}
             <div>
@@ -162,6 +186,7 @@ export default function MyPageEdit() {
               <Input {...register('threads')} placeholder="@your_threads" />
             </div>
           </Flex>
+          {/* 왼쪽 */}
           <Flex className="flex-1" align="stretch" direction="col" gap={38}>
             {/* 상호명 */}
             <div>
@@ -181,6 +206,7 @@ export default function MyPageEdit() {
                 </p>
               )}
             </div>
+            {/* 업종 */}
             <div>
               <Label>업종</Label>
               <Flex gap={18}>
@@ -197,7 +223,8 @@ export default function MyPageEdit() {
                           categories.find((c) => c.id === field.value)?.name ||
                           ''
                         }
-                        isSelected={!!field.value}
+                        // isSelected={!!field.value}
+                        isSelected={!!dirtyFields.categoryId}
                       >
                         {categories.map((c) => (
                           <button
@@ -206,8 +233,11 @@ export default function MyPageEdit() {
                             className="w-full px-4 py-2 text-left hover:bg-gray-50"
                             onClick={() => {
                               field.onChange(c.id);
-                              setSelectedCategoryId(c.id);
-                              setSelectedSubCategoryId(null);
+                              methods.setValue('subCategoryId', null);
+                              methods.setValue('detailCategoryId', null);
+                              closeAllBoxes();
+                              // setSelectedCategoryId(c.id);
+                              // setSelectedSubCategoryId(null);
                             }}
                           >
                             {c.name}
@@ -230,7 +260,8 @@ export default function MyPageEdit() {
                           subCategories.find((sc) => sc.id === field.value)
                             ?.name || ''
                         }
-                        isSelected={!!field.value}
+                        // isSelected={!!field.value}
+                        isSelected={!!dirtyFields.categoryId}
                       >
                         {subCategories.map((sc) => (
                           <button
@@ -239,7 +270,9 @@ export default function MyPageEdit() {
                             className="w-full px-4 py-2 text-left hover:bg-gray-50"
                             onClick={() => {
                               field.onChange(sc.id);
-                              setSelectedSubCategoryId(sc.id);
+                              methods.setValue('detailCategoryId', null);
+                              closeAllBoxes();
+                              // setSelectedSubCategoryId(sc.id);
                             }}
                           >
                             {sc.name}
@@ -262,7 +295,8 @@ export default function MyPageEdit() {
                           detailCategories.find((dc) => dc.id === field.value)
                             ?.name || ''
                         }
-                        isSelected={!!field.value}
+                        // isSelected={!!field.value}
+                        isSelected={!!dirtyFields.categoryId}
                       >
                         {detailCategories.map((dc) => (
                           <button
@@ -271,6 +305,7 @@ export default function MyPageEdit() {
                             className="w-full px-4 py-2 text-left hover:bg-gray-50"
                             onClick={() => {
                               field.onChange(dc.id);
+                              closeAllBoxes();
                             }}
                           >
                             {dc.name}
@@ -282,6 +317,7 @@ export default function MyPageEdit() {
                 </div>
               </Flex>
             </div>
+            {/* 주소 */}
             <div>
               <Label htmlFor="street">사업장 주소</Label>
               <Input {...register('street')} placeholder="주소 입력" />
