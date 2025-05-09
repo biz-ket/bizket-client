@@ -27,10 +27,11 @@ import {
 } from '@/features/create-marketing/types/apiType';
 import { useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
+import ImageDeleteIcon from '@/features/create-marketing/ui/ImageDeleteIcon';
 
 const CreateContent = () => {
   const [prompt, setPrompt] = useState('');
-  const [isBusinessInfoOpen, setIsBusinessInfoOpen] = useState(false);
+  const [isBusinessInfoOpen, setIsBusinessInfoOpen] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedAge, setSelectedAge] = useState('');
   const [platform, setPlatform] = useState<'instagram' | 'threads'>(
@@ -40,11 +41,21 @@ const CreateContent = () => {
   const [account, setAccount] = useState('');
   const [brandName, setBrandName] = useState('');
 
-  const { files, previews, addFiles } = useFileUpload(3);
+  const { files, previews, addFiles, removeFile } = useFileUpload(3);
 
   const { data: userData } = useMemberInfo();
   const { token } = useAuthStore();
   const { mutate } = useCreateMarketingMutation();
+
+  const isDisabled: boolean = token
+    ? !prompt ||
+      !selectedCategory ||
+      !selectedAge ||
+      !account ||
+      !accent.length ||
+      !brandName ||
+      !files.length
+    : !prompt || !accent.length || !files.length;
 
   const handleChangeAccount = (e: ChangeEvent<HTMLInputElement>) => {
     setAccount(e.target.value);
@@ -236,12 +247,19 @@ const CreateContent = () => {
           </div>
           <Flex gap={10}>
             {previews.map((preview, index) => (
-              <div
-                key={`preview-${index}`}
-                style={{ width: '97.5px', height: '97.5px' }}
-                className="relative overflow-hidden border rounded-8 border-line-20"
-              >
-                <Image src={preview} fill alt="미리보기 이미지" />
+              <div key={`preview-${index}`} className="relative">
+                <div
+                  style={{ width: '97.5px', height: '97.5px' }}
+                  className="overflow-hidden border rounded-8 border-line-20"
+                >
+                  <Image src={preview} fill alt="미리보기 이미지" />
+                  <button
+                    onClick={() => removeFile(index)}
+                    className="absolute -top-5 -right-5"
+                  >
+                    <ImageDeleteIcon />
+                  </button>
+                </div>
               </div>
             ))}
           </Flex>
@@ -291,6 +309,7 @@ const CreateContent = () => {
       <button
         onClick={handleSubmit}
         className="w-full h-48 text-white bg-primary-50 rounded-10 body-md-medium disabled:opacity-50"
+        disabled={isDisabled}
       >
         생성하기
       </button>

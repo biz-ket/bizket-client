@@ -28,7 +28,7 @@ const PlatformSelectButton = ({
         isActive
           ? 'border-primary-50 bg-primary-10 text-primary-50'
           : 'border-line-40 text-font-20 bg-white',
-        disabled && '!border-none !bg-bg-10 !text-font-20',
+        disabled && '!border-none !bg-bg-10 !text-font-20 cursor-default',
       )}
     >
       {label}

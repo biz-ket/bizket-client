@@ -1,3 +1,4 @@
+import CreateLoading from '@/features/create-marketing-viewer/ui/CreateLoading';
 import TextViewBox from '@/features/create-marketing-viewer/ui/TextViewBox';
 import {
   useMarketingDataStore,
@@ -22,27 +23,8 @@ const TextViewList = () => {
           align="center"
           className="w-[380px] rounded-20 py-[113px] bg-white"
         >
-          {isLoading && (
-            <>
-              <Image
-                src={'/images/create-marketing/content-loading.png'}
-                width={93}
-                height={88}
-                alt="콘텐츠 로딩 중 이미지"
-              />
-              <Flex direction="col" align="center" gap={3}>
-                <p className="body-md-regular text-font-30">
-                  SNS 콘텐츠 생성 중!
-                </p>
-                <p className="text-center body-sm-regular text-font-20">
-                  창을 닫으면, 생성이 중단됩니다
-                </p>
-              </Flex>
-              <p className="py-5 px-9 body-sm-regular text-font-20 bg-bg-10 rounded-8">
-                9초 / 15초 예상
-              </p>
-            </>
-          )}
+          {isLoading && <CreateLoading />}
+
           {!isSuccess && !isLoading && (
             <>
               <Image

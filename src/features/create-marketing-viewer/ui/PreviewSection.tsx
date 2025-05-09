@@ -10,7 +10,7 @@ const PreviewSection = () => {
   console.log(marketingDetailData);
 
   return (
-    <Flex justify="center" align="center" className="relative flex-1 h-full">
+    <Flex justify="center" className="relative flex-1 h-full">
       <Preview isHistory={activeTab === 'history'} />
     </Flex>
   );
