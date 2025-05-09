@@ -3,21 +3,18 @@ import MenuIcon from '@/features/create-marketing-viewer/ui/MenuIcon';
 import SaveIcon from '@/features/create-marketing-viewer/ui/SaveIcon';
 import ShareIcon from '@/features/create-marketing-viewer/ui/ShareIcon';
 import WishIcon from '@/features/create-marketing-viewer/ui/WishIcon';
-import {
-  useMarketingDataStore,
-  useMarketingLoadingStore,
-} from '@/shared/store/useMarketingStore';
+import { MarketingHistoryItem } from '@/features/create-marketing/types/apiType';
+import { useMarketingLoadingStore } from '@/shared/store/useMarketingStore';
 import Flex from '@/shared/ui/layout/Flex';
 import Image from 'next/image';
 
 interface PreviewProps {
   isHistory?: boolean;
+  data: MarketingHistoryItem;
 }
 
-export const Preview = ({ isHistory }: PreviewProps) => {
+export const Preview = ({ isHistory, data }: PreviewProps) => {
   const { isSuccess } = useMarketingLoadingStore();
-
-  const { data } = useMarketingDataStore();
 
   return isSuccess || isHistory ? (
     <div className="overflow-hidden rounded-10">
@@ -30,12 +27,18 @@ export const Preview = ({ isHistory }: PreviewProps) => {
           <MenuIcon />
         </Flex>
         <div className="w-full h-[495px] relative">
-          <Image
-            src={data?.imageUrls[0] || '/images/create-marketing/preview.png'}
-            style={{ objectFit: 'cover' }}
-            fill
-            alt="미리보기 이미지"
-          />
+          {data?.imageUrls[0] && (
+            <Image
+              src={
+                isHistory
+                  ? data?.imageUrls[0]
+                  : data?.imageUrls[0] || '/images/create-marketing/preview.png'
+              }
+              style={{ objectFit: 'cover' }}
+              fill
+              alt="미리보기 이미지"
+            />
+          )}
         </div>
         <Flex direction="col" gap={12} className="w-full px-16 py-12">
           <Flex justify="between" className="w-full">
