@@ -14,76 +14,43 @@ import Card from './Card';
 
 const data: {
   name: string;
-  v1: number;
-  v2: number;
+  data: number;
 }[] = [
   {
-    name: '2024-06',
-    v1: 1100000,
-    v2: 1000000,
-  },
-  {
-    name: '2024-07',
-    v1: 1000000,
-    v2: 700000,
-  },
-  {
-    name: '2024-08',
-    v1: 1100000,
-    v2: 400000,
-  },
-  {
-    name: '2024-09',
-    v1: 1200000,
-    v2: 500000,
-  },
-  {
     name: '2024-10',
-    v1: 700000,
-    v2: 300000,
+    data: 700000,
   },
   {
     name: '2024-11',
-    v1: 400000,
-    v2: 200000,
+    data: 400000,
   },
   {
     name: '2024-12',
-    v1: 600000,
-    v2: 200000,
+    data: 600000,
   },
   {
     name: '2025-01',
-    v1: 1000000,
-    v2: 500000,
+    data: 1000000,
   },
   {
     name: '2025-02',
-    v1: 1100000,
-    v2: 800000,
+    data: 1100000,
   },
   {
     name: '2025-03',
-    v1: 1000000,
-    v2: 800000,
+    data: 1000000,
   },
 ];
 
 const MonthlySearchTrendChart = () => {
   return (
     <Card className="w-full h-[530px] px-35 py-40 flex-col">
-      <div className="w-full flex flex-row mb-40 items-center">
-        <span className="flex-1 block body-lg-regular">월간 검색 트렌드</span>
+      <div className="w-full flex flex-row mb-40 items-center justify-between">
         <Legend
           payload={[
             {
-              value: '트렌드 검색어1',
-              id: 'v1',
-              color: '#FFC300',
-            },
-            {
-              value: '트렌드 검색어2',
-              id: 'v2',
+              value: '키워드',
+              id: 'data',
               color: '#FF7900',
             },
           ]}
@@ -92,6 +59,9 @@ const MonthlySearchTrendChart = () => {
             position: 'relative',
           }}
         />
+        <span className="body-md-regular text-font-20">
+          *검색 트렌드 관심도 (최근 6개월)
+        </span>
       </div>
       <div className="w-full flex-1">
         <ResponsiveContainer width={'100%'} height={'100%'}>
@@ -113,29 +83,14 @@ const MonthlySearchTrendChart = () => {
             <CartesianGrid verticalPoints={[0]} stroke="#f1f1f1" />
             <Tooltip />
             <Area
-              name="트렌드 검색어1"
-              dataKey="v1"
-              stroke="#FFC300"
-              fill="url(#areaGradient_yellow)"
-            />
-            <Area
-              name="트렌드 검색어2"
-              dataKey="v2"
+              name="키워드"
+              dataKey="data"
               stroke="#FF7900"
               fill="url(#areaGradient_orange)"
+              type="natural"
+              dot={{ r: 2.5, fillOpacity: 1, fill: '#FF7900' }}
             />
             <defs>
-              <linearGradient
-                id="areaGradient_yellow"
-                x1="1"
-                y1="1"
-                x2="1"
-                y2="0"
-              >
-                <stop offset="0%" stopColor="#FFFFFF" />
-                <stop offset="43%" stopColor="#FFE590" />
-                <stop offset="100%" stopColor="#FFC300" />
-              </linearGradient>
               <linearGradient
                 id="areaGradient_orange"
                 x1="1"

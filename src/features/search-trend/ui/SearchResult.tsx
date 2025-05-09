@@ -24,7 +24,7 @@ const SearchResult = ({ searchParams }: SearchResultProps) => {
   }
 
   return (
-    <section className="mt-80">
+    <section className="pt-[155px] pb-[210px]">
       <h2 className="heading-sm">트렌드 키워드 분석</h2>
       <Flex direction="col" gap={30} className="mt-38">
         <MonthlySearchTrendChart />

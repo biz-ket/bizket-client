@@ -2,7 +2,6 @@
 
 import Flex from '@/shared/ui/layout/Flex';
 import Card from './Card';
-import ArrowDownIcon from './ArrowDownIcon';
 
 const data: {
   name: string;
@@ -21,16 +20,11 @@ const data: {
 ];
 
 const RelatedKeywordsRanking = () => {
-  const onClickExpandButton = () => {
-    // 더 많은 연관키워드 보기
-  };
-
   return (
-    <Card className="flex-1 h-[616px] p-30 flex-col items-center">
-      <Flex align="center" className="w-full">
-        <span className="block flex-1 body-lg-semibold">연관 키워드</span>
-        <span className="body-md-regular text-font-40">월간 검색량(Total)</span>
-      </Flex>
+    <Card className="flex-1 h-[616px] p-30 flex-col">
+      <div className="body-lg-semibold">
+        키워드 연관 검색 Top 10
+      </div>
 
       <div className="bg-line-30 w-full h-[0.5px] mt-15 mb-30" />
 
@@ -48,14 +42,6 @@ const RelatedKeywordsRanking = () => {
           </li>
         ))}
       </ul>
-
-      <button
-        className="flex gap-6 items-center mt-25"
-        onClick={onClickExpandButton}
-      >
-        <span className="text-primary-50">더 많은 연관키워드 보기</span>
-        <ArrowDownIcon fill="#FF7900" />
-      </button>
     </Card>
   );
 };

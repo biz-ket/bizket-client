@@ -28,7 +28,7 @@ const WeeklySearchRatioChart = () => {
   return (
     <Card className="flex-1 flex flex-col h-[616px] p-30">
       <div className="w-full">
-        <span className="body-lg-semibold">요일별 검색 비율</span>
+        <span className="body-lg-semibold">요일별 키워드 관심도</span>
       </div>
 
       <div className="bg-line-30 w-full h-[0.5px] mt-15 mb-30" />
