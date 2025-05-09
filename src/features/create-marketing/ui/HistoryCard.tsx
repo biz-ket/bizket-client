@@ -3,6 +3,7 @@ import HistoryTag from '@/features/create-marketing/ui/HistoryTag';
 import XIcon from '@/features/create-marketing/ui/XIcon';
 import { useContentHistoryStore } from '@/shared/store/useContentHistoryStroe';
 import Flex from '@/shared/ui/layout/Flex';
+import { formatDate } from '@/shared/utils/formatDate';
 import clsx from 'clsx';
 import { MouseEvent } from 'react';
 
@@ -36,9 +37,12 @@ const HistoryCard = ({ data }: HistoryCardProps) => {
             {data.generatedContent}
           </h4>
           <Flex align="center" gap={6}>
-            {data.hashtags.map((tag: string) => (
-              <HistoryTag key={tag} tag={tag} />
-            ))}
+            <HistoryTag tag="마케팅 콘텐츠" />
+            {data.platform && (
+              <HistoryTag
+                tag={data.platform === 'instagram' ? '인스타그램' : '스레드'}
+              />
+            )}
           </Flex>
           <button
             onClick={handleClickDelete}
@@ -49,7 +53,9 @@ const HistoryCard = ({ data }: HistoryCardProps) => {
         </Flex>
         <Flex direction="col" gap={10} className="w-full">
           <p className="body-sm-light text-font-40">{data.generatedContent}</p>
-          <p className="body-sm-light text-font-20">{data.createdAt}</p>
+          <p className="body-sm-light text-font-20">
+            {formatDate(data.createdAt)}
+          </p>
         </Flex>
       </Flex>
     </div>
