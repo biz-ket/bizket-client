@@ -1,16 +1,20 @@
-import { MarketingHistoryResponse } from '@/features/create-marketing/types/apiType';
+import { MarketingHistoryItem } from '@/features/create-marketing/types/apiType';
 import HistoryTag from '@/features/create-marketing/ui/HistoryTag';
 import XIcon from '@/features/create-marketing/ui/XIcon';
+import { useContentHistoryStore } from '@/shared/store/useContentHistoryStroe';
 import Flex from '@/shared/ui/layout/Flex';
+import clsx from 'clsx';
 import { MouseEvent } from 'react';
 
 interface HistoryCardProps {
-  data: MarketingHistoryResponse;
+  data: MarketingHistoryItem;
 }
 
 const HistoryCard = ({ data }: HistoryCardProps) => {
+  const { id, setId } = useContentHistoryStore();
+
   const handleClickCard = () => {
-    console.log('카드 클릭');
+    setId(data.id);
   };
 
   const handleClickDelete = (e: MouseEvent<HTMLButtonElement>) => {
@@ -21,7 +25,10 @@ const HistoryCard = ({ data }: HistoryCardProps) => {
   return (
     <div
       onClick={handleClickCard}
-      className="w-full px-32 border cursor-pointer rounded-10 py-25 border-line-30"
+      className={clsx(
+        'w-full px-32 border cursor-pointer rounded-10 py-25 ',
+        data.id === id ? 'border-primary-60' : 'border-line-30',
+      )}
     >
       <Flex direction="col" gap={34} className="relative w-full">
         <Flex direction="col" gap={12} className="w-full">

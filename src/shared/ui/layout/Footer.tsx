@@ -36,13 +36,16 @@ const Footer = () => {
                 <Link href="#" className="text-white body-lg-regular">
                   저작권 정보
                 </Link>
-                <Link href="#" className="text-white body-lg-regular">
+                <Link href="/create" className="text-white body-lg-regular">
                   마케팅 콘텐츠 생성 AI
                 </Link>
-                <Link href="#" className="text-white body-lg-regular">
+                <Link href="/report" className="text-white body-lg-regular">
                   비지니스보고서
                 </Link>
-                <Link href="#" className="text-white body-lg-regular">
+                <Link
+                  href="/search-trend"
+                  className="text-white body-lg-regular"
+                >
                   검색어 트렌드
                 </Link>
               </Flex>
