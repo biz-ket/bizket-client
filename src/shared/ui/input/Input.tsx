@@ -20,7 +20,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           placeholder={placeholder}
           className={clsx(
-            'h-full w-full rounded-10 bg-white px-20 py-13 label-lg-medium placeholder:text-line-40 text-font-60 border border-line-30',
+            'h-full w-full rounded-10 bg-white px-20 py-13 body-sm-regular placeholder:text-line-40 text-font-60 border border-line-30 disabled:border-none disabled:bg-bg-10 disabled:placeholder:text-font-20',
             className,
           )}
           onChange={onChange}
