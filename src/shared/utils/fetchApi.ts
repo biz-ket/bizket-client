@@ -49,7 +49,15 @@ export const fetchApi = async (
       error.status = res.status;
       throw error;
     }
-    return res.json();
+
+    if (res.status === 204) {
+      return {};
+    }
+    const text = await res.text();
+    if (!text) {
+      return {};
+    }
+    return JSON.parse(text);
   };
 
   try {

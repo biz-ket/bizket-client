@@ -5,6 +5,9 @@ import { fetchApi } from '@/shared/utils/fetchApi';
 export interface Member {
   id: number;
   nickname: string;
+  email: string;
+  instagramAccountId: string;
+  threadsAccountId: string;
 }
 
 export const useMemberInfo = () => {
