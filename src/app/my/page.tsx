@@ -15,9 +15,10 @@ const MyPage = () => {
 
   useEffect(() => {
     if (!hasHydrated || isLoading) return;
-
+    console.log(user);
     if (isError || !user) {
       router.push('/');
+      console.log('ss');
     }
   }, [hasHydrated, isLoading, isError, user, router]);
 

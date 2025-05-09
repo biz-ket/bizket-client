@@ -112,7 +112,7 @@ const Introduce = () => {
                   <ContentSubTitle title="비즈킷에서 AI로 상품 설명, 마케팅 글, 이미지 생성까지 한 번에! 우리 가게의 성장을 위해 마케팅 콘텐츠를 간편하게 생성해 보세요!" />
                 </div>
               </Flex>
-              <div className="relative">
+              <div className="relative w-full">
                 <Image
                   style={{ width: '100%' }}
                   width={1200}

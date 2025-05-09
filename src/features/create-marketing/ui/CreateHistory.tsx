@@ -1,30 +1,14 @@
+import { useGetMarketingHistoryQuery } from '@/features/create-marketing/hooks/useGetMarketingHistoryQuery';
 import HistoryCard from '@/features/create-marketing/ui/HistoryCard';
 import SearchIcon from '@/features/create-marketing/ui/SearchIcon';
 import Input from '@/shared/ui/input/Input';
 import Flex from '@/shared/ui/layout/Flex';
 
-const DUMMY_HISTORY_DATA = [
-  {
-    title: '모카무스 메이크업',
-    tags: ['마케팅 콘텐츠', '인스타그램'],
-    desc: '20대 여성의 말투로 메이크업 컨셉, 컬러 특징을 포함해서 메이크업에 대한 설명을 간략히 작성해줘',
-    date: '2025.03.25',
-  },
-  {
-    title: '프로필 촬영 메이크업',
-    tags: ['마케팅 콘텐츠', '인스타그램'],
-    desc: '20대 여성의 말투로 메이크업 컨셉, 컬러 특징을 포함해서 메이크업에 대한 설명을 간략히 작성해줘',
-    date: '2025.03.25',
-  },
-  {
-    title: '모카무스 메이크업',
-    tags: ['마케팅 콘텐츠', '인스타그램'],
-    desc: '20대 여성의 말투로 메이크업 컨셉, 컬러 특징을 포함해서 메이크업에 대한 설명을 간략히 작성해줘',
-    date: '2025.03.25',
-  },
-];
-
 const CreateHistory = () => {
+  const { data: marketingHistory } = useGetMarketingHistoryQuery();
+
+  console.log(marketingHistory);
+
   return (
     <Flex direction="col" gap={30} className="w-full">
       <Flex direction="col" gap={14} className="w-full">
@@ -36,9 +20,13 @@ const CreateHistory = () => {
           </button>
         </div>
       </Flex>
-      <Flex direction="col" gap={24} className="w-full">
-        {DUMMY_HISTORY_DATA?.map((data, index) => (
-          <HistoryCard key={data.title + index} data={data} />
+      <Flex
+        direction="col"
+        gap={24}
+        className="w-[calc(100%+6px)] h-[730px] overflow-y-auto"
+      >
+        {marketingHistory?.map((data, index) => (
+          <HistoryCard key={'history' + index} data={data} />
         ))}
       </Flex>
     </Flex>

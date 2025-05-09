@@ -21,26 +21,49 @@ import { useSelectBoxStore } from '@/shared/store/useSelectBoxStore';
 import Image from 'next/image';
 import { useFileUpload } from '@/shared/hooks/useFileUpload';
 import { useCreateMarketingMutation } from '@/features/create-marketing/hooks/useCreateMarketingMutation';
-import { CreateMarketingRequestType } from '@/features/create-marketing/types/apiType';
+import {
+  CreateMarketingRequestType,
+  Tags,
+} from '@/features/create-marketing/types/apiType';
+import { useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
+import { useAuthStore } from '@/features/auth/model/useAuthStore';
+import ImageDeleteIcon from '@/features/create-marketing/ui/ImageDeleteIcon';
 
 const CreateContent = () => {
   const [prompt, setPrompt] = useState('');
-  const [isBusinessInfoOpen, setIsBusinessInfoOpen] = useState(false);
+  const [isBusinessInfoOpen, setIsBusinessInfoOpen] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedAge, setSelectedAge] = useState('');
-  const [platform, setPlatform] = useState<'INSTAGRAM' | 'THREADS'>(
-    'INSTAGRAM',
+  const [platform, setPlatform] = useState<'instagram' | 'threads'>(
+    'instagram',
   );
-  const [accent, setAccent] = useState<
-    'QUALITY' | 'PRICE' | 'DESIGN' | 'TREND'
-  >('QUALITY');
+  const [accent, setAccent] = useState<Tags[]>(['QUALITY']);
+  const [account, setAccount] = useState('');
+  const [brandName, setBrandName] = useState('');
 
-  const { files, previews, addFiles } = useFileUpload(3);
+  const { files, previews, addFiles, removeFile } = useFileUpload(3);
 
+  const { data: userData } = useMemberInfo();
+  const { token } = useAuthStore();
   const { mutate } = useCreateMarketingMutation();
 
-  console.log(files);
-  console.log(previews);
+  const isDisabled: boolean = token
+    ? !prompt ||
+      !selectedCategory ||
+      !selectedAge ||
+      !account ||
+      !accent.length ||
+      !brandName ||
+      !files.length
+    : !prompt || !accent.length || !files.length;
+
+  const handleChangeAccount = (e: ChangeEvent<HTMLInputElement>) => {
+    setAccount(e.target.value);
+  };
+
+  const handleChangeBrandName = (e: ChangeEvent<HTMLInputElement>) => {
+    setBrandName(e.target.value);
+  };
 
   const toggleBox = useSelectBoxStore((state) => state.toggleBox);
 
@@ -58,9 +81,11 @@ const CreateContent = () => {
   };
 
   const handleChangeAccent = (
-    accent: 'QUALITY' | 'PRICE' | 'DESIGN' | 'TREND',
+    acc: 'QUALITY' | 'PRICE' | 'DESIGN' | 'TREND',
   ) => {
-    setAccent(accent);
+    setAccent((prev) =>
+      prev.includes(acc) ? prev.filter((item) => item !== acc) : [...prev, acc],
+    );
   };
 
   const handleCategoryChange = (value: string) => {
@@ -76,27 +101,26 @@ const CreateContent = () => {
     setIsBusinessInfoOpen((prev) => !prev);
   };
 
-  const handleChangePlatform = (platform: 'INSTAGRAM' | 'THREADS') => {
+  const handleChangePlatform = (platform: 'instagram' | 'threads') => {
     setPlatform(platform);
   };
 
   const handleSubmit = () => {
     const data: CreateMarketingRequestType = {
-      userType: 'GUEST',
-      // memberId: 1,
-      // brandName: '브랜드',
-      // account: '운영계정',
-      // industry: '산업군',
-      clientToken: 'guest-token',
-      // platform: 'INSTAGRAM',
-      // targetAgeGroup: '20대',
-      prompt: '가을 감성의 인테리어 소품 추천 문구를 생성해주세요.',
-      emphasisTags: ['TREND'],
-      // rawImageUrls: files,
-      rawImageUrls: [
-        'https://storage.googleapis.com/nangpago-9d371.firebasestorage.app/dc137676-6240-4920-97d3-727c4b7d6d8d_360_F_517535712_q7f9QC9X6TQxWi6xYZZbMmw5cnLMr279.jpg',
-      ],
+      userType: token ? 'BUSINESS' : 'GUEST',
+      memberId: token && userData ? userData?.id : null,
+      brandName: token ? brandName : null,
+      account: token ? account : null,
+      industry: token ? selectedCategory : null,
+      clientToken: token ? null : 'test',
+      platform: token ? platform : null,
+      targetAgeGroup: null,
+      prompt,
+      emphasisTags: accent,
+      imageUrls: files,
     };
+
+    console.log(data);
 
     try {
       mutate(data);
@@ -113,7 +137,7 @@ const CreateContent = () => {
             className="flex items-center justify-between w-full pb-12 border-b border-line-20"
             onClick={toggleBusinessInfo}
           >
-            <ContentTitle title="사업장 정보" />
+            <ContentTitle title="사업장 정보" isLogin={!token} />
             <motion.div
               initial={false}
               animate={{
@@ -142,10 +166,20 @@ const CreateContent = () => {
           >
             <Flex justify="between" className="w-full">
               <InputBox label="상호명" width="151px">
-                <Input placeholder="상호명" />
+                <Input
+                  placeholder="상호명"
+                  value={brandName}
+                  onChange={handleChangeBrandName}
+                  disabled={!token}
+                />
               </InputBox>
               <InputBox label="계정" width="151px">
-                <Input placeholder="@bizket" />
+                <Input
+                  placeholder="@bizket"
+                  value={account}
+                  onChange={handleChangeAccount}
+                  disabled={!token}
+                />
               </InputBox>
             </Flex>
             <InputBox label="업종">
@@ -154,6 +188,7 @@ const CreateContent = () => {
                 placeholder="업종을 선택해주세요."
                 value={selectedCategory}
                 isSelected={!!selectedCategory}
+                disabled={!token}
               >
                 <CategorySelectBox
                   onSelect={handleCategoryChange}
@@ -167,6 +202,7 @@ const CreateContent = () => {
                 placeholder="고객 연령층 선택"
                 value={selectedAge}
                 isSelected={!!selectedAge}
+                disabled={!token}
               >
                 <AgeSelectBox age={selectedAge} handleClick={handleClickAge} />
               </SelectBox>
@@ -174,19 +210,21 @@ const CreateContent = () => {
           </motion.div>
         </Flex>
         <Flex direction="col" gap={14} className="relative w-full z-dropdown">
-          <ContentTitle title="플랫폼 선택" />
+          <ContentTitle title="플랫폼 선택" isLogin={!token} />
           <Flex justify="between" align="center" className="w-full">
             <PlatformSelectButton
               label="인스타그램"
-              name="INSTAGRAM"
-              isActive={platform === 'INSTAGRAM'}
+              name="instagram"
+              isActive={platform === 'instagram'}
               onClick={handleChangePlatform}
+              disabled={!token}
             />
             <PlatformSelectButton
               label="스레드"
-              name="THREADS"
-              isActive={platform === 'THREADS'}
+              name="threads"
+              isActive={platform === 'threads'}
               onClick={handleChangePlatform}
+              disabled={!token}
             />
           </Flex>
         </Flex>
@@ -202,19 +240,26 @@ const CreateContent = () => {
             />
             <label
               htmlFor="content-file-upload"
-              className="flex items-center justify-center w-full h-48 rounded-10 bg-primary-10 body-sm-regular text-primary-50"
+              className="flex items-center justify-center w-full h-48 cursor-pointer rounded-10 bg-primary-10 body-sm-regular text-primary-50"
             >
               이미지 업로드
             </label>
           </div>
           <Flex gap={10}>
             {previews.map((preview, index) => (
-              <div
-                key={`preview-${index}`}
-                style={{ width: '97.5px', height: '97.5px' }}
-                className="relative overflow-hidden border rounded-8 border-line-20"
-              >
-                <Image src={preview} fill alt="미리보기 이미지" />
+              <div key={`preview-${index}`} className="relative">
+                <div
+                  style={{ width: '97.5px', height: '97.5px' }}
+                  className="overflow-hidden border rounded-8 border-line-20"
+                >
+                  <Image src={preview} fill alt="미리보기 이미지" />
+                  <button
+                    onClick={() => removeFile(index)}
+                    className="absolute -top-5 -right-5"
+                  >
+                    <ImageDeleteIcon />
+                  </button>
+                </div>
               </div>
             ))}
           </Flex>
@@ -233,29 +278,29 @@ const CreateContent = () => {
             <IconSelectButton
               label="퀄리티"
               name="QUALITY"
-              icon={<QuilityIcon isActive={accent === 'QUALITY'} />}
-              isActive={accent === 'QUALITY'}
+              icon={<QuilityIcon isActive={accent.includes('QUALITY')} />}
+              isActive={accent.includes('QUALITY')}
               onClick={handleChangeAccent}
             />
             <IconSelectButton
               label="가격"
               name="PRICE"
-              icon={<PriceIcon isActive={accent === 'PRICE'} />}
-              isActive={accent === 'PRICE'}
+              icon={<PriceIcon isActive={accent.includes('PRICE')} />}
+              isActive={accent.includes('PRICE')}
               onClick={handleChangeAccent}
             />
             <IconSelectButton
               label="디자인"
               name="DESIGN"
-              icon={<DesignIcon isActive={accent === 'DESIGN'} />}
-              isActive={accent === 'DESIGN'}
+              icon={<DesignIcon isActive={accent.includes('DESIGN')} />}
+              isActive={accent.includes('DESIGN')}
               onClick={handleChangeAccent}
             />
             <IconSelectButton
               label="트렌드"
               name="TREND"
-              icon={<TrendIcon isActive={accent === 'TREND'} />}
-              isActive={accent === 'TREND'}
+              icon={<TrendIcon isActive={accent.includes('TREND')} />}
+              isActive={accent.includes('TREND')}
               onClick={handleChangeAccent}
             />
           </Flex>
@@ -264,6 +309,7 @@ const CreateContent = () => {
       <button
         onClick={handleSubmit}
         className="w-full h-48 text-white bg-primary-50 rounded-10 body-md-medium disabled:opacity-50"
+        disabled={isDisabled}
       >
         생성하기
       </button>

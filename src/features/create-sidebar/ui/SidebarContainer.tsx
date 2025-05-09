@@ -18,7 +18,7 @@ const SidebarContainer = () => {
     <Flex
       direction="col"
       gap={10}
-      className="h-[calc(100vh-72px)] px-4 py-12 border-r w-72 border-line-20 bg-white relative z-10"
+      className="relative z-10 px-4 py-12 bg-white border-r w-72 border-line-20"
     >
       <SideButton
         label="사이드바"
