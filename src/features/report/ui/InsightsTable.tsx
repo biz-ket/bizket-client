@@ -72,7 +72,7 @@ const InsightsTable = ({ insights, onCreate }: InsightsTableProps) => {
               <col className="w-60" />
               <col className="w-70" />
             </colgroup>
-            <tbody className="divide-y divide-gray-200 text-center">
+            <tbody className="ㄴdivide-gray-200 text-center">
               {insights.map((item) => (
                 <tr
                   key={item.id}
