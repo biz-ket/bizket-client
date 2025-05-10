@@ -9,10 +9,11 @@ export interface InsightsTableProps {
 
 const InsightsTable = ({ insights, onCreate }: InsightsTableProps) => {
   return (
-    <div className="flex-1 bg-white flex flex-col h-[635px] border rounded-20 overflow-hidden ">
-      <div className="overflow-x-auto h-full">
+    <div className="flex-1 bg-white flex flex-col h-[635px] border rounded-20 overflow-hidden">
+      {/* ─── 헤더 영역 ───────────────── */}
+      <div className="overflow-x-auto">
         <table
-          className="w-full table-auto text-left border-collapse h-full"
+          className="w-full table-auto text-left border-collapse"
           style={{ borderSpacing: 0 }}
         >
           <colgroup>
@@ -35,66 +36,74 @@ const InsightsTable = ({ insights, onCreate }: InsightsTableProps) => {
               <th className="body-sm-regular py-18 pr-20">저장횟수</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-gray-200 ">
-            {insights.length === 0 ? (
-              <tr className="h-hull">
-                <td colSpan={7} className="h-full">
-                  <div className="flex h-full flex-col items-center justify-center ">
-                    <div className="w-100 h-100 relative mb-25">
-                      <Image
-                        src="/images/shared/document.svg"
-                        fill
-                        alt="데이터 없음"
-                      />
-                    </div>
-                    <p className="body-md-regular text-font-30">
-                      게시글이 없어요
-                    </p>
-                    <p className="body-sm-regular text-font-20">
-                      마케팅 콘텐츠 생성 AI로 게시글을 작성해 보세요
-                    </p>
+        </table>
+      </div>
 
-                    <button
-                      onClick={onCreate}
-                      className="mt-14 text-font-20 body-sm-regular rounded-8 px-14 py-5 bg-bg-10"
-                    >
-                      생성하러 가기
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ) : (
-              insights.map((item) => (
+      {/* ─── 바디 영역 ──────────── */}
+      <div className="overflow-auto flex-1">
+        {insights.length === 0 ? (
+          <div className="flex h-full flex-col items-center justify-center ">
+            <div className="w-100 h-100 relative mb-25">
+              <Image src="/images/shared/document.svg" fill alt="데이터 없음" />
+            </div>
+            <p className="body-md-regular text-font-30">게시글이 없어요</p>
+            <p className="body-sm-regula text-font-20">
+              마케팅 콘텐츠 생성 AI로 게시글을 작성해 보세요
+            </p>
+
+            <button
+              onClick={onCreate}
+              className="mt-1 text-font-20 body-sm-regular rounded-8 px-14 py-5 bg-bg-10"
+            >
+              생성하러 가기
+            </button>
+          </div>
+        ) : (
+          <table
+            className="w-full table-auto text-left border-collapse"
+            style={{ borderSpacing: 0 }}
+          >
+            <colgroup>
+              <col className="w-100" />
+              <col className="w-90" />
+              <col />
+              <col className="w-60" />
+              <col className="w-60" />
+              <col className="w-60" />
+              <col className="w-70" />
+            </colgroup>
+            <tbody className="divide-y divide-gray-200 text-center">
+              {insights.map((item) => (
                 <tr
                   key={item.id}
                   className="hover:bg-gray-50 transition-colors text-center border-b border-gray-200"
                 >
-                  <td className="py-15 body-sm-regular  text-font-20 pl-20">
+                  <td className="py-15 body-sm-regular text-font-20 pl-20">
                     {new Date(item.timestamp).toLocaleDateString()}
                   </td>
-                  <td className="py-15 body-sm-regular  text-font-20">
+                  <td className="py-15 body-sm-regular text-font-20">
                     {item.platform}
                   </td>
-                  <td className="py-15 body-sm-regular  text-font-20 max-w-[250px] pr-40 overflow-hidden whitespace-nowrap truncate">
+                  <td className="py-15 body-sm-regular text-font-20 max-w-[250px] pr-40 overflow-hidden whitespace-nowrap truncate">
                     {item.caption}
                   </td>
-                  <td className="py-15 body-sm-regular  text-font-30">
+                  <td className="py-15 body-sm-regular text-font-30">
                     +{item.likes}
                   </td>
-                  <td className="py-15 body-sm-regular  text-font-30">
+                  <td className="py-15 body-sm-regular text-font-30">
                     +{item.comments}
                   </td>
-                  <td className="py-15 body-sm-regular  text-font-30">
+                  <td className="py-15 body-sm-regular text-font-30">
                     +{item.shares}
                   </td>
-                  <td className="py-15 body-sm-regular  text-font-30 pr-20">
+                  <td className="py-15 body-sm-regular text-font-30 pr-20">
                     +{item.saved}
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
