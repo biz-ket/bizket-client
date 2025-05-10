@@ -66,7 +66,7 @@ const InsightPage = () => {
       />
 
       <Container>
-        <Flex gap={36} className="pt-90 pb-80">
+        <Flex gap={35} className="pt-90 pb-80">
           <ProfileCard profile={profileRes.data!} member={memberRes.data!} />
           <InsightsTable insights={insightsRes.data!} />
         </Flex>

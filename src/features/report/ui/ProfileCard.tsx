@@ -1,4 +1,3 @@
-// components/ProfileCard.tsx
 'use client';
 
 import Image from 'next/image';
@@ -39,17 +38,17 @@ const ProfileCard = ({ profile, member }: ProfileCardProps) => {
           </span>
           {profile.followerCount}
         </p>
+        <p className="body-md-regular mb-8">
+          <span className="text-primary-10 inline-block w-[70px] mr-15">
+            스레드
+          </span>
+          {member.threadsAccountId}
+        </p>
         <p className="body-md-regular">
           <span className="text-primary-10 inline-block w-[70px] mr-15">
             인스타그램
           </span>
           {profile.instagramAccountId}
-        </p>
-        <p className="body-md-regular">
-          <span className="text-primary-10 inline-block w-[70px] mr-15">
-            스레드
-          </span>
-          {member.threadsAccountId}
         </p>
       </div>
       <Image
