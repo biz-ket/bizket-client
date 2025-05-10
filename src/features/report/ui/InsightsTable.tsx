@@ -1,16 +1,18 @@
 'use client';
 import { MediaWithInsights } from '@/features/report/hooks/useMediaInsights';
+import Image from 'next/image';
 
 export interface InsightsTableProps {
   insights: MediaWithInsights[];
+  onCreate?: () => void;
 }
 
-const InsightsTable = ({ insights }: InsightsTableProps) => {
+const InsightsTable = ({ insights, onCreate }: InsightsTableProps) => {
   return (
     <div className="flex-1 bg-white flex flex-col h-[635px] border rounded-20 overflow-hidden ">
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto h-full">
         <table
-          className="w-full table-auto text-left border-collapse"
+          className="w-full table-auto text-left border-collapse h-full"
           style={{ borderSpacing: 0 }}
         >
           <colgroup>
@@ -34,34 +36,63 @@ const InsightsTable = ({ insights }: InsightsTableProps) => {
             </tr>
           </thead>
           <tbody className="bg-white divide-gray-200 ">
-            {insights.map((item) => (
-              <tr
-                key={item.id}
-                className="hover:bg-gray-50 transition-colors text-center border-b border-gray-200"
-              >
-                <td className="py-15 body-sm-regular  text-font-20 pl-20">
-                  {new Date(item.timestamp).toLocaleDateString()}
-                </td>
-                <td className="py-15 body-sm-regular  text-font-20">
-                  {item.platform}
-                </td>
-                <td className="py-15 body-sm-regular  text-font-20 max-w-[250px] pr-40 overflow-hidden whitespace-nowrap truncate">
-                  {item.caption}
-                </td>
-                <td className="py-15 body-sm-regular  text-font-30">
-                  +{item.likes}
-                </td>
-                <td className="py-15 body-sm-regular  text-font-30">
-                  +{item.comments}
-                </td>
-                <td className="py-15 body-sm-regular  text-font-30">
-                  +{item.shares}
-                </td>
-                <td className="py-15 body-sm-regular  text-font-30 pr-20">
-                  +{item.saved}
+            {insights.length === 0 ? (
+              <tr className="h-hull">
+                <td colSpan={7} className="h-full">
+                  <div className="flex h-full flex-col items-center justify-center ">
+                    <div className="w-100 h-100 relative mb-25">
+                      <Image
+                        src="/images/shared/document.svg"
+                        fill
+                        alt="데이터 없음"
+                      />
+                    </div>
+                    <p className="body-md-regular text-font-30">
+                      게시글이 없어요
+                    </p>
+                    <p className="body-sm-regular text-font-20">
+                      마케팅 콘텐츠 생성 AI로 게시글을 작성해 보세요
+                    </p>
+
+                    <button
+                      onClick={onCreate}
+                      className="mt-14 text-font-20 body-sm-regular rounded-8 px-14 py-5 bg-bg-10"
+                    >
+                      생성하러 가기
+                    </button>
+                  </div>
                 </td>
               </tr>
-            ))}
+            ) : (
+              insights.map((item) => (
+                <tr
+                  key={item.id}
+                  className="hover:bg-gray-50 transition-colors text-center border-b border-gray-200"
+                >
+                  <td className="py-15 body-sm-regular  text-font-20 pl-20">
+                    {new Date(item.timestamp).toLocaleDateString()}
+                  </td>
+                  <td className="py-15 body-sm-regular  text-font-20">
+                    {item.platform}
+                  </td>
+                  <td className="py-15 body-sm-regular  text-font-20 max-w-[250px] pr-40 overflow-hidden whitespace-nowrap truncate">
+                    {item.caption}
+                  </td>
+                  <td className="py-15 body-sm-regular  text-font-30">
+                    +{item.likes}
+                  </td>
+                  <td className="py-15 body-sm-regular  text-font-30">
+                    +{item.comments}
+                  </td>
+                  <td className="py-15 body-sm-regular  text-font-30">
+                    +{item.shares}
+                  </td>
+                  <td className="py-15 body-sm-regular  text-font-30 pr-20">
+                    +{item.saved}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

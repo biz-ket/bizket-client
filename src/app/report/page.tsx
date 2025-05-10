@@ -68,7 +68,10 @@ const InsightPage = () => {
       <Container>
         <Flex gap={35} className="pt-90 pb-80">
           <ProfileCard profile={profileRes.data!} member={memberRes.data!} />
-          <InsightsTable insights={insightsRes.data!} />
+          <InsightsTable
+            insights={insightsRes.data!}
+            onCreate={() => router.push('/my/edit')}
+          />
         </Flex>
       </Container>
     </div>
