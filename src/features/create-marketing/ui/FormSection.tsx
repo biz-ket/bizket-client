@@ -36,7 +36,7 @@ const FormSection = () => {
     <AnimatePresence>
       {isTabOpen && (
         <motion.div
-          className="relative h-[calc(100vh-72px)] overflow-x-hidden overflow-y-auto bg-white py-30 bg-primary-40 "
+          className="relative h-full overflow-x-hidden overflow-y-auto bg-white py-30 bg-primary-40 "
           initial="closed"
           animate="open"
           exit="closed"

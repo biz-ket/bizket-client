@@ -1,38 +1,60 @@
+import { useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
 import CommentIcon from '@/features/create-marketing-viewer/ui/CommentIcon';
 import MenuIcon from '@/features/create-marketing-viewer/ui/MenuIcon';
 import SaveIcon from '@/features/create-marketing-viewer/ui/SaveIcon';
 import ShareIcon from '@/features/create-marketing-viewer/ui/ShareIcon';
 import WishIcon from '@/features/create-marketing-viewer/ui/WishIcon';
+import { MarketingHistoryItem } from '@/features/create-marketing/types/apiType';
+import { useMarketingLoadingStore } from '@/shared/store/useMarketingStore';
 import Flex from '@/shared/ui/layout/Flex';
 import Image from 'next/image';
 
-const testText =
-  '여리여리 분위기 가득 Mocha mousse 🤎\n올해의 팬톤 컬러 #모카무스 메이크업 🤎☕️\n\nmakeup @makeup_jin \nhair @._.oh.in. \n\n💌메이크업 예약 및 문의 \n👉🏻프로필링크 카카오채널';
-
-const isSuccess = false;
-
 interface PreviewProps {
   isHistory?: boolean;
+  data: MarketingHistoryItem;
 }
 
-export const Preview = ({ isHistory }: PreviewProps) => {
+export const Preview = ({ isHistory, data }: PreviewProps) => {
+  const { isSuccess } = useMarketingLoadingStore();
+  const { data: userData } = useMemberInfo();
+
+  console.log(userData);
+
   return isSuccess || isHistory ? (
     <div className="overflow-hidden rounded-10">
       <div className="w-[425px]  bg-white h-[820px] overflow-auto ">
         <Flex justify="between" align="center" className="w-full px-16 py-17">
           <Flex align="center" gap={8}>
-            <div className="bg-gray-300 rounded-full w-35 h-35"></div>
-            <p className="body-lg-semibold text-font-50">김비즈</p>
+            <div className="relative overflow-hidden border-gray-300 rounded-full w-35 h-35">
+              <Image
+                style={{ objectFit: 'cover' }}
+                fill
+                src={
+                  userData?.profileImageUrl ||
+                  '/images/shared/default_profile.png'
+                }
+                alt="유저 프로필 이미지"
+              />
+            </div>
+            <p className="body-lg-semibold text-font-50">
+              {userData?.instagramAccountId}
+            </p>
           </Flex>
           <MenuIcon />
         </Flex>
         <div className="w-full h-[495px] relative">
-          <Image
-            src="/images/create-marketing/preview.png"
-            style={{ objectFit: 'cover' }}
-            fill
-            alt="미리보기 이미지지"
-          />
+          {data?.imageUrls[0] && (
+            <Image
+              src={
+                isHistory
+                  ? data?.imageUrls[0]
+                  : data?.imageUrls[0] || '/images/create-marketing/preview.png'
+              }
+              style={{ objectFit: 'cover' }}
+              fill
+              alt="미리보기 이미지"
+            />
+          )}
         </div>
         <Flex direction="col" gap={12} className="w-full px-16 py-12">
           <Flex justify="between" className="w-full">
@@ -44,8 +66,13 @@ export const Preview = ({ isHistory }: PreviewProps) => {
             <SaveIcon />
           </Flex>
           <div>
-            <span className="mr-5 label-lg-semibold text-font-50">김비즈</span>{' '}
-            <pre className="inline">{testText}</pre>
+            <span className="mr-5 label-lg-semibold text-font-50">
+              {userData?.instagramAccountId}
+            </span>{' '}
+            <pre className="inline">{data?.generatedContent}</pre>
+            <p className="body-sm-regular text-font-50 mt-15">
+              {data?.hashtags.join(' ')}
+            </p>
           </div>
         </Flex>
       </div>

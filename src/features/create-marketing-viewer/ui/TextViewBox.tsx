@@ -1,6 +1,6 @@
 'use client';
 
-import DeleteIcon from '@/features/create-marketing-viewer/ui/DeleteIcon';
+// import DeleteIcon from '@/features/create-marketing-viewer/ui/DeleteIcon';
 import PasteIcon from '@/features/create-marketing-viewer/ui/PasteIcon';
 import Flex from '@/shared/ui/layout/Flex';
 import { useState } from 'react';
@@ -34,9 +34,9 @@ const TextViewBox = ({ content }: TextViewBoxProps) => {
         <button onClick={handleCopy} className="relative flex items-center">
           <PasteIcon />
         </button>
-        <button>
+        {/* <button>
           <DeleteIcon />
-        </button>
+        </button> */}
       </Flex>
     </div>
   );

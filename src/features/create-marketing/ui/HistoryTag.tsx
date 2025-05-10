@@ -13,7 +13,7 @@ const HistoryTag = ({ tag }: HistoryTagProps) => {
       className={clsx(
         'label-sm-semibold text-white px-10 py-6 rounded-20',
         tag === '마케팅 콘텐츠' && 'bg-black',
-        tag === '인스타그램' && 'bg-[#F67824]',
+        (tag === '인스타그램' || tag === '스레드') && 'bg-[#F67824]',
       )}
     >
       {tag}
