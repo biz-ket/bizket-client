@@ -4,11 +4,20 @@ interface AgeCheckboxProps {
   isChecked?: boolean;
   label: string;
   onClick: (label: string) => void;
+  labelClassName?: string;
 }
 
-const AgeCheckbox = ({ label, isChecked, onClick }: AgeCheckboxProps) => {
+const AgeCheckbox = ({
+  label,
+  isChecked,
+  onClick,
+  labelClassName,
+}: AgeCheckboxProps) => {
   return (
-    <button onClick={() => onClick(label)} className="flex items-center gap-12">
+    <button
+      onClick={() => onClick(label)}
+      className="flex items-center gap-12 "
+    >
       <div
         className={clsx(
           'w-20 h-20 border rounded-4 flex justify-center items-center',
@@ -30,7 +39,9 @@ const AgeCheckbox = ({ label, isChecked, onClick }: AgeCheckboxProps) => {
           />
         </svg>
       </div>
-      <span className="text-black body-sm-regular">{label}</span>
+      <span className={clsx('text-black', labelClassName ?? 'body-sm-regular')}>
+        {label}
+      </span>
     </button>
   );
 };
