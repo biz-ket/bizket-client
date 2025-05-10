@@ -24,6 +24,7 @@ import OptionsList, { Option } from '@/features/my/ui/OptionList';
 import OptionSelectBox from '@/features/my/ui/OptionSelectBox';
 import { useEffect } from 'react';
 import SingleDatePicker from '@/features/my/ui/SingleDatePicker';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   member: Member;
@@ -32,6 +33,7 @@ interface Props {
 
 export default function MyPageEditForm({ member, profile }: Props) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { closeAllBoxes } = useSelectBoxStore();
   const { data: ageOptions = [] } = useCustomerAgeGroups();
   const {
@@ -132,6 +134,11 @@ export default function MyPageEditForm({ member, profile }: Props) {
             },
             {
               onSuccess: () => {
+                queryClient.invalidateQueries({
+                  queryKey: ['businessProfile'],
+                });
+                queryClient.invalidateQueries({ queryKey: ['member'] });
+
                 alert('저장에 성공했습니다.');
                 router.push('/my');
               },
