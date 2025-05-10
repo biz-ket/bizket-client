@@ -5,7 +5,7 @@ import { useBusinessProfile } from '@/features/report/hooks/useBusinessProfile';
 import Header from '@/features/my/ui/Header';
 import Flex from '@/shared/ui/layout/Flex';
 import Container from '@/shared/ui/layout/Container';
-import MyPageEditForm from './MyPageEditForm';
+import MyPageEditForm from '../../../features/my/ui/MyPageEditForm';
 import Image from 'next/image';
 
 export default function MyPageEdit() {
