@@ -42,7 +42,6 @@ export default function MyPageEditForm({ member, profile }: Props) {
   const { mutate: updateMember } = useUpdateMember();
   const { mutate: updateBusinessProfile } = useUpdateBusinessProfile();
 
-  // 이제 무조건 member, profile이 존재
   const methods = useProfileForm(member, profile);
   const {
     watch,
