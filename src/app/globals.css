@@ -80,3 +80,7 @@ pre {
   --rdp-accent-color: #ff7900;
   --rdp-accent-background-color: #ffefe4;
 }
+
+.preview .swiper-pagination-bullet-active {
+  background: #ff7900 !important;
+}

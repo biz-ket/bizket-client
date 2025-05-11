@@ -8,6 +8,11 @@ import { MarketingHistoryItem } from '@/features/create-marketing/types/apiType'
 import { useMarketingLoadingStore } from '@/shared/store/useMarketingStore';
 import Flex from '@/shared/ui/layout/Flex';
 import Image from 'next/image';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import ThreadIcons from '@/features/create-marketing-viewer/ui/ThreadIcons';
 
 interface PreviewProps {
   isHistory?: boolean;
@@ -21,60 +26,137 @@ export const Preview = ({ isHistory, data }: PreviewProps) => {
   console.log(userData);
 
   return isSuccess || isHistory ? (
-    <div className="overflow-hidden rounded-10">
-      <div className="w-[425px]  bg-white h-[820px] overflow-auto ">
-        <Flex justify="between" align="center" className="w-full px-16 py-17">
-          <Flex align="center" gap={8}>
-            <div className="relative overflow-hidden border-gray-300 rounded-full w-35 h-35">
-              <Image
-                style={{ objectFit: 'cover' }}
-                fill
-                src={
-                  userData?.profileImageUrl ||
-                  '/images/shared/default_profile.png'
-                }
-                alt="유저 프로필 이미지"
-              />
-            </div>
-            <p className="body-lg-semibold text-font-50">
-              {userData?.instagramAccountId}
-            </p>
-          </Flex>
-          <MenuIcon />
-        </Flex>
-        <div className="w-full h-[495px] relative">
-          {data?.imageUrls[0] && (
-            <Image
-              src={
-                isHistory
-                  ? data?.imageUrls[0]
-                  : data?.imageUrls[0] || '/images/create-marketing/preview.png'
-              }
-              style={{ objectFit: 'cover' }}
-              fill
-              alt="미리보기 이미지"
-            />
-          )}
-        </div>
-        <Flex direction="col" gap={12} className="w-full px-16 py-12">
-          <Flex justify="between" className="w-full">
-            <Flex align="center" gap={13}>
-              <WishIcon />
-              <CommentIcon />
-              <ShareIcon />
+    <div className="overflow-hidden rounded-10 preview">
+      <div className="w-[425px]  bg-white min-h-[600px] max-h-[820px] overflow-auto ">
+        {data?.platform === 'instagram' ? (
+          <>
+            <Flex
+              justify="between"
+              align="center"
+              className="w-full px-16 py-17"
+            >
+              <Flex align="center" gap={8}>
+                <div className="relative overflow-hidden border-gray-300 rounded-full w-35 h-35">
+                  <Image
+                    style={{ objectFit: 'cover' }}
+                    fill
+                    src={
+                      userData?.profileImageUrl ||
+                      '/images/shared/default_profile.png'
+                    }
+                    alt="유저 프로필 이미지"
+                  />
+                </div>
+                <p className="body-lg-semibold text-font-50">
+                  {userData?.instagramAccountId}
+                </p>
+              </Flex>
+              <MenuIcon />
             </Flex>
-            <SaveIcon />
-          </Flex>
-          <div>
-            <span className="mr-5 label-lg-semibold text-font-50">
-              {userData?.instagramAccountId}
-            </span>{' '}
-            <pre className="inline">{data?.generatedContent}</pre>
-            <p className="body-sm-regular text-font-50 mt-15">
-              {data?.hashtags.join(' ')}
-            </p>
-          </div>
-        </Flex>
+            <Swiper
+              pagination={{ clickable: true }}
+              modules={[Pagination]}
+              className="w-full h-[495px]"
+            >
+              {data?.imageUrls.map((image, index) => (
+                <SwiperSlide key={`insta-${index}`}>
+                  <div className="relative w-full h-[495px]">
+                    <Image
+                      src={
+                        isHistory
+                          ? image
+                          : image || '/images/create-marketing/preview.png'
+                      }
+                      style={{ objectFit: 'cover' }}
+                      fill
+                      alt="미리보기 이미지"
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            <Flex direction="col" gap={12} className="w-full px-16 py-12">
+              <Flex justify="between" className="w-full">
+                <Flex align="center" gap={13}>
+                  <WishIcon />
+                  <CommentIcon />
+                  <ShareIcon />
+                </Flex>
+                <SaveIcon />
+              </Flex>
+              <div>
+                <span className="mr-5 label-lg-semibold text-font-50">
+                  {userData?.instagramAccountId}
+                </span>{' '}
+                <pre className="inline body-md-regular text-font-40">
+                  {data?.generatedContent}
+                </pre>
+                <p className="body-sm-regular text-font-50 mt-15">
+                  {data?.hashtags.join(' ')}
+                </p>
+              </div>
+            </Flex>
+          </>
+        ) : (
+          <>
+            <Flex
+              justify="between"
+              align="center"
+              className="w-full px-16 py-17"
+            >
+              <Flex align="center" gap={8}>
+                <div className="relative overflow-hidden border-gray-300 rounded-full w-35 h-35">
+                  <Image
+                    style={{ objectFit: 'cover' }}
+                    fill
+                    src={
+                      userData?.profileImageUrl ||
+                      '/images/shared/default_profile.png'
+                    }
+                    alt="유저 프로필 이미지"
+                  />
+                </div>
+                <p className="body-lg-semibold text-font-50">
+                  {userData?.instagramAccountId}
+                </p>
+              </Flex>
+              <MenuIcon />
+            </Flex>
+            <Flex direction="col" gap={14} className="w-full px-26 pb-60">
+              <>
+                <pre className="inline body-md-regular text-font-40">
+                  {data?.generatedContent}
+                </pre>
+                <p className="body-sm-regular text-font-50 mt-15">
+                  {data?.hashtags.join(' ')}
+                </p>
+              </>
+              <Swiper
+                pagination={{ clickable: true }}
+                modules={[Pagination]}
+                className="w-full h-[200px] rounded-10 overflow-hidden"
+              >
+                {data?.imageUrls.map((image, index) => (
+                  <SwiperSlide key={`thread-${index}`}>
+                    <div className="relative w-full h-[200px]">
+                      <Image
+                        src={
+                          isHistory
+                            ? image
+                            : image || '/images/create-marketing/preview.png'
+                        }
+                        style={{ objectFit: 'cover' }}
+                        fill
+                        alt="미리보기 이미지"
+                      />
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+              <ThreadIcons />
+            </Flex>
+          </>
+        )}
       </div>
       <Flex
         justify="center"
