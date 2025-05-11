@@ -83,34 +83,35 @@ const Header = () => {
             isDark ? 'text-white' : 'text-font-60',
           )}
         >
-          <li>
-            <Link
-              href="/my"
-              className="flex items-center gap-6 body-md-regular"
-            >
-              {isLoggedIn && member?.profileImageUrl ? (
-                <div className="relative w-28 h-28">
-                  <Image
-                    src={member.profileImageUrl}
-                    fill
-                    alt={`${member.nickname} 프로필`}
-                    className="rounded-full"
-                  />
-                </div>
-              ) : (
-                <div className="relative w-28 h-28">
-                  <Image
-                    src="/images/shared/profile.svg"
-                    fill
-                    alt="디폴트 프로필"
-                    className="rounded-full"
-                  />
-                </div>
-                // <MyIcon fill={isDark ? 'white' : 'black'} />
-              )}
-              {member?.nickname}님
-            </Link>
-          </li>
+          {isLoggedIn && (
+            <li>
+              <Link
+                href="/my"
+                className="flex items-center gap-6 body-md-regular"
+              >
+                {member?.profileImageUrl ? (
+                  <div className="relative w-28 h-28">
+                    <Image
+                      src={member.profileImageUrl}
+                      fill
+                      alt={`${member.nickname} 프로필`}
+                      className="rounded-full"
+                    />
+                  </div>
+                ) : (
+                  <div className="relative w-28 h-28">
+                    <Image
+                      src="/images/shared/profile.svg"
+                      fill
+                      alt="디폴트 프로필"
+                      className="rounded-full"
+                    />
+                  </div>
+                )}
+                {member?.nickname}님
+              </Link>
+            </li>
+          )}
           <li>
             {!hasHydrated ? (
               <div style={{ width: 100, height: 24 }} />
