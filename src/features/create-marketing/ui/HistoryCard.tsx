@@ -1,11 +1,13 @@
+import { useDeleteMarketingMutation } from '@/features/create-marketing/hooks/useDeleteMarketingMutation';
 import { MarketingHistoryItem } from '@/features/create-marketing/types/apiType';
 import HistoryTag from '@/features/create-marketing/ui/HistoryTag';
 import XIcon from '@/features/create-marketing/ui/XIcon';
 import { useContentHistoryStore } from '@/shared/store/useContentHistoryStroe';
 import Flex from '@/shared/ui/layout/Flex';
+import CheckDeleteModal from '@/shared/ui/modal/CheckDeleteModal';
 import { formatDate } from '@/shared/utils/formatDate';
 import clsx from 'clsx';
-import { MouseEvent } from 'react';
+import { MouseEvent, useState } from 'react';
 
 interface HistoryCardProps {
   data: MarketingHistoryItem;
@@ -13,14 +15,29 @@ interface HistoryCardProps {
 
 const HistoryCard = ({ data }: HistoryCardProps) => {
   const { id, setId } = useContentHistoryStore();
+  const [isOpen, setIsOpen] = useState(false);
+  const [historyId, setHistoryId] = useState<number | null>(null);
+
+  const { mutate: deleteHistoryMutate } = useDeleteMarketingMutation();
+
+  console.log(historyId);
 
   const handleClickCard = () => {
     setId(data.id);
   };
 
-  const handleClickDelete = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleOpenModal = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    console.log('삭제');
+    setIsOpen(true);
+    setHistoryId(data.id);
+  };
+  const handleCloseModal = () => {
+    setIsOpen(false);
+  };
+
+  const handleClickDelete = () => {
+    deleteHistoryMutate(historyId);
+    setIsOpen(false);
   };
 
   return (
@@ -45,7 +62,7 @@ const HistoryCard = ({ data }: HistoryCardProps) => {
             )}
           </Flex>
           <button
-            onClick={handleClickDelete}
+            onClick={handleOpenModal}
             className="absolute top-0 right-0 z-10"
           >
             <XIcon />
@@ -58,6 +75,12 @@ const HistoryCard = ({ data }: HistoryCardProps) => {
           </p>
         </Flex>
       </Flex>
+      {isOpen && (
+        <CheckDeleteModal
+          onDelete={handleClickDelete}
+          onCancel={handleCloseModal}
+        />
+      )}
     </div>
   );
 };
