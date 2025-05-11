@@ -4,7 +4,7 @@ export const profileSchema = z.object({
   name: z.string().min(1, '이름을 입력하세요'),
   brand: z.string().min(1, '상호명을 입력하세요'),
   email: z.string().email('유효한 이메일을 입력하세요'),
-  startDate: z.string().min(1, '시작일을 입력하세요'),
+  startDate: z.date({ required_error: '시작일을 입력하세요' }),
   phone1: z.string().min(1, '전화번호를 입력하세요'),
   phone2: z.string().min(1),
   phone3: z.string().min(1),

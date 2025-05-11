@@ -11,20 +11,16 @@ interface SelectBoxProps {
   id: string;
   placeholder: string;
   value?: string;
-  isActive?: boolean;
   isSelected?: boolean;
   children: ReactNode;
-  handleClick?: () => void;
-  disabled?: boolean;
 }
 
-const SelectBox = ({
+const OptionSelectBox = ({
   id,
   placeholder,
   value,
   isSelected,
   children,
-  disabled,
 }: SelectBoxProps) => {
   const selectBoxRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -39,54 +35,25 @@ const SelectBox = ({
     return () => setMounted(false);
   }, []);
 
-  const handleToggleOpen = () => {
-    if (disabled) return;
-    toggleBox(id);
-  };
-
-  // 드롭다운 영역 클릭 시 이벤트 버블링 중지
-  const handleDropdownClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // 버튼 영역과 드롭다운 영역 체크
-      const isClickInsideBox =
-        selectBoxRef.current &&
-        selectBoxRef.current.contains(event.target as Node);
-      const isClickInsideDropdown =
-        dropdownRef.current &&
-        dropdownRef.current.contains(event.target as Node);
-
-      // 두 영역 모두 아닌 곳 클릭 시 드롭다운 닫기
-      if (!isClickInsideBox && !isClickInsideDropdown) {
-        closeAllBoxes();
+      if (
+        selectBoxRef.current?.contains(event.target as Node) ||
+        dropdownRef.current?.contains(event.target as Node)
+      ) {
+        return;
       }
+      closeAllBoxes();
     };
-
-    // 드롭다운이 열린 경우에만 이벤트 리스너 등록
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
-
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [closeAllBoxes, isOpen]);
+  }, [isOpen, closeAllBoxes]);
 
-  // 드롭다운 위치 계산
-  const getDropdownPosition = () => {
-    if (selectBoxRef.current) {
-      const rect = selectBoxRef.current.getBoundingClientRect();
-      return {
-        top: rect.bottom + window.scrollY + 5,
-        left: rect.left + window.scrollX,
-        width: rect.width,
-      };
-    }
-    return { top: 0, left: 0, width: 0 };
-  };
+  const getContainer = () => selectBoxRef.current || document.body;
 
   return (
     <div className="relative w-full" ref={selectBoxRef}>
@@ -97,9 +64,8 @@ const SelectBox = ({
           isOpen || isSelected
             ? 'bg-primary-10 text-primary-50 border-primary-50'
             : 'bg-white text-font-20 border-line-40',
-          disabled && '!border-none !bg-bg-10 cursor-default',
         )}
-        onClick={handleToggleOpen}
+        onClick={() => toggleBox(id)}
       >
         {value || placeholder}
         <motion.div
@@ -111,19 +77,15 @@ const SelectBox = ({
       </button>
 
       {mounted &&
+        isOpen &&
+        selectBoxRef.current &&
         createPortal(
           <AnimatePresence>
             {isOpen && (
               <div
                 ref={dropdownRef}
-                onClick={handleDropdownClick}
-                style={{
-                  position: 'absolute',
-                  top: `${getDropdownPosition().top}px`,
-                  left: `${getDropdownPosition().left}px`,
-                  width: `${getDropdownPosition().width}px`,
-                  zIndex: 100,
-                }}
+                onClick={(e) => e.stopPropagation()}
+                className="absolute left-0 top-full mt-1 w-full z-50"
               >
                 <motion.div
                   className="overflow-hidden bg-white border rounded-8 border-primary-50"
@@ -137,10 +99,10 @@ const SelectBox = ({
               </div>
             )}
           </AnimatePresence>,
-          document.body,
+          getContainer(),
         )}
     </div>
   );
 };
 
-export default SelectBox;
+export default OptionSelectBox;
