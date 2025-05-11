@@ -78,6 +78,7 @@ const WeeklySearchRatioChart = ({ result }: WeeklySearchRatioChartProps) => {
               <CartesianGrid verticalPoints={[0]} stroke="#f1f1f1" />
               <Tooltip
                 formatter={(value) => `${formatNumber(value as number)}%`}
+                cursor={false}
               />
               <Bar
                 dataKey="ratio"
