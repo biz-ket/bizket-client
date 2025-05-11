@@ -1,15 +1,18 @@
 'use client';
-
 import Image from 'next/image';
 
 export const InstagramLoginButton = () => {
   const handleLogin = () => {
     const frontend =
-      process.env.NEXT_PUBLIC_FRONTEND_URL ?? window.location.origin;
-    const redirectUrl = encodeURIComponent(`${frontend}/login/callback`);
+      typeof window !== 'undefined'
+        ? window.location.origin
+        : process.env.NEXT_PUBLIC_FRONTEND_URL!;
+
+    const redirectUrl = encodeURIComponent(`${frontend}/`);
 
     const apiBase = process.env.NEXT_PUBLIC_BIZKET_API_BASE_URL!;
-    window.location.href = `${apiBase}/auth/instagram/login?redirect_uri=${redirectUrl}`;
+    const loginUrl = `${apiBase}/auth/instagram/login?redirect_uri=${redirectUrl}`;
+    window.location.href = loginUrl;
   };
 
   return (
