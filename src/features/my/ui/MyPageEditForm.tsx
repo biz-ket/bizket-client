@@ -91,9 +91,11 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
                   queryKey: ['businessProfile'],
                 });
                 queryClient.invalidateQueries({ queryKey: ['member'] });
+                queryClient.refetchQueries({ queryKey: ['businessProfile'] });
+                queryClient.refetchQueries({ queryKey: ['member'] });
 
                 alert('저장에 성공했습니다.');
-                router.push('/my');
+                router.push('/my?refresh=true');
               },
               onError: () => alert('사업장 정보 저장 중 오류가 발생했습니다.'),
             },
@@ -303,8 +305,8 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
                       labelClassName="body-lg-regular"
                       onClick={() => {
                         const updated = field.value.includes(age.id)
-                          ? field.value.filter((a) => a !== age.id)
-                          : [...field.value, age.id];
+                          ? []
+                          : [age.id];
                         field.onChange(updated);
                       }}
                     />
