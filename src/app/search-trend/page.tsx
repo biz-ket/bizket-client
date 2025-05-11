@@ -12,9 +12,9 @@ const SearchTrendPage = () => {
   );
 
   return (
-    <div className='bg-[url("/images/search-trend/background-image.png")] bg-contain bg-no-repeat py-[200px]'>
+    <div>
+      <SearchForm onSearch={setSearchParams} />
       <Container>
-        <SearchForm onSearch={setSearchParams} />
         {searchParams && <SearchResult searchParams={searchParams} />}
       </Container>
     </div>
