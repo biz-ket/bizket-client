@@ -34,7 +34,7 @@ const Modal = ({
     <div
       className={clsx(
         layout,
-        'z-50 flex justify-center items-center bg-[rgba(0,0,0,0.6)]',
+        'z-modal flex justify-center items-center bg-[rgba(0,0,0,0.6)]',
       )}
     >
       <div
@@ -62,7 +62,7 @@ interface ModalHeaderProps {
 
 const ModalHeader = ({ children }: ModalHeaderProps) => {
   return (
-    <div className="label-md-semibold text-primary-60 bg-primary-10 py-3 px-10 mx-auto">
+    <div className="px-10 py-3 mx-auto label-md-semibold text-primary-60 bg-primary-10">
       {children}
     </div>
   );
@@ -75,7 +75,7 @@ interface ModalBodyProps {
 
 const ModalBody = ({ children }: ModalBodyProps) => {
   return (
-    <div className="w-full flex flex-col gap-14 items-center">{children}</div>
+    <div className="flex flex-col items-center w-full gap-14">{children}</div>
   );
 };
 Modal.Body = ModalBody;
@@ -85,7 +85,7 @@ interface ModalFooterProps {
 }
 
 const ModalFooter = ({ children }: ModalFooterProps) => {
-  return <div className="w-full flex gap-10">{children}</div>;
+  return <div className="flex w-full gap-10">{children}</div>;
 };
 Modal.Footer = ModalFooter;
 
@@ -103,7 +103,7 @@ interface ModalMessageProps {
 }
 
 const ModalMessage = ({ children }: ModalMessageProps) => {
-  return <span className="title-sm text-center">{children}</span>;
+  return <span className="text-center title-sm">{children}</span>;
 };
 Modal.Message = ModalMessage;
 
@@ -113,7 +113,7 @@ interface ModalSubMessageProps {
 
 const ModalSubMessage = ({ children }: ModalSubMessageProps) => {
   return (
-    <span className="body-md-regular text-font-20 text-center">{children}</span>
+    <span className="text-center body-md-regular text-font-20">{children}</span>
   );
 };
 Modal.SubMessage = ModalSubMessage;
