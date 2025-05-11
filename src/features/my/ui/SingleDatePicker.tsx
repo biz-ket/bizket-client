@@ -5,14 +5,18 @@ import { Controller } from 'react-hook-form';
 import { DayPicker } from 'react-day-picker';
 import Input from '@/shared/ui/input/Input';
 import Card from '@/features/search-trend/ui/Card';
-import CalendarIcon from '@/features/search-trend/ui/CalendarIcon';
-import { formatDate } from '@/features/search-trend/utils/dateUtils';
 import type { Control } from 'react-hook-form';
 import type { ProfileFormValues } from '@/features/profile/schema';
 
 interface SingleDatePickerProps {
   control: Control<ProfileFormValues>;
   name: 'startDate';
+}
+export function formatDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}.${month}.${day}`;
 }
 
 export default function SingleDatePicker({
@@ -49,9 +53,7 @@ export default function SingleDatePicker({
               onClick={() => setOpen((v) => !v)}
               className="cursor-pointer pr-12"
             />
-            <div className="absolute inset-y-0 right-10 flex items-center pointer-events-none">
-              <CalendarIcon fill={open ? '#FF7900' : '#CFCFCF'} />
-            </div>
+            <div className="absolute inset-y-0 right-10 flex items-center pointer-events-none"></div>
 
             {open && (
               <Card className="absolute top-full left-0 mt-2 z-50 px-20 py-10">
@@ -60,7 +62,7 @@ export default function SingleDatePicker({
                   selected={selectedDate}
                   onSelect={(date) => {
                     if (date) {
-                      onChange(date); // Date 그대로 전달!
+                      onChange(date);
                       setOpen(false);
                     }
                   }}
