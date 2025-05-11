@@ -4,9 +4,13 @@ import Modal from '@/shared/ui/modal/Modal';
 
 interface CheckDeleteAccountModalProps {
   onClose?: () => void;
+  onConfirm: () => void;
 }
 
-const CheckDeleteAccountModal = ({ onClose }: CheckDeleteAccountModalProps) => {
+const CheckDeleteAccountModal = ({
+  onClose,
+  onConfirm,
+}: CheckDeleteAccountModalProps) => {
   return (
     <Modal>
       <Modal.Header>탈퇴하기</Modal.Header>
@@ -23,7 +27,9 @@ const CheckDeleteAccountModal = ({ onClose }: CheckDeleteAccountModalProps) => {
         <Modal.Button onClick={onClose} variant="cancel">
           취소
         </Modal.Button>
-        <Modal.Button variant="primary">탈퇴하기</Modal.Button>
+        <Modal.Button onClick={onConfirm} variant="primary">
+          탈퇴하기
+        </Modal.Button>
       </Modal.Footer>
     </Modal>
   );
