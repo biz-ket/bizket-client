@@ -22,9 +22,18 @@ const LoginPage = () => {
           인스타그램 계정으로 로그인해주세요.
         </p>
         <InstagramLoginButton />
-        <button className="title-sm mt-15 mb-28 py-18 text-font-30 border border-line-40 rounded-14 w-[421px]">
+        <a
+          href="https://www.instagram.com/accounts/emailsignup/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button className="title-sm mt-15 mb-28 py-18 text-font-30 border border-line-40 rounded-14 w-[421px]">
+            인스타그램 계정 생성하기
+          </button>
+        </a>
+        {/* <button className="title-sm mt-15 mb-28 py-18 text-font-30 border border-line-40 rounded-14 w-[421px]">
           인스타그램 계정 생성하기
-        </button>
+        </button> */}
         <div className="text-center text-font-20">
           <p className="body-lg-regular">
             원활한 서비스 이용을 위해, 개인 계정이 아닌

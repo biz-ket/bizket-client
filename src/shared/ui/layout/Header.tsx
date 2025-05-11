@@ -8,7 +8,8 @@ import clsx from 'clsx';
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
 import Flex from '@/shared/ui/layout/Flex';
 import LoginIcon from '@/shared/ui/icons/LoginIcon';
-import MyIcon from '@/shared/ui/icons/MyIcon';
+// import MyIcon from '@/shared/ui/icons/MyIcon';
+import { useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
 
 const Header = () => {
   const pathname = usePathname();
@@ -19,7 +20,7 @@ const Header = () => {
   const logout = useAuthStore((s) => s.logout);
 
   const isLoggedIn = Boolean(token);
-
+  const { data: member } = useMemberInfo();
   const isDark = pathname.includes('/report') || pathname.includes('/my');
   const isFull = pathname.includes('/create');
 
@@ -87,12 +88,30 @@ const Header = () => {
               href="/my"
               className="flex items-center gap-6 body-md-regular"
             >
-              <MyIcon fill={isDark ? 'white' : 'black'} />
-              마이페이지
+              {isLoggedIn && member?.profileImageUrl ? (
+                <div className="relative w-28 h-28">
+                  <Image
+                    src={member.profileImageUrl}
+                    fill
+                    alt={`${member.nickname} 프로필`}
+                    className="rounded-full"
+                  />
+                </div>
+              ) : (
+                <div className="relative w-28 h-28">
+                  <Image
+                    src="/images/shared/profile.svg"
+                    fill
+                    alt="디폴트 프로필"
+                    className="rounded-full"
+                  />
+                </div>
+                // <MyIcon fill={isDark ? 'white' : 'black'} />
+              )}
+              {member?.nickname}님
             </Link>
           </li>
           <li>
-            {/* hydrating 중엔 빈 공간(또는 스켈레톤) */}
             {!hasHydrated ? (
               <div style={{ width: 100, height: 24 }} />
             ) : isLoggedIn ? (
