@@ -34,7 +34,7 @@ interface Props {
   profile: BusinessProfile;
 }
 
-export default function MyPageEditForm({ member, profile }: Props) {
+export const MyPageEditForm = ({ member, profile }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const deleteAccount = useDeleteAccount();
@@ -344,4 +344,5 @@ export default function MyPageEditForm({ member, profile }: Props) {
       )}
     </div>
   );
-}
+};
+export default MyPageEditForm;
