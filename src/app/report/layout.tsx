@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
 import MemberOnlyModal from '@/shared/ui/modal/MemberOnlyModal';
@@ -11,18 +10,12 @@ import Container from '@/shared/ui/layout/Container';
 export const ReportLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const token = useAuthStore((s) => s.token);
-  const [showModal, setShowModal] = useState(false);
-
-  useEffect(() => {
-    setShowModal(!token);
-  }, [token]);
 
   const handleClose = () => {
-    setShowModal(false);
     router.back();
   };
 
-  if (showModal) {
+  if (!token) {
     return (
       <>
         <MemberOnlyModal usePortal onClose={handleClose} />
@@ -30,7 +23,9 @@ export const ReportLayout = ({ children }: { children: React.ReactNode }) => {
         <Container>
           <Flex gap={35} className="pt-90 pb-80">
             <Skeleton className="w-[400px] h-[635px] rounded-20" />
-            <Skeleton as="div" count={5} className="h-[127px] flex-1 mb-4" />
+            <Flex direction="col" className="w-full gap-4 flex-1">
+              <Skeleton as="div" count={10} className="h-[50px] w-full mb-14" />
+            </Flex>
           </Flex>
         </Container>
       </>

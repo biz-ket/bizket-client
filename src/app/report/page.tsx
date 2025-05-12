@@ -29,14 +29,14 @@ const InsightPage = () => {
 
   if (isLoading) {
     return (
-      <div>
-        <Container>
-          <Flex gap={35} className="pt-90 pb-80">
-            <Skeleton className="w-[400px] h-[635px] rounded-20" />
-            <Skeleton as="div" count={5} className="h-[127px] flex-1 mb-4" />
+      <Container>
+        <Flex gap={35} className="pt-90 pb-80">
+          <Skeleton className="w-[400px] h-[635px] rounded-20" />
+          <Flex direction="col" className="w-full gap-4 flex-1">
+            <Skeleton as="div" count={7} className="h-[80px] w-full mb-10" />
           </Flex>
-        </Container>
-      </div>
+        </Flex>
+      </Container>
     );
   }
   if (errorResult || !userRes.data)
@@ -49,7 +49,7 @@ const InsightPage = () => {
   return (
     <div>
       <Header
-        title="비즈니스 리포트"
+        title="비즈니스 보고서"
         userName={userRes.data.nickname}
         action={{
           label: '내 정보 수정',
