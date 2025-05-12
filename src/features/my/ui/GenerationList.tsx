@@ -1,8 +1,7 @@
-import Flex from '@/shared/ui/layout/Flex';
 import useGenerationQuery from '../hooks/useGenerationQuery';
-import { memo, ReactNode, useCallback } from 'react';
-import clsx from 'clsx';
+import { memo, useCallback } from 'react';
 import ArrowDownIcon from './ArrowDownIcon';
+import ContentsCard from './ContentsCard';
 
 interface GenerationListProps {
   keyword: string;
@@ -39,26 +38,8 @@ const GenerationList = ({ keyword }: GenerationListProps) => {
   return (
     <>
       <div className="grid grid-cols-4 gap-20">
-        {generations.map((generation, idx) => (
-          <div
-            key={`creation-${idx}`}
-            className="w-full h-[232px] px-32 py-35 border border-line-20 rounded-20 shadow-[0px_2px_5px_0px_rgba(0,0,0,0.06)]"
-          >
-            <div className="w-full">
-              <span className="block w-full overflow-hidden whitespace-nowrap text-ellipsis title-sm">
-                {generation.generatedContent}
-              </span>
-              <Flex gap={6} className="text-white mt-12">
-                <Chip className="bg-black rounded-20">마케팅 콘텐츠</Chip>
-                {generation.platform && (
-                  <Chip className="bg-[#F67824]">{generation.platform}</Chip>
-                )}
-              </Flex>
-            </div>
-            <div className="mt-28">
-              <p className="text-font-40 body-sm-light">{generation.prompt}</p>
-            </div>
-          </div>
+        {generations.map((generation) => (
+          <ContentsCard key={`contents-${generation.id}`} contents={generation} />
         ))}
       </div>
 
@@ -71,24 +52,6 @@ const GenerationList = ({ keyword }: GenerationListProps) => {
         </button>
       )}
     </>
-  );
-};
-
-interface ChipProps {
-  children: ReactNode;
-  className?: string;
-}
-
-const Chip = ({ children, className }: ChipProps) => {
-  return (
-    <div
-      className={clsx(
-        'rounded-20 px-10 py-6 text-white label-sm-semibold',
-        className,
-      )}
-    >
-      {children}
-    </div>
   );
 };
 
