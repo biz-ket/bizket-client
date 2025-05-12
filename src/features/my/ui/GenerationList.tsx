@@ -1,6 +1,6 @@
 import Flex from '@/shared/ui/layout/Flex';
 import useGenerationQuery from '../hooks/useGenerationQuery';
-import { ReactNode, useCallback } from 'react';
+import { memo, ReactNode, useCallback } from 'react';
 import clsx from 'clsx';
 import ArrowDownIcon from './ArrowDownIcon';
 
@@ -92,4 +92,4 @@ const Chip = ({ children, className }: ChipProps) => {
   );
 };
 
-export default GenerationList;
+export default memo(GenerationList);

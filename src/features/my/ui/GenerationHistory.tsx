@@ -4,9 +4,11 @@ import Flex from '@/shared/ui/layout/Flex';
 import { useState } from 'react';
 import SearchIcon from '@/shared/ui/icons/SearchIcon';
 import GenerationList from './GenerationList';
+import { useDebounce } from '@/shared/hooks/useDebounce';
 
 const GenerationHistory = () => {
   const [keyword, setKeyword] = useState('');
+  const debouncedKeyword = useDebounce(keyword, 300);
 
   return (
     <section className="w-full mt-43 flex flex-col items-center">
@@ -24,7 +26,7 @@ const GenerationHistory = () => {
         </Flex>
       </Flex>
 
-      <GenerationList keyword={keyword} />
+      <GenerationList keyword={debouncedKeyword} />
     </section>
   );
 };
