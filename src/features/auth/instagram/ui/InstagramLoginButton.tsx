@@ -17,6 +17,8 @@ export const InstagramLoginButton = () => {
     window.location.href = loginUrl;
   };
 
+  console.log(process.env.NEXT_PUBLIC_FRONTEND_URL);
+
   return (
     <button
       className="title-sm relative bg-primary-50 py-18 height-[70px] text-white rounded-14 w-[421px]"
