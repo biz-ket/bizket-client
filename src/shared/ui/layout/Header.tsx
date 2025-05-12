@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
 import Flex from '@/shared/ui/layout/Flex';
 import LoginIcon from '@/shared/ui/icons/LoginIcon';
-// import MyIcon from '@/shared/ui/icons/MyIcon';
+import MyIcon from '@/shared/ui/icons/MyIcon';
 import { useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
 
 const Header = () => {
@@ -86,6 +86,39 @@ const Header = () => {
           {isLoggedIn && (
             <li>
               <Link
+                href={'/my'}
+                className="flex items-center gap-6 body-md-regular"
+              >
+                <MyIcon fill={isDark ? 'white' : 'black'} />
+                마이페이지
+              </Link>
+            </li>
+          )}
+
+          <li>
+            {!hasHydrated ? (
+              <div style={{ width: 100, height: 24 }} />
+            ) : isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-6 body-md-regular"
+              >
+                <LoginIcon fill={isDark ? 'white' : 'black'} />
+                로그아웃
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                className="flex items-center gap-6 body-md-regular"
+              >
+                <LoginIcon fill={isDark ? 'white' : 'black'} />
+                로그인
+              </Link>
+            )}
+          </li>
+          {isLoggedIn && (
+            <li>
+              <Link
                 href="/my"
                 className="flex items-center gap-6 body-md-regular"
               >
@@ -112,27 +145,6 @@ const Header = () => {
               </Link>
             </li>
           )}
-          <li>
-            {!hasHydrated ? (
-              <div style={{ width: 100, height: 24 }} />
-            ) : isLoggedIn ? (
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-6 body-md-regular"
-              >
-                <LoginIcon fill={isDark ? 'white' : 'black'} />
-                로그아웃
-              </button>
-            ) : (
-              <Link
-                href="/login"
-                className="flex items-center gap-6 body-md-regular"
-              >
-                <LoginIcon fill={isDark ? 'white' : 'black'} />
-                로그인
-              </Link>
-            )}
-          </li>
         </ul>
       </div>
     </header>

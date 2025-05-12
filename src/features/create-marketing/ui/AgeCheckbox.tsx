@@ -15,6 +15,7 @@ const AgeCheckbox = ({
 }: AgeCheckboxProps) => {
   return (
     <button
+      type="button"
       onClick={() => onClick(label)}
       className="flex items-center gap-12 "
     >
