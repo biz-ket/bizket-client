@@ -14,9 +14,11 @@ const LayoutComponent = ({ children }: LayoutComponentProps) => {
   // 헤더,푸터를 숨기고 싶은 경로들
   const hideLayoutOn = ['/login'];
   const shouldHideLayout = hideLayoutOn.includes(pathname);
-
+  const wrapperClass = `w-full min-w-[1500px] ${
+    shouldHideLayout ? '' : 'pt-60'
+  }`;
   return (
-    <div className="w-full min-w-[1500px] pt-60">
+    <div className={wrapperClass}>
       {!shouldHideLayout && <Header />}
       {children}
       {!shouldHideLayout && <Footer />}

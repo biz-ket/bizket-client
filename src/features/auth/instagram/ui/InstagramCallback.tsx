@@ -19,7 +19,6 @@ export const InstagramCallback = ({
         { code },
         {
           onSuccess: (data) => {
-            console.log('✅ exchange response:', data);
             setToken(data.jwtToken);
             setRefreshToken(data.refreshToken);
             setMemberId(data.memberId);
