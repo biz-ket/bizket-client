@@ -14,9 +14,13 @@ export const useInstagramExchange = (): UseMutationResult<
   { code: string },
   unknown
 > => {
+  const redirectUrl = encodeURIComponent(
+    process.env.NEXT_PUBLIC_FRONTEND_URL || window.location.origin,
+  );
+
   return useMutation<ExchangeResponse, Error, { code: string }>({
     mutationFn: ({ code }) =>
-      fetchApi('/auth/instagram/exchange', {
+      fetchApi(`/auth/instagram/exchange?redirect_uri=${redirectUrl}`, {
         method: 'POST',
         auth: false,
         body: { code },
