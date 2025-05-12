@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./app/**/*.{js,ts,jsx,tsx}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
 
   theme: {
     extend: {
@@ -30,6 +30,10 @@ module.exports = {
           30: '#dddddd',
           40: '#cfcfcf',
           50: '#000000',
+        },
+
+        bg: {
+          10: '#f6f6f6',
         },
       },
       backgroundColor: {},
@@ -101,12 +105,12 @@ module.exports = {
         '.heading-lg': {
           fontSize: '46px',
           lineHeight: '130%',
-          fontWeight: '600',
+          fontWeight: '700',
         },
         '.heading-md': {
           fontSize: '36px',
           lineHeight: '130%',
-          fontWeight: '600',
+          fontWeight: '700',
         },
         '.heading-sm': {
           fontSize: '35px',
@@ -139,6 +143,11 @@ module.exports = {
           fontSize: '24px',
           lineHeight: '130%',
           fontWeight: '600',
+        },
+        '.title-md-bold': {
+          fontSize: '24px',
+          lineHeight: '130%',
+          fontWeight: '700',
         },
         '.title-sm': {
           fontSize: '22px',
@@ -182,10 +191,20 @@ module.exports = {
           lineHeight: '150%',
           fontWeight: '300',
         },
+        '.body-sm-light': {
+          fontSize: '14px',
+          lineHeight: '150%',
+          fontWeight: '300',
+        },
         '.body-sm-regular': {
           fontSize: '14px',
           lineHeight: '150%',
           fontWeight: '400',
+        },
+        '.body-sm-light': {
+          fontSize: '14px',
+          lineHeight: '150%',
+          fontWeight: '300',
         },
         '.body-sm-semibold': {
           fontSize: '14px',

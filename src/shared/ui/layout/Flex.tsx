@@ -11,7 +11,7 @@ interface FlexProps {
   className?: string;
 }
 
-export default function Flex({
+const Flex = ({
   children,
   direction = 'row',
   align = 'start',
@@ -19,7 +19,7 @@ export default function Flex({
   wrap = false,
   gap = 0,
   className,
-}: FlexProps) {
+}: FlexProps) => {
   const flexClass = clsx(
     'flex',
     direction === 'col' ? 'flex-col' : 'flex-row',
@@ -43,4 +43,6 @@ export default function Flex({
       {children}
     </div>
   );
-}
+};
+
+export default Flex;
