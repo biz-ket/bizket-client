@@ -30,10 +30,10 @@ export const metadata: Metadata = {
     siteName: 'BIZKET',
     images: [
       {
-        url: 'https://assets.swygbro.com/public/logo.png',
+        url: '/images/shared/thumbnail.png',
         width: 1200,
         height: 630,
-        alt: 'SWYG 썸네일',
+        alt: 'BIZKET 썸네일',
       },
     ],
   },

@@ -1,3 +1,5 @@
+'use client';
+
 import Footer from '@/shared/ui/layout/Footer';
 import Header from '@/shared/ui/layout/Header';
 import { usePathname } from 'next/navigation';
