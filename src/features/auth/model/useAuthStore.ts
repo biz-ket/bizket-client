@@ -22,10 +22,9 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       _hasHydrated: false,
-      token:
-        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzQ2Njc4NTUzLCJleHAiOjE3NDc4ODgxNTN9.yxxIVrjJGpi2jANcmnhwj5XFw7OTvyMPLuG4BJ-hyKE',
+      token: '',
       refreshToken: null,
-      memberId: 2,
+      memberId: null,
       user: null,
       setToken: (t) => set({ token: t }),
       setRefreshToken: (rt) => set({ refreshToken: rt }),
