@@ -29,12 +29,12 @@ const SearchResult = ({ searchParams }: SearchResultProps) => {
       <h2 className="heading-sm">트렌드 키워드 분석</h2>
 
       {isSomeLoading ? (
-        <div className="w-full flex justify-center">
+        <div className="w-full flex justify-center mt-38">
           <Image
-            src={'/images/shared/loading_ui.gif'}
+            src={'/images/shared/loading-text-gray.gif'}
             alt="로딩 이미지"
-            width={200}
-            height={178}
+            width={100}
+            height={89}
             unoptimized
           />
         </div>
