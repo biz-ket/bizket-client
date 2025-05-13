@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useAuthStore } from '../../model/useAuthStore';
 import { useInstagramExchange } from '../../hooks/useInstagramExchange';
+import Image from 'next/image';
 
 export const InstagramCallback = ({
   code,
@@ -31,8 +32,15 @@ export const InstagramCallback = ({
 
   if (isPending) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <p className="ml-4">로그인 처리 중…</p>
+      <div className="w-full h-[500px] flex justify-center">
+        <Image
+          src={'/images/shared/loading_ui.gif'}
+          alt="로딩 이미지"
+          width={200}
+          height={178}
+          unoptimized
+          className="w-[200px] h-auto"
+        />
       </div>
     );
   }
