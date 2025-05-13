@@ -4,7 +4,7 @@ import { MarketingContentsGeneration } from '../model/types';
 import { useMemo } from 'react';
 import { fetchGenerationsByKeyword } from '../api/fetchGenerationsByKeyword';
 
-const limit = 4;
+const limit = 8;
 
 interface useGenerationQueryProps {
   keyword: string;
