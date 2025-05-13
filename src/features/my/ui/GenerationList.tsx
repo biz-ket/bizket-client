@@ -1,17 +1,17 @@
-import useGenerationQuery from '../hooks/useGenerationQuery';
+import Flex from '@/shared/ui/layout/Flex';
 import { memo, useCallback } from 'react';
 import ArrowDownIcon from './ArrowDownIcon';
+import Image from 'next/image';
 import ContentsCard from './ContentsCard';
+import { useGetMarketingHistoryQuery } from '@/shared/hooks/useGetMarketingHistoryQuery';
 
 interface GenerationListProps {
   keyword: string;
 }
 
 const GenerationList = ({ keyword }: GenerationListProps) => {
-  const { generations, isLoading, isError, hasNextPage, fetchNextPage } =
-    useGenerationQuery({
-      keyword,
-    });
+  const { contents, isLoading, isError, hasNextPage, fetchNextPage } =
+    useGetMarketingHistoryQuery(keyword, 8);
 
   const fetchMore = useCallback(() => {
     fetchNextPage();
@@ -22,15 +22,28 @@ const GenerationList = ({ keyword }: GenerationListProps) => {
     return <p>로딩중</p>;
   }
 
-  if (isError || generations === undefined) {
+  if (isError || contents === undefined) {
     // TODO: 에러 컴포넌트로 대체
     return <p>에러 발생!</p>;
   }
 
-  if (generations.length === 0) {
+  if (contents.length === 0) {
     return (
-      <div className="w-full h-[232px] flex justify-center items-center">
-        <p>검색 결과가 없습니다.</p>
+      <div className="w-full h-[232px] flex flex-col gap-20 justify-center items-center">
+        <Image
+          width={100}
+          height={110}
+          src={'/images/create-marketing/no-history.png'}
+          alt="생성이력x 이미지"
+        />
+        <Flex direction="col" gap={2} align="center">
+          <p className="body-md-regular text-font-30">생성이력이 없습니다</p>
+          <p className="text-center body-sm-regular text-font-20">
+            마케팅 콘텐츠 생성 AI에서
+            <br />
+            간편하게 게시물을 생성해 보세요!
+          </p>
+        </Flex>
       </div>
     );
   }
@@ -38,8 +51,8 @@ const GenerationList = ({ keyword }: GenerationListProps) => {
   return (
     <>
       <div className="grid grid-cols-4 gap-20">
-        {generations.map((generation) => (
-          <ContentsCard key={`contents-${generation.id}`} contents={generation} />
+        {contents.map((contents) => (
+          <ContentsCard key={`contents-${contents.id}`} contents={contents} />
         ))}
       </div>
 
