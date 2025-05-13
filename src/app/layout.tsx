@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: 'BIZKET',
     images: [
       {
-        url: '/images/shared/thumbnail.png',
+        url: '/images/shared/open_graph.png',
         width: 1200,
         height: 630,
         alt: 'BIZKET 썸네일',

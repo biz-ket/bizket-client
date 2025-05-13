@@ -25,9 +25,11 @@ const MemberOnlyModal = ({ onClose, usePortal }: MemberOnlyModalProps) => {
         <Modal.Image src="/images/modal/lock.svg" alt="자물쇠 이미지" />
       </Modal.Body>
       <Modal.Footer>
-        <Modal.Button onClick={onClose} variant="cancel">
-          취소
-        </Modal.Button>
+        {onClose && (
+          <Modal.Button onClick={onClose} variant="cancel">
+            취소
+          </Modal.Button>
+        )}
         <Modal.Button onClick={() => router.push('/login')} variant="primary">
           로그인
         </Modal.Button>
