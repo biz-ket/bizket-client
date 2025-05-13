@@ -32,12 +32,12 @@ export const InstagramCallback = ({
 
   if (isPending) {
     return (
-      <div className="w-full h-[500px] flex justify-center">
+      <div className="w-full h-[500px] flex justify-center items-center">
         <Image
-          src={'/images/shared/loading_ui.gif'}
+          src={'/images/shared/loading-text-gray.gif'}
           alt="로딩 이미지"
-          width={200}
-          height={178}
+          width={100}
+          height={89}
           unoptimized
           className="w-[200px] h-auto"
         />
