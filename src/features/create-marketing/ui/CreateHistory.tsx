@@ -11,7 +11,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 const CreateHistory = () => {
   const [keyword, setKeyword] = useState('');
-  const { setId } = useContentHistoryStore();
+  const { id, setId } = useContentHistoryStore();
   const debounceKeyword = useDebounce(keyword, 300);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -22,10 +22,10 @@ const CreateHistory = () => {
   };
 
   useEffect(() => {
-    if (!data) return;
+    if (!data || id !== null) return;
 
     setId(data?.pages[0].content[0].id);
-  }, [data, setId]);
+  }, [data, setId, id]);
 
   return (
     <Flex direction="col" gap={30} className="w-full">
