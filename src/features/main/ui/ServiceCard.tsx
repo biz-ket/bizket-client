@@ -14,7 +14,7 @@ const ServiceCard = ({ category, title, link, imgUrl }: ServiceCardProps) => {
     <Link
       style={{ backgroundImage: `url(${imgUrl})` }}
       href={link}
-      className="w-[280px] h-[363px] rounded-20 px-26 py-30"
+      className="w-[280px] h-[363px] rounded-20 px-26 py-30 hover:scale-105 transition-[0.3s]"
     >
       <Flex direction="col" justify="between" className="h-full">
         <Flex direction="col" gap={19}>
