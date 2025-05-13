@@ -34,7 +34,8 @@ const Modal = ({
     <div
       className={clsx(
         layout,
-        'z-modal flex justify-center items-center bg-[rgba(0,0,0,0.6)]',
+        ' flex justify-center items-center bg-[rgba(0,0,0,0.6)]',
+        usePortal ? 'z-modal' : ' z-50',
       )}
     >
       <div
