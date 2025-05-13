@@ -11,7 +11,7 @@ interface GenerationListProps {
 
 const GenerationList = ({ keyword }: GenerationListProps) => {
   const { contents, isLoading, isError, hasNextPage, fetchNextPage } =
-    useGetMarketingHistoryQuery(keyword);
+    useGetMarketingHistoryQuery(keyword, 8);
 
   const fetchMore = useCallback(() => {
     fetchNextPage();
@@ -52,10 +52,7 @@ const GenerationList = ({ keyword }: GenerationListProps) => {
     <>
       <div className="grid grid-cols-4 gap-20">
         {contents.map((contents) => (
-          <ContentsCard
-            key={`contents-${contents.id}`}
-            contents={contents}
-          />
+          <ContentsCard key={`contents-${contents.id}`} contents={contents} />
         ))}
       </div>
 
