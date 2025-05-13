@@ -25,9 +25,9 @@ import {
   CreateMarketingRequestType,
   Tags,
 } from '@/features/create-marketing/types/apiType';
-import { useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
 import ImageDeleteIcon from '@/features/create-marketing/ui/ImageDeleteIcon';
+import { getClientToken } from '@/shared/utils/getClientToken';
 
 const CreateContent = () => {
   const [prompt, setPrompt] = useState('');
@@ -43,8 +43,9 @@ const CreateContent = () => {
 
   const { files, previews, addFiles, removeFile } = useFileUpload(3);
 
-  const { data: userData } = useMemberInfo();
-  const { token } = useAuthStore();
+  const { token, memberId } = useAuthStore();
+  const clientToken = getClientToken();
+
   const { mutate } = useCreateMarketingMutation();
 
   const isDisabled: boolean = token
@@ -108,11 +109,11 @@ const CreateContent = () => {
   const handleSubmit = () => {
     const data: CreateMarketingRequestType = {
       userType: token ? 'BUSINESS' : 'GUEST',
-      memberId: token && userData ? userData?.id : null,
+      memberId: token ? memberId : null,
       brandName: token ? brandName : null,
       account: token ? account : null,
       industry: token ? selectedCategory : null,
-      clientToken: token ? null : 'test',
+      clientToken: token ? null : clientToken,
       platform: token ? platform : null,
       targetAgeGroup: null,
       prompt,

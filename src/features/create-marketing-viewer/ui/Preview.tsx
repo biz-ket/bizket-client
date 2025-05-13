@@ -13,6 +13,8 @@ import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import ThreadIcons from '@/features/create-marketing-viewer/ui/ThreadIcons';
+import MemberOnlyModal from '@/shared/ui/modal/MemberOnlyModal';
+import { useAuthStore } from '@/features/auth/model/useAuthStore';
 
 interface PreviewProps {
   isHistory?: boolean;
@@ -23,12 +25,66 @@ export const Preview = ({ isHistory, data }: PreviewProps) => {
   const { isSuccess } = useMarketingLoadingStore();
   const { data: userData } = useMemberInfo();
 
-  console.log(userData);
+  const { token } = useAuthStore();
 
   return isSuccess || isHistory ? (
-    <div className="overflow-hidden rounded-10 preview">
+    <div className="relative overflow-hidden rounded-10 preview">
       <div className="w-[425px]  bg-white min-h-[600px] max-h-[820px] overflow-auto ">
-        {data?.platform === 'instagram' ? (
+        {!token ? (
+          <>
+            <Flex
+              justify="between"
+              align="center"
+              className="w-full px-16 py-17"
+            >
+              <Flex align="center" gap={8}>
+                <div className="relative overflow-hidden border-gray-300 rounded-full w-35 h-35">
+                  <Image
+                    style={{ objectFit: 'cover' }}
+                    fill
+                    src={'/images/shared/default-profile.png'}
+                    alt="유저 프로필 이미지1"
+                  />
+                </div>
+                <p className="body-lg-semibold text-font-50">김비즈</p>
+              </Flex>
+              <MenuIcon />
+            </Flex>
+            <div className="relative w-full h-[495px] bg-black/20"></div>
+            <Flex direction="col" gap={12} className="w-full px-16 py-12">
+              <Flex justify="between" className="w-full">
+                <Flex align="center" gap={13}>
+                  <WishIcon />
+                  <CommentIcon />
+                  <ShareIcon />
+                </Flex>
+                <SaveIcon />
+              </Flex>
+              <div>
+                <span className="mr-5 label-lg-semibold text-font-50">
+                  김비즈
+                </span>
+                <pre className="inline body-md-regular text-font-40">
+                  여리여리 분위기 가득 Mocha mousse 🤎
+                  <br />
+                  올해의 팬톤 컬러 #모카무스 메이크업 🤎☕️
+                  <br />
+                  <br />
+                  makeup @makeup_jin hair @._.oh.in.
+                  <br />
+                  <br />
+                  💌메이크업 예약 및 문의 👉🏻프로필링크 카카오채널
+                  <br />
+                  #모카무스메이크업 #모카무스 #촬영메이크업 #잠실메이크업
+                </pre>
+                <p className="body-sm-regular text-font-50 mt-15">
+                  #김비즈 #마케팅팅
+                </p>
+              </div>
+            </Flex>
+            <MemberOnlyModal usePortal={false} />
+          </>
+        ) : data?.platform === 'instagram' ? (
           <>
             <Flex
               justify="between"
@@ -42,13 +98,13 @@ export const Preview = ({ isHistory, data }: PreviewProps) => {
                     fill
                     src={
                       userData?.profileImageUrl ||
-                      '/images/shared/default_profile.png'
+                      '/images/shared/default-profile.png'
                     }
-                    alt="유저 프로필 이미지"
+                    alt="유저 프로필 이미지1"
                   />
                 </div>
                 <p className="body-lg-semibold text-font-50">
-                  {userData?.instagramAccountId}
+                  {userData?.instagramAccountId || '김비즈'}
                 </p>
               </Flex>
               <MenuIcon />
@@ -87,7 +143,7 @@ export const Preview = ({ isHistory, data }: PreviewProps) => {
               <div>
                 <span className="mr-5 label-lg-semibold text-font-50">
                   {userData?.instagramAccountId}
-                </span>{' '}
+                </span>
                 <pre className="inline body-md-regular text-font-40">
                   {data?.generatedContent}
                 </pre>
@@ -97,7 +153,7 @@ export const Preview = ({ isHistory, data }: PreviewProps) => {
               </div>
             </Flex>
           </>
-        ) : (
+        ) : data?.platform === 'threads' ? (
           <>
             <Flex
               justify="between"
@@ -111,13 +167,13 @@ export const Preview = ({ isHistory, data }: PreviewProps) => {
                     fill
                     src={
                       userData?.profileImageUrl ||
-                      '/images/shared/default_profile.png'
+                      '/images/shared/default-profile.png'
                     }
                     alt="유저 프로필 이미지"
                   />
                 </div>
                 <p className="body-lg-semibold text-font-50">
-                  {userData?.instagramAccountId}
+                  {userData?.instagramAccountId || '김비즈'}
                 </p>
               </Flex>
               <MenuIcon />
@@ -156,7 +212,7 @@ export const Preview = ({ isHistory, data }: PreviewProps) => {
               <ThreadIcons />
             </Flex>
           </>
-        )}
+        ) : null}
       </div>
       <Flex
         justify="center"

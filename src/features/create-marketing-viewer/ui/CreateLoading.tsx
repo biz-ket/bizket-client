@@ -21,7 +21,7 @@ const CreateLoading = () => {
         <p className="body-md-regular text-font-20">곧 콘텐츠가 완성됩니다.</p>
         <Flex direction="col" align="center" gap={8}>
           <Image
-            src="/images/create-marketing/create-loading.png"
+            src="/images/create-marketing/create-loading.gif"
             width={155}
             height={142}
             alt="로딩 이미지"
