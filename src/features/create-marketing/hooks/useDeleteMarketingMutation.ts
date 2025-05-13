@@ -1,5 +1,5 @@
 import { deleteMarketing } from '@/features/create-marketing/api/deleteMarketing';
-import { useGetMarketingHistoryQuery } from '@/features/create-marketing/hooks/useGetMarketingHistoryQuery';
+import { useGetMarketingHistoryQuery } from '@/shared/hooks/useGetMarketingHistoryQuery';
 import { useMutation } from '@tanstack/react-query';
 
 export const useDeleteMarketingMutation = () => {
