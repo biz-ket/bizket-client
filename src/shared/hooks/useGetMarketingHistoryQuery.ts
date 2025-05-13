@@ -1,13 +1,14 @@
 import { getAuthState } from '@/features/auth/model/useAuthStore';
-import { getMarketingHistory } from '@/features/create-marketing/api/getMarketingHistory';
+import { getMarketingHistory } from '@/shared/api/getMarketingHistory';
 import { getClientToken } from '@/shared/utils/getClientToken';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 
 export const useGetMarketingHistoryQuery = (keyword: string) => {
   const { memberId } = getAuthState();
   const clientToken = getClientToken();
 
-  return useInfiniteQuery({
+  const queryResult = useInfiniteQuery({
     queryKey: ['marketing-history', keyword || '', memberId, clientToken],
     queryFn: ({ pageParam = 0 }) => getMarketingHistory(pageParam, 10, keyword),
     initialPageParam: 0,
@@ -18,4 +19,16 @@ export const useGetMarketingHistoryQuery = (keyword: string) => {
     },
     staleTime: 0,
   });
+
+  const contents = useMemo(() => {
+    if (queryResult.data) {
+      return queryResult.data.pages.flatMap((page) => page.content);
+    }
+    return queryResult.data;
+  }, [queryResult.data]);
+
+  return {
+    contents,
+    ...queryResult,
+  };
 };

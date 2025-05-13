@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetMarketingHistoryQuery } from '@/features/create-marketing/hooks/useGetMarketingHistoryQuery';
+import { useGetMarketingHistoryQuery } from '@/shared/hooks/useGetMarketingHistoryQuery';
 import HistoryCard from '@/features/create-marketing/ui/HistoryCard';
 import SearchIcon from '@/features/create-marketing/ui/SearchIcon';
 import { useDebounce } from '@/shared/hooks/useDebounce';
@@ -15,7 +15,7 @@ const CreateHistory = () => {
   const { id, setId } = useContentHistoryStore();
   const debounceKeyword = useDebounce(keyword, 300);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { contents, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGetMarketingHistoryQuery(debounceKeyword);
 
   const handleChagneKeyword = (e: ChangeEvent<HTMLInputElement>) => {
@@ -23,10 +23,12 @@ const CreateHistory = () => {
   };
 
   useEffect(() => {
-    if (!data || id !== null) return;
+    if (!contents || contents.length === 0 || id !== null) {
+      return;
+    }
 
-    setId(data?.pages[0].content[0].id);
-  }, [data, setId, id]);
+    setId(contents[0].id);
+  }, [contents, setId, id]);
 
   return (
     <Flex direction="col" gap={30} className="w-full">
@@ -57,12 +59,8 @@ const CreateHistory = () => {
         }}
       >
         <Flex direction="col" gap={24} className="w-full">
-          {data?.pages && data?.pages.length > 0 ? (
-            data?.pages.flatMap((page) =>
-              page.content.map((item) => (
-                <HistoryCard key={item.id} data={item} />
-              )),
-            )
+          {contents ? (
+            contents.map((item) => <HistoryCard key={item.id} data={item} />)
           ) : (
             <Flex
               direction="col"
