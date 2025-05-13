@@ -25,7 +25,7 @@ const Header = ({ title, userName, action, subtitle }: HeaderProps) => {
             <Flex align="center" className="mt-9">
               {userName && (
                 <p className="text-white heading-sm">
-                  안녕하세요,
+                  안녕하세요,{' '}
                   <span className="text-primary-50">{userName}</span>님!
                 </p>
               )}

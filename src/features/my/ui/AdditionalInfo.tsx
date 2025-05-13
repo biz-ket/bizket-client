@@ -4,7 +4,7 @@ import PlatformProfile from './PlatformProfile';
 
 const AdditionalInfo = () => {
   return (
-    <Flex className="flex-1 h-full rounded-20 shadow-[0px_2px_10px_0px_rgba(0,0,0,0.08)] px-45 py-40">
+    <Flex className="flex-1 h-full rounded-20 shadow-[0px_2px_10px_0px_rgba(0,0,0,0.08)]">
       <BusinessProfile />
       <div className="bg-line-30 w-[0.5px] h-full" />
       <PlatformProfile />
