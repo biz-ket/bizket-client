@@ -11,8 +11,6 @@ const TextViewList = () => {
   const { isLoading, isSuccess } = useMarketingLoadingStore();
   const { data } = useMarketingDataStore();
 
-  console.log(data);
-
   return (
     <Flex direction="col" gap={10}>
       {!isSuccess && (
