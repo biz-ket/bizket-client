@@ -18,17 +18,18 @@ import Label from '@/features/my/ui/Label';
 import { useSelectBoxStore } from '@/shared/store/useSelectBoxStore';
 import { ProfileFormValues } from '@/features/profile/schema';
 
-import { Member } from '@/features/auth/hooks/useMemberInfo';
+import { Member, useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
 import { BusinessProfile } from '@/features/report/hooks/useBusinessProfile';
 import OptionsList, { Option } from '@/features/my/ui/OptionList';
 import OptionSelectBox from '@/features/my/ui/OptionSelectBox';
 
 import SingleDatePicker from '@/features/my/ui/SingleDatePicker';
-import { useQueryClient } from '@tanstack/react-query';
 import { useDeleteAccount } from '@/features/auth/hooks/useDeleteAccount';
 
 import CheckDeleteAccountModal from '@/features/update-my-info/ui/CheckDeleteAccountModal';
 import CheckRequiredFieldModal from '@/shared/ui/modal/CheckRequiredFieldModal';
+import { useCurrentUser } from '@/features/auth/hooks/useCurrentUser';
+import useBusinessProfile from '../hooks/useBusinessProfile';
 
 interface Props {
   member: Member;
@@ -37,7 +38,6 @@ interface Props {
 
 export const MyPageEditForm = ({ member, profile }: Props) => {
   const router = useRouter();
-  const queryClient = useQueryClient();
   const deleteAccount = useDeleteAccount();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -49,6 +49,9 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
   const { data: categories = [] } = useBusinessCategories();
   const { mutate: updateMember } = useUpdateMember();
   const { mutate: updateBusinessProfile } = useUpdateBusinessProfile();
+  const { refetch: refetchUser } = useCurrentUser();
+  const { refetch: refetchMember } = useMemberInfo();
+  const { refetch: refetchBussiness } = useBusinessProfile();
 
   const methods = useProfileForm(member, profile);
   const {
@@ -101,12 +104,9 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
             },
             {
               onSuccess: () => {
-                queryClient.invalidateQueries({
-                  queryKey: ['businessProfile'],
-                });
-                queryClient.invalidateQueries({ queryKey: ['member'] });
-                queryClient.refetchQueries({ queryKey: ['businessProfile'] });
-                queryClient.refetchQueries({ queryKey: ['member'] });
+                refetchUser();
+                refetchMember();
+                refetchBussiness();
 
                 alert('저장에 성공했습니다.');
                 router.push('/my?refresh=true');
