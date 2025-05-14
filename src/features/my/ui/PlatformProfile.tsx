@@ -16,7 +16,7 @@ const PlatformProfile = () => {
             </Flex>
             <Flex>
               <div className="text-font-20 w-98">스레드</div>
-              <div>{data.threadsAccountId}</div>
+              {data.threadsAccountId && <div>{data.threadsAccountId}</div>}
             </Flex>
           </div>
         </Flex>

@@ -21,12 +21,16 @@ const UserProfile = ({ user }: UserProfileProps) => {
           {user.nickname}
         </div>
         <Flex direction="col" gap={8} className="body-md-regular mt-27">
-          <div className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis">
-            {user.placeEmail}
-          </div>
-          <div className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis">
-            {user.placePhoneNumber}
-          </div>
+          {user.placeEmail && (
+            <div className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis">
+              {user.placeEmail}
+            </div>
+          )}
+          {user.placePhoneNumber && (
+            <div className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis">
+              {user.placePhoneNumber}
+            </div>
+          )}
         </Flex>
       </div>
       <div className="w-[126px] h-[126px] shrink-0 rounded-[50%] overflow-hidden bg-white">
