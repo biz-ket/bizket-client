@@ -83,7 +83,7 @@ const CreateHistory = () => {
         className="relative z-0 w-[calc(100%+6px)] h-[730px] overflow-y-auto bg-white"
       >
         <Flex direction="col" gap={24} className="w-full">
-          {contents ? (
+          {contents && contents.length > 0 ? (
             contents.map((item) => <HistoryCard key={item.id} data={item} />)
           ) : (
             <Flex

@@ -20,8 +20,6 @@ const HistoryCard = ({ data }: HistoryCardProps) => {
 
   const { mutate: deleteHistoryMutate } = useDeleteMarketingMutation();
 
-  console.log(historyId);
-
   const handleClickCard = () => {
     setId(data.id);
   };
