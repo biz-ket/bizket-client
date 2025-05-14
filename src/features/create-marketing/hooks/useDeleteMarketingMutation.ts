@@ -1,15 +1,20 @@
 import { deleteMarketing } from '@/features/create-marketing/api/deleteMarketing';
+import { useToast } from '@/shared/context/ToastContext';
 import { useGetMarketingHistoryQuery } from '@/shared/hooks/useGetMarketingHistoryQuery';
 import { useMutation } from '@tanstack/react-query';
 
 export const useDeleteMarketingMutation = () => {
   const { refetch: marketingHistoryRefetch } = useGetMarketingHistoryQuery('');
+  const { openToast } = useToast();
 
   return useMutation({
     mutationKey: ['marketing-delete'],
     mutationFn: (id: number | null) => deleteMarketing(id),
     onSuccess: () => {
       marketingHistoryRefetch();
+      openToast({
+        message: '삭제되었습니다.',
+      });
     },
   });
 };
