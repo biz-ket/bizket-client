@@ -8,7 +8,7 @@ export default function CallbackContent() {
   const code = useSearchParams().get('code');
   const router = useRouter();
   const onSuccess = useCallback(() => {
-    router.push('/my');
+    router.push('/');
   }, [router]);
 
   return <InstagramCallback code={code} onSuccess={onSuccess} />;
