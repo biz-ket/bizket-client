@@ -16,6 +16,8 @@ const BusinessProfile = () => {
     router.push('/report');
   };
 
+  const openDate = data?.openDate ? formatDate(data.openDate) : null;
+
   return (
     <div className="flex-1 h-full relative overflow-hidden pl-39 pr-19">
       {data && (
@@ -32,32 +34,40 @@ const BusinessProfile = () => {
                 </button>
               </div>
               <Flex gap={8} align="center" wrap className="max-w-full">
-                <div className="title-md-bold max-w-full truncate">
-                  {data.placeName}
-                </div>
-                <div className="bg-primary-50 text-white label-sm-semibold rounded-20 px-10 py-6">
-                  {data.businessDetailCategoryName}
-                </div>
+                {data.placeName && (
+                  <div className="title-md-bold max-w-full truncate">
+                    {data.placeName}
+                  </div>
+                )}
+                {data.businessDetailCategoryName && (
+                  <div className="bg-primary-50 text-white label-sm-semibold rounded-20 px-10 py-6">
+                    {data.businessDetailCategoryName}
+                  </div>
+                )}
               </Flex>
             </Flex>
 
             <Flex direction="col" gap={4}>
               <Flex gap={14}>
-                <Flex gap={6} align="center">
-                  <HomeIcon />
-                  <span className="body-md-regular">{`${formatDate(
-                    data.openDate,
-                  )} 오픈`}</span>
-                </Flex>
-                <Flex gap={6} align="center">
-                  <UserIcon />
-                  <span className="body-md-regular">{`${data.customerAgeGroupLabel} 고객층`}</span>
-                </Flex>
+                {openDate && (
+                  <Flex gap={6} align="center">
+                    <HomeIcon />
+                    <span className="body-md-regular">{openDate}</span>
+                  </Flex>
+                )}
+                {data.customerAgeGroupLabel && (
+                  <Flex gap={6} align="center">
+                    <UserIcon />
+                    <span className="body-md-regular">{`${data.customerAgeGroupLabel} 고객층`}</span>
+                  </Flex>
+                )}
               </Flex>
-              <Flex gap={6} align="center">
-                <MapIcon />
-                <span className="body-md-regular">{data.address}</span>
-              </Flex>
+              {data.address && (
+                <Flex gap={6} align="center">
+                  <MapIcon />
+                  <span className="body-md-regular">{data.address}</span>
+                </Flex>
+              )}
             </Flex>
           </Flex>
         </>
