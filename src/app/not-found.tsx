@@ -18,11 +18,11 @@ const NotFoundPage = () => (
       />
     </Link>
     <Image
-      src="/images/shared/404page.png"
+      src="/images/shared/404.png"
       width={330}
       height={330}
       alt="404"
-      className="mt-45 mb-15"
+      className="mt-40 mb-20"
     />
     <h1 className="text-30 font-semibold mb-10">
       요청하신 페이지를 찾을 수 없습니다.
