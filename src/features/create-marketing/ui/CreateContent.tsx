@@ -76,7 +76,6 @@ const CreateContent = () => {
   };
 
   const handleClickAge = (age: string) => {
-    console.log(age);
     setSelectedAge(age);
     toggleBox('age');
   };
@@ -120,8 +119,6 @@ const CreateContent = () => {
       emphasisTags: accent,
       imageUrls: files,
     };
-
-    console.log(data);
 
     try {
       mutate(data);
