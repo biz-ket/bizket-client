@@ -3,14 +3,36 @@
 import Image from 'next/image';
 import Flex from '@/shared/ui/layout/Flex';
 import { BusinessProfile } from '@/features/report/hooks/useBusinessProfile';
-import { Member } from '@/features/auth/hooks/useMemberInfo';
+import Link from 'next/link';
 
 interface ProfileCardProps {
-  profile: BusinessProfile;
-  member: Member;
+  profile: BusinessProfile | { message: string };
 }
 
-const ProfileCard = ({ profile, member }: ProfileCardProps) => {
+const ProfileCard = ({ profile }: ProfileCardProps) => {
+  // 사업장 정보가 없을 때
+  if ('message' in profile) {
+    return (
+      <div className="relative w-[400px] h-[635px] px-30 py-45 bg-gradient-to-br from-primary-50 to-primary-30 text-white rounded-20 overflow-hidden">
+        <p className="mb-6 text-lg font-medium text-gray-700">
+          {profile.message}
+        </p>
+        <Link
+          href="/my/edit"
+          className="px-6 py-3 bg-primary-10 text-primary-50 rounded-10 inline-block text-center"
+        >
+          정보 수정하러 가기
+        </Link>
+        <Image
+          src="/images/shared/insight-profile.svg"
+          alt="프로필 카드 배경"
+          fill
+          className="absolute !bottom-[-9px] !top-auto right-0"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-[400px] h-[635px] px-30 py-45 bg-gradient-to-br from-primary-50 to-primary-30 text-white rounded-20 overflow-hidden">
       <p className="text-primary-10 mb-40">고객 프로필</p>
@@ -42,7 +64,7 @@ const ProfileCard = ({ profile, member }: ProfileCardProps) => {
           <span className="text-primary-10 inline-block w-[70px] mr-15">
             스레드
           </span>
-          {member.threadsAccountId}
+          {profile.threadsAccountId}
         </p>
         <p className="body-md-regular">
           <span className="text-primary-10 inline-block w-[70px] mr-15">
