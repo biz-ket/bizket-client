@@ -30,6 +30,7 @@ import CheckDeleteAccountModal from '@/features/update-my-info/ui/CheckDeleteAcc
 import CheckRequiredFieldModal from '@/shared/ui/modal/CheckRequiredFieldModal';
 import { useCurrentUser } from '@/features/auth/hooks/useCurrentUser';
 import useBusinessProfile from '../hooks/useBusinessProfile';
+import { useToast } from '@/shared/context/ToastContext';
 
 interface Props {
   member: Member;
@@ -39,6 +40,7 @@ interface Props {
 export const MyPageEditForm = ({ member, profile }: Props) => {
   const router = useRouter();
   const deleteAccount = useDeleteAccount();
+  const { openToast } = useToast();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
@@ -68,7 +70,10 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
   const { data: detailCategories = [] } =
     useDetailCategories(watchedSubCategoryId);
 
-  const toYMD = (d: Date) => d.toISOString().slice(0, 10);
+  const toYMD = (d: Date) => {
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-');
+  };
 
   const handleSaveClick = () => {
     handleSubmit((data) => {
@@ -108,7 +113,9 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
                 refetchMember();
                 refetchBussiness();
 
-                alert('저장에 성공했습니다.');
+                openToast({
+                  message: '저장되었습니다.',
+                });
                 router.push('/my?refresh=true');
               },
               onError: () => alert('사업장 정보 저장 중 오류가 발생했습니다.'),
