@@ -12,11 +12,11 @@ const PlatformProfile = () => {
           <div>
             <Flex className="body-md-regular">
               <div className="text-font-20 w-98">인스타그램</div>
-              <div>{data.instagramAccountId}</div>
+              <div>{data.instagramAccountId || '계정 정보 없음'}</div>
             </Flex>
             <Flex>
               <div className="text-font-20 w-98">스레드</div>
-              {data.threadsAccountId && <div>{data.threadsAccountId}</div>}
+              <div>{data.threadsAccountId || '계정 정보 없음'}</div>
             </Flex>
           </div>
         </Flex>
