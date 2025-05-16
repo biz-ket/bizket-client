@@ -24,7 +24,7 @@ const LoginPage = () => {
               />
             </Link>
             <p className="text-font-30 pt-19 pb-60 body-lg-regular">
-              인스타그램 계정으로 로그인해주세요.
+              인스타그램 계정으로 로그인해 주세요.
             </p>
             <InstagramLoginButton />
             <Link
@@ -38,7 +38,7 @@ const LoginPage = () => {
             <p className="text-center text-font-20">
               원활한 서비스 이용을 위해, 개인 계정이 아닌
               <br />
-              사업자용 계정 생성 후 로그인해주세요.
+              사업자용 계정 생성 후 로그인해 주세요.
             </p>
           </Flex>
 
