@@ -2,26 +2,22 @@
 
 // import DeleteIcon from '@/features/create-marketing-viewer/ui/DeleteIcon';
 import PasteIcon from '@/features/create-marketing-viewer/ui/PasteIcon';
+import { useToast } from '@/shared/context/ToastContext';
 import Flex from '@/shared/ui/layout/Flex';
-import { useState } from 'react';
 
 interface TextViewBoxProps {
   content: string;
 }
 
 const TextViewBox = ({ content }: TextViewBoxProps) => {
-  const [isCopied, setIsCopied] = useState(false);
-
-  console.log(isCopied);
+  const { openToast } = useToast();
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(content);
-      setIsCopied(true);
-
-      setTimeout(() => {
-        setIsCopied(false);
-      }, 2000);
+      openToast({
+        message: '복사되었습니다.',
+      });
     } catch (err) {
       console.error('클립보드 복사 실패:', err);
     }

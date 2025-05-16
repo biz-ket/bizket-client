@@ -12,8 +12,6 @@ const PreviewSection = () => {
   const { data: marketingHistoryData } = useGetMarketingDetail(id);
   const { data: marketingViewData } = useMarketingDataStore();
 
-  console.log(marketingHistoryData);
-
   return (
     <Flex justify="center" className="relative flex-1 h-full">
       <Preview

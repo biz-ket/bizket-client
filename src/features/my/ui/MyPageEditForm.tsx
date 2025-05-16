@@ -1,5 +1,5 @@
 'use client';
-
+import { useState, useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import {
@@ -18,16 +18,19 @@ import Label from '@/features/my/ui/Label';
 import { useSelectBoxStore } from '@/shared/store/useSelectBoxStore';
 import { ProfileFormValues } from '@/features/profile/schema';
 
-import { Member } from '@/features/auth/hooks/useMemberInfo';
+import { Member, useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
 import { BusinessProfile } from '@/features/report/hooks/useBusinessProfile';
 import OptionsList, { Option } from '@/features/my/ui/OptionList';
 import OptionSelectBox from '@/features/my/ui/OptionSelectBox';
 
 import SingleDatePicker from '@/features/my/ui/SingleDatePicker';
-import { useQueryClient } from '@tanstack/react-query';
 import { useDeleteAccount } from '@/features/auth/hooks/useDeleteAccount';
-import { useState } from 'react';
+
 import CheckDeleteAccountModal from '@/features/update-my-info/ui/CheckDeleteAccountModal';
+import CheckRequiredFieldModal from '@/shared/ui/modal/CheckRequiredFieldModal';
+import { useCurrentUser } from '@/features/auth/hooks/useCurrentUser';
+import useBusinessProfile from '../hooks/useBusinessProfile';
+import { useToast } from '@/shared/context/ToastContext';
 
 interface Props {
   member: Member;
@@ -36,14 +39,21 @@ interface Props {
 
 export const MyPageEditForm = ({ member, profile }: Props) => {
   const router = useRouter();
-  const queryClient = useQueryClient();
   const deleteAccount = useDeleteAccount();
+  const { openToast } = useToast();
+
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const pendingData = useRef<ProfileFormValues | null>(null);
+
   const { closeAllBoxes } = useSelectBoxStore();
   const { data: ageOptions = [] } = useCustomerAgeGroups();
   const { data: categories = [] } = useBusinessCategories();
   const { mutate: updateMember } = useUpdateMember();
   const { mutate: updateBusinessProfile } = useUpdateBusinessProfile();
+  const { refetch: refetchUser } = useCurrentUser();
+  const { refetch: refetchMember } = useMemberInfo();
+  const { refetch: refetchBussiness } = useBusinessProfile();
 
   const methods = useProfileForm(member, profile);
   const {
@@ -60,9 +70,21 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
   const { data: detailCategories = [] } =
     useDetailCategories(watchedSubCategoryId);
 
-  const toYMD = (d: Date) => d.toISOString().slice(0, 10);
-  const onSubmit = (data: ProfileFormValues) => {
-    if (!confirm('변경사항을 저장하시겠습니까?')) return;
+  const toYMD = (d: Date) => {
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-');
+  };
+
+  const handleSaveClick = () => {
+    handleSubmit((data) => {
+      pendingData.current = data;
+      setIsSaveModalOpen(true);
+    })();
+  };
+
+  const handleSaveConfirm = () => {
+    if (!pendingData.current) return;
+    const data = pendingData.current;
     updateMember(
       {
         name: data.name,
@@ -87,14 +109,13 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
             },
             {
               onSuccess: () => {
-                queryClient.invalidateQueries({
-                  queryKey: ['businessProfile'],
-                });
-                queryClient.invalidateQueries({ queryKey: ['member'] });
-                queryClient.refetchQueries({ queryKey: ['businessProfile'] });
-                queryClient.refetchQueries({ queryKey: ['member'] });
+                refetchUser();
+                refetchMember();
+                refetchBussiness();
 
-                alert('저장에 성공했습니다.');
+                openToast({
+                  message: '저장되었습니다.',
+                });
                 router.push('/my?refresh=true');
               },
               onError: () => alert('사업장 정보 저장 중 오류가 발생했습니다.'),
@@ -104,18 +125,10 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
         onError: () => alert('회원 정보 저장 중 오류가 발생했습니다.'),
       },
     );
+    setIsSaveModalOpen(false);
   };
-  // 버튼 클릭 시 모달 열기
-  const handleDeleteClick = () => {
-    setIsDeleteModalOpen(true);
-  };
-
-  // 모달에서 취소
-  const handleModalClose = () => {
-    setIsDeleteModalOpen(false);
-  };
-
-  // 모달에서 탈퇴 확정
+  const handleDeleteClick = () => setIsDeleteModalOpen(true);
+  const handleModalClose = () => setIsDeleteModalOpen(false);
   const handleModalConfirm = () => {
     deleteAccount.mutate();
     setIsDeleteModalOpen(false);
@@ -123,10 +136,7 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
 
   return (
     <div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex gap-60 pt-56 pb-[165px]"
-      >
+      <form className="flex gap-60 pt-56 pb-[165px]">
         {/* 오른쪽 */}
         <Flex className="flex-1" direction="col" gap={38} align="stretch">
           {/* 이름 */}
@@ -329,7 +339,8 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
               회원탈퇴
             </button>
             <button
-              type="submit"
+              type="button"
+              onClick={handleSaveClick}
               disabled={isSubmitting}
               className="flex-1 h-65 px-6 bg-primary-50 text-white rounded-10 label-xl-medium"
             >
@@ -342,6 +353,13 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
         <CheckDeleteAccountModal
           onClose={handleModalClose}
           onConfirm={handleModalConfirm}
+        />
+      )}
+      {isSaveModalOpen && (
+        <CheckRequiredFieldModal
+          onClose={() => setIsSaveModalOpen(false)}
+          onConfirm={handleSaveConfirm}
+          usePortal={true}
         />
       )}
     </div>

@@ -7,6 +7,17 @@ export interface InsightsTableProps {
   onCreate?: () => void;
 }
 
+const formatWithSign = (n: number) => {
+  if (n < 0) return '–';
+  return `+${n}`;
+};
+export const formatDate = (dateValue: string | number | Date): string => {
+  const date = new Date(dateValue);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}.${month}.${day}`;
+};
 const InsightsTable = ({ insights, onCreate }: InsightsTableProps) => {
   return (
     <div className="flex-1 bg-white flex flex-col h-[635px] border rounded-20 overflow-hidden">
@@ -17,8 +28,8 @@ const InsightsTable = ({ insights, onCreate }: InsightsTableProps) => {
           style={{ borderSpacing: 0 }}
         >
           <colgroup>
+            <col className="w-[110px]" />
             <col className="w-100" />
-            <col className="w-90" />
             <col />
             <col className="w-60" />
             <col className="w-60" />
@@ -27,7 +38,7 @@ const InsightsTable = ({ insights, onCreate }: InsightsTableProps) => {
           </colgroup>
           <thead className="bg-black text-white text-center px-10">
             <tr>
-              <th className="body-sm-regular py-18 pl-20">게시일</th>
+              <th className="body-sm-regular py-18 pl-10">게시일</th>
               <th className="body-sm-regular py-18">플랫폼</th>
               <th className="body-sm-regular py-18">게시내용</th>
               <th className="body-sm-regular py-18">좋아요</th>
@@ -64,8 +75,8 @@ const InsightsTable = ({ insights, onCreate }: InsightsTableProps) => {
             style={{ borderSpacing: 0 }}
           >
             <colgroup>
+              <col className="w-[110px]" />
               <col className="w-100" />
-              <col className="w-90" />
               <col />
               <col className="w-60" />
               <col className="w-60" />
@@ -78,26 +89,26 @@ const InsightsTable = ({ insights, onCreate }: InsightsTableProps) => {
                   key={item.id}
                   className="hover:bg-gray-50 transition-colors text-center border-b border-gray-200"
                 >
-                  <td className="py-15 body-sm-regular text-font-20 pl-20">
-                    {new Date(item.timestamp).toLocaleDateString()}
+                  <td className="py-17 body-sm-regular text-font-20 pl-15ㄴ">
+                    {formatDate(item.timestamp)}
                   </td>
-                  <td className="py-15 body-sm-regular text-font-20">
+                  <td className="py-17 body-sm-regular text-font-20">
                     {item.platform}
                   </td>
-                  <td className="py-15 body-sm-regular text-font-20 max-w-[250px] pr-40 overflow-hidden whitespace-nowrap truncate">
+                  <td className="py-17 body-sm-regular text-font-20 text-left max-w-[250px] px-15 overflow-hidden whitespace-nowrap truncate">
                     {item.caption}
                   </td>
-                  <td className="py-15 body-sm-regular text-font-30">
-                    +{item.likes}
+                  <td className="py-17 body-sm-regular text-font-30">
+                    {formatWithSign(item.likes)}
                   </td>
-                  <td className="py-15 body-sm-regular text-font-30">
-                    +{item.comments}
+                  <td className="py-17 body-sm-regular text-font-30">
+                    {formatWithSign(item.comments)}
                   </td>
-                  <td className="py-15 body-sm-regular text-font-30">
-                    +{item.shares}
+                  <td className="py-17 body-sm-regular text-font-30">
+                    {formatWithSign(item.shares)}
                   </td>
-                  <td className="py-15 body-sm-regular text-font-30 pr-20">
-                    +{item.saved}
+                  <td className="py-17 body-sm-regular text-font-30 pr-20">
+                    {formatWithSign(item.saved)}
                   </td>
                 </tr>
               ))}

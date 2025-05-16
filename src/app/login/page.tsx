@@ -7,16 +7,16 @@ const LoginPage = () => {
   return (
     <div className="relative min-h-scree">
       <Flex className="h-screen">
-        <div className="relative h-screen flex-1">
+        <Flex direction="col" justify="between" className="h-screen flex-1">
           <Flex
             justify="center"
             align="center"
             direction="col"
-            className="w-full h-full"
+            className="w-full flex-1"
           >
             <Link href="/">
               <Image
-                src={`/images/shared/logo.svg`}
+                src="/images/shared/logo.svg"
                 width={239}
                 height={55}
                 alt="비즈킷 로고"
@@ -24,7 +24,7 @@ const LoginPage = () => {
               />
             </Link>
             <p className="text-font-30 pt-19 pb-60 body-lg-regular">
-              인스타그램 계정으로 로그인해주세요.
+              인스타그램 계정으로 로그인해 주세요.
             </p>
             <InstagramLoginButton />
             <Link
@@ -35,20 +35,19 @@ const LoginPage = () => {
                 인스타그램 계정 생성하기
               </button>
             </Link>
-            <div className="text-center text-font-20">
-              <p className="body-lg-regular">
-                원활한 서비스 이용을 위해, 개인 계정이 아닌
-                <br />
-                사업자용 계정 생성 후 로그인해주세요.
-              </p>
-            </div>
+            <p className="text-center text-font-20">
+              원활한 서비스 이용을 위해, 개인 계정이 아닌
+              <br />
+              사업자용 계정 생성 후 로그인해 주세요.
+            </p>
           </Flex>
+
           <Flex
             justify="center"
             align="center"
             direction="col"
             gap={6}
-            className="text-center w-full text-font-20 absolute bottom-70"
+            className="w-full text-center text-font-20 pb-[70px]"
           >
             <p>CONTACT US</p>
             <p>© 2025 BIZKET. All Rights Reserved.</p>
@@ -61,7 +60,7 @@ const LoginPage = () => {
               <p>개인정보 처리방침</p>
             </div>
           </Flex>
-        </div>
+        </Flex>
 
         <div className="relative h-screen w-auto">
           <Image

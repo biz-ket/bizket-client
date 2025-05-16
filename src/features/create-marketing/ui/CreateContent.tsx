@@ -76,7 +76,6 @@ const CreateContent = () => {
   };
 
   const handleClickAge = (age: string) => {
-    console.log(age);
     setSelectedAge(age);
     toggleBox('age');
   };
@@ -120,8 +119,6 @@ const CreateContent = () => {
       emphasisTags: accent,
       imageUrls: files,
     };
-
-    console.log(data);
 
     try {
       mutate(data);
@@ -186,7 +183,7 @@ const CreateContent = () => {
             <InputBox label="업종">
               <SelectBox
                 id="category"
-                placeholder="업종을 선택해주세요."
+                placeholder="업종을 선택해 주세요."
                 value={selectedCategory}
                 isSelected={!!selectedCategory}
                 disabled={!token}
@@ -270,7 +267,7 @@ const CreateContent = () => {
           <Textarea
             value={prompt}
             onChange={handleChangePrompt}
-            placeholder="ex) 20대 여자의 말투로 작성해주고, 이미지의 메이크업에 대해 30자 이내로 작성해줘"
+            placeholder="ex) 20대 여자의 말투로 작성해주고, 이미지의 메이크업에 대해 30자 이내로 작성해 줘"
           />
         </Flex>
         <Flex direction="col" gap={14} className="w-full">

@@ -33,11 +33,13 @@ const BusinessProfile = () => {
               </div>
               <Flex gap={8} align="center" wrap className="max-w-full">
                 <div className="title-md-bold max-w-full truncate">
-                  {data.placeName}
+                  {data.placeName || '정보 없음'}
                 </div>
-                <div className="bg-primary-50 text-white label-sm-semibold rounded-20 px-10 py-6">
-                  {data.businessDetailCategoryName}
-                </div>
+                {data.businessDetailCategoryName && (
+                  <div className="bg-primary-50 text-white label-sm-semibold rounded-20 px-10 py-6">
+                    {data.businessDetailCategoryName}
+                  </div>
+                )}
               </Flex>
             </Flex>
 
@@ -45,18 +47,26 @@ const BusinessProfile = () => {
               <Flex gap={14}>
                 <Flex gap={6} align="center">
                   <HomeIcon />
-                  <span className="body-md-regular">{`${formatDate(
-                    data.openDate,
-                  )} 오픈`}</span>
+                  <span className="body-md-regular">
+                    {data?.openDate
+                      ? formatDate(data.openDate)
+                      : '오픈일 정보 없음'}
+                  </span>
                 </Flex>
                 <Flex gap={6} align="center">
                   <UserIcon />
-                  <span className="body-md-regular">{`${data.customerAgeGroupLabel} 고객층`}</span>
+                  <span className="body-md-regular">
+                    {data.customerAgeGroupLabel
+                      ? `${data.customerAgeGroupLabel} 고객층`
+                      : '고객층 정보 없음'}
+                  </span>
                 </Flex>
               </Flex>
               <Flex gap={6} align="center">
                 <MapIcon />
-                <span className="body-md-regular">{data.address}</span>
+                <span className="body-md-regular">
+                  {data.address || '사업장 주소 정보 없음'}
+                </span>
               </Flex>
             </Flex>
           </Flex>

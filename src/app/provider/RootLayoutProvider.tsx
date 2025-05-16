@@ -2,6 +2,7 @@
 
 import { ReactNode } from 'react';
 import QueryProvider from './QueryProvider';
+import { ToastProvider } from '@/shared/context/ToastContext';
 
 interface RootLayoutProviderProps {
   children: ReactNode;
@@ -10,5 +11,9 @@ interface RootLayoutProviderProps {
 export default function RootLayoutProvider({
   children,
 }: RootLayoutProviderProps) {
-  return <QueryProvider>{children}</QueryProvider>;
+  return (
+    <QueryProvider>
+      <ToastProvider>{children}</ToastProvider>
+    </QueryProvider>
+  );
 }

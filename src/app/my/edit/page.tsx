@@ -22,7 +22,9 @@ export default function MyPageEdit() {
       </>
     );
   }
-
+  if (!member || !profile) {
+    return <div>데이터를 불러오는 중입니다.</div>;
+  }
   return (
     <>
       <Header title="마이페이지" subtitle="정보수정" />
