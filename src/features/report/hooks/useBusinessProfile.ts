@@ -18,6 +18,7 @@ export interface BusinessProfile {
   placePhoneNumber: string;
   followerCount: number;
   instagramAccountId: string;
+  threadsAccountId: string;
 }
 const defaultProfile: BusinessProfile = {
   placeName: '우리 가게',
@@ -35,6 +36,7 @@ const defaultProfile: BusinessProfile = {
   placePhoneNumber: '010-1234-5678',
   followerCount: 1,
   instagramAccountId: 'bizket27',
+  threadsAccountId: 'bizzket',
 };
 
 export const useBusinessProfile = () => {

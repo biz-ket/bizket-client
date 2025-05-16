@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { useMediaInsights } from '@/features/report/hooks/useMediaInsights';
 import { useBusinessProfile } from '@/features/report/hooks/useBusinessProfile';
-import { useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
 import { useCurrentUser } from '@/features/auth/hooks/useCurrentUser';
 import Container from '@/shared/ui/layout/Container';
 import Flex from '@/shared/ui/layout/Flex';
@@ -17,14 +16,9 @@ const InsightPage = () => {
   const insightsRes = useMediaInsights();
   const profileRes = useBusinessProfile();
   const userRes = useCurrentUser();
-  const memberRes = useMemberInfo();
 
-  const isLoading = [insightsRes, profileRes, userRes, memberRes].some(
-    (r) => r.isLoading,
-  );
-  const errorResult = [insightsRes, profileRes, userRes, memberRes].find(
-    (r) => r.isError,
-  );
+  const isLoading = [insightsRes, profileRes, userRes].some((r) => r.isLoading);
+  const errorResult = [insightsRes, profileRes, userRes].find((r) => r.isError);
   const errorMsg = errorResult?.error?.message ?? '알 수 없는 오류';
 
   if (isLoading) {
@@ -59,7 +53,7 @@ const InsightPage = () => {
 
       <Container>
         <Flex gap={35} className="pt-90 pb-80">
-          <ProfileCard profile={profileRes.data!} member={memberRes.data!} />
+          <ProfileCard profile={profileRes.data!} />
           <InsightsTable
             insights={insightsRes.data!}
             onCreate={() => router.push('/my/edit')}
