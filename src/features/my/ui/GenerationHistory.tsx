@@ -17,7 +17,7 @@ const GenerationHistory = () => {
         <Flex align='center' gap={12} className="w-[284px] pl-20 pr-18 py-10 bg-line-10 rounded-[30px]">
           <input
             type="text"
-            placeholder="검색하려는 이력을 작성해주세요."
+            placeholder="검색하려는 이력을 작성해 주세요."
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             className="flex-1 text-font-20 body-md-light bg-transparent"
