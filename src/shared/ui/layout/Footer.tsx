@@ -26,7 +26,7 @@ const Modal = ({ isOpen, onClose, title, content }: ModalProps) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed top-0 left-0 flex items-center justify-center w-full h-full z-important bg-black/60"
+          className="fixed top-0 left-0 flex items-center justify-center w-full h-full px-16 z-important bg-black/60"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
