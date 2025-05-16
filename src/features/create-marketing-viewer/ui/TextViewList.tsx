@@ -33,12 +33,12 @@ const TextViewList = () => {
               />
               <Flex direction="col" align="center" gap={3}>
                 <p className="body-md-regular text-font-30">
-                  콘텐츠를 생성해주세요
+                  콘텐츠를 생성해 주세요
                 </p>
                 <p className="text-center body-sm-regular text-font-20">
                   생성하기 버튼을 누르고 간편하게
                   <br />
-                  게시물을 작성해보세요!{' '}
+                  게시물을 작성해 보세요!
                 </p>
               </Flex>
             </>
