@@ -21,7 +21,7 @@ export interface BusinessProfile {
   threadsAccountId: string;
 }
 const defaultProfile: BusinessProfile = {
-  placeName: '우리 가게',
+  placeName: '',
   customerAgeGroupId: 2,
   customerAgeGroupLabel: '20대',
   businessCategoryId: 1,
@@ -43,7 +43,7 @@ export const useBusinessProfile = () => {
   const token = useAuthStore((s) => s.token);
 
   return useQuery<BusinessProfile, Error>({
-    queryKey: ['businessProfile'],
+    queryKey: ['business-profile'],
     queryFn: () =>
       fetchApi('/business-report/me/profile', {
         auth: true,

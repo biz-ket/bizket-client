@@ -65,11 +65,7 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
           <span className="text-primary-10 inline-block w-[70px] mr-15">
             스레드
           </span>
-          {isEmpty
-            ? '등록 된 계정 없음'
-            : profile.threadsAccountId
-            ? profile.threadsAccountId
-            : '-'}
+          {data?.threadsAccountId ? data.threadsAccountId : '등록 된 계정 없음'}
         </p>
         <p className="body-md-regular">
           <span className="text-primary-10 inline-block w-[70px] mr-15">
