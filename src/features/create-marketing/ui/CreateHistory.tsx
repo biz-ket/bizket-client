@@ -9,11 +9,13 @@ import Input from '@/shared/ui/input/Input';
 import Flex from '@/shared/ui/layout/Flex';
 import Image from 'next/image';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useTabStore } from '@/shared/store/useTabStore';
 
 const CreateHistory = () => {
   const [keyword, setKeyword] = useState('');
   const { id, setId } = useContentHistoryStore();
   const debounceKeyword = useDebounce(keyword, 300);
+  const { activeTab } = useTabStore();
 
   const { contents, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGetMarketingHistoryQuery(debounceKeyword);
@@ -27,7 +29,14 @@ const CreateHistory = () => {
     setId(contents[0].id);
   }, [contents, setId, id]);
 
+  useEffect(() => {
+    if (!contents || contents.length === 0) return;
+    setId(contents[0].id);
+  }, [activeTab]);
+
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const activeCardRef = useRef<HTMLDivElement | null>(null);
+
   const [topVisible, setTopVisible] = useState(false);
   const [bottomVisible, setBottomVisible] = useState(true);
 
@@ -52,6 +61,19 @@ const CreateHistory = () => {
     setTopVisible(el.scrollTop > 0);
     setBottomVisible(el.scrollTop + el.clientHeight < el.scrollHeight - 1);
   }, [contents]);
+
+  useEffect(() => {
+    if (activeCardRef.current && scrollRef.current) {
+      const scrollContainer = scrollRef.current;
+      const activeCard = activeCardRef.current;
+      const offsetTop = activeCard.offsetTop;
+      const scrollY =
+        offsetTop -
+        scrollContainer.clientHeight / 2 +
+        activeCard.clientHeight / 2;
+      scrollContainer.scrollTo({ top: scrollY, behavior: 'smooth' });
+    }
+  }, [id]);
 
   return (
     <Flex direction="col" gap={30} className="relative w-full">
@@ -84,7 +106,13 @@ const CreateHistory = () => {
       >
         <Flex direction="col" gap={24} className="w-full">
           {contents && contents.length > 0 ? (
-            contents.map((item) => <HistoryCard key={item.id} data={item} />)
+            contents.map((item) => (
+              <HistoryCard
+                key={item.id}
+                data={item}
+                ref={item.id === id ? activeCardRef : null}
+              />
+            ))
           ) : (
             <Flex
               direction="col"

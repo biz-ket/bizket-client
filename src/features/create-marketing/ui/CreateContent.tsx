@@ -227,7 +227,12 @@ const CreateContent = () => {
           </Flex>
         </Flex>
         <Flex direction="col" gap={14} className="w-full">
-          <ContentTitle title="게시 이미지 업로드" />
+          <Flex align="center" gap={4}>
+            <ContentTitle title="게시 이미지 업로드" />
+            <p className="body-sm-regular text-font-20">
+              ({files?.length || 0}/3)
+            </p>
+          </Flex>
           <div className="w-full">
             <input
               id="content-file-upload"

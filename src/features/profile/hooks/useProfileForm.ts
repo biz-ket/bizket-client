@@ -14,11 +14,12 @@ import { useEffect } from 'react';
 export const useProfileForm = (member?: Member, profile?: BusinessProfile) => {
   const methods = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
+    mode: 'onChange',
     defaultValues: {
       name: '',
       brand: '',
-      email: '',
-      startDate: new Date(),
+      placeEmail: '',
+      startDate: undefined,
       phone1: '',
       phone2: '',
       phone3: '',
@@ -28,7 +29,7 @@ export const useProfileForm = (member?: Member, profile?: BusinessProfile) => {
       instagram: '',
       street: '',
       threads: '',
-      ageGroupIds: [],
+      ageGroupId: 0,
     },
   });
 
@@ -49,7 +50,7 @@ export const useProfileForm = (member?: Member, profile?: BusinessProfile) => {
     reset({
       name: member.nickname,
       brand: profile.placeName,
-      email: member.email,
+      placeEmail: profile.placeEmail,
       startDate: parsedDate,
       phone1: p1,
       phone2: p2,
@@ -60,7 +61,7 @@ export const useProfileForm = (member?: Member, profile?: BusinessProfile) => {
       instagram: member.instagramAccountId || '',
       street: profile.address || '',
       threads: member.threadsAccountId || '',
-      ageGroupIds: [profile.customerAgeGroupId],
+      ageGroupId: profile.customerAgeGroupId,
     });
   }, [member, profile, reset]);
 
