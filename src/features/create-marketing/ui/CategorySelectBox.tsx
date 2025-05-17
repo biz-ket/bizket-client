@@ -33,6 +33,7 @@ const CategorySelectBox: React.FC<CategorySelectBoxProps> = ({
         '카페-베이커리',
         '치킨-피자',
         'bars-펍',
+        '기타',
       ],
     },
     {
@@ -48,6 +49,7 @@ const CategorySelectBox: React.FC<CategorySelectBoxProps> = ({
         '식품점',
         '화장품',
         '전자제품',
+        '기타',
       ],
     },
     {
@@ -63,6 +65,7 @@ const CategorySelectBox: React.FC<CategorySelectBoxProps> = ({
         '왁싱',
         '반영구화장',
         '에스테틱',
+        '기타',
       ],
     },
     {
@@ -78,6 +81,7 @@ const CategorySelectBox: React.FC<CategorySelectBoxProps> = ({
         '주차장',
         '자동차 정비',
         '여행사',
+        '기타',
       ],
     },
     {
@@ -93,6 +97,7 @@ const CategorySelectBox: React.FC<CategorySelectBoxProps> = ({
         '요리학원',
         '보습학원',
         '외국어학원',
+        '기타',
       ],
     },
     {
@@ -108,6 +113,7 @@ const CategorySelectBox: React.FC<CategorySelectBoxProps> = ({
         '주택임대',
         '컨설팅',
         '부동산개발',
+        '기타',
       ],
     },
   ];

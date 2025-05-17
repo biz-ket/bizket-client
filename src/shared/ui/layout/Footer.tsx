@@ -5,6 +5,7 @@ import Flex from '@/shared/ui/layout/Flex';
 import Image from 'next/image';
 import Link from 'next/link';
 import { TERMS_PRIVACY } from '@/shared/constant/TermsPrivacy';
+import { useTabStore } from '@/shared/store/useTabStore';
 
 interface ModalProps {
   isOpen: boolean;
@@ -60,6 +61,7 @@ const Modal = ({ isOpen, onClose, title, content }: ModalProps) => {
 const Footer = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', content: '' });
+  const { setActiveTab } = useTabStore();
 
   const handleOpenModal = (type: 'terms' | 'privacy') => {
     setModalContent({
@@ -117,7 +119,11 @@ const Footer = () => {
               </Flex>
               <Flex direction="col" gap={22}>
                 <p className="text-white body-lg-semibold">빠른 링크</p>
-                <Link href="/create" className="text-white/70 body-md-regular">
+                <Link
+                  onClick={() => setActiveTab('create')}
+                  href="/create"
+                  className="text-white/70 body-md-regular"
+                >
                   마케팅 콘텐츠 생성 AI
                 </Link>
                 <Link href="/report" className="text-white/70 body-md-regular">
