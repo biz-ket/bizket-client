@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 
 const BusinessProfile = () => {
   const { data } = useBusinessProfile();
-
+  console.log(data);
   const router = useRouter();
 
   const onClickBusinessButton = () => {

@@ -1,6 +1,7 @@
 'use client';
+
 import { useState, useRef } from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, FormProvider } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import {
   useSubCategories,
@@ -9,7 +10,6 @@ import {
 } from '@/features/report/hooks/useBusinessCategories';
 import { useCustomerAgeGroups } from '@/features/report/hooks/useCustomerAgeGroups';
 import { useUpdateMember } from '@/features/auth/hooks/useUpdateMemberMutation';
-import { useUpdateBusinessProfile } from '@/features/report/hooks/useUpdateBusinessProfileMutation';
 import { useProfileForm } from '@/features/profile/hooks/useProfileForm';
 import Flex from '@/shared/ui/layout/Flex';
 import Input from '@/shared/ui/input/Input';
@@ -25,12 +25,17 @@ import OptionSelectBox from '@/features/my/ui/OptionSelectBox';
 
 import SingleDatePicker from '@/features/my/ui/SingleDatePicker';
 import { useDeleteAccount } from '@/features/auth/hooks/useDeleteAccount';
-
 import CheckDeleteAccountModal from '@/features/update-my-info/ui/CheckDeleteAccountModal';
 import CheckRequiredFieldModal from '@/shared/ui/modal/CheckRequiredFieldModal';
 import { useCurrentUser } from '@/features/auth/hooks/useCurrentUser';
-import useBusinessProfile from '../hooks/useBusinessProfile';
 import { useToast } from '@/shared/context/ToastContext';
+import {
+  useUpdateBusinessProfile,
+  useCreateBusinessProfile,
+  BusinessProfilePayload,
+} from '@/features/report/hooks/useUpdateBusinessProfileMutation';
+import SaveConfirmModal from '@/shared/ui/modal/SaveConfirmModal';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   member: Member;
@@ -40,28 +45,31 @@ interface Props {
 export const MyPageEditForm = ({ member, profile }: Props) => {
   const router = useRouter();
   const deleteAccount = useDeleteAccount();
+  const queryClient = useQueryClient();
   const { openToast } = useToast();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isRequiredModalOpen, setIsRequiredModalOpen] = useState(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const pendingData = useRef<ProfileFormValues | null>(null);
 
   const { closeAllBoxes } = useSelectBoxStore();
   const { data: ageOptions = [] } = useCustomerAgeGroups();
   const { data: categories = [] } = useBusinessCategories();
+
   const { mutate: updateMember } = useUpdateMember();
-  const { mutate: updateBusinessProfile } = useUpdateBusinessProfile();
+  const updateBP = useUpdateBusinessProfile();
+  const createBP = useCreateBusinessProfile();
+
   const { refetch: refetchUser } = useCurrentUser();
   const { refetch: refetchMember } = useMemberInfo();
-  const { refetch: refetchBussiness } = useBusinessProfile();
-
   const methods = useProfileForm(member, profile);
   const {
     watch,
     register,
     control,
     handleSubmit,
-    formState: { errors, isSubmitting, dirtyFields },
+    formState: { isValid, dirtyFields },
   } = methods;
 
   const watchedCategoryId = watch('categoryId') ?? 0;
@@ -76,57 +84,71 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
   };
 
   const handleSaveClick = () => {
+    if (!isValid) {
+      setIsRequiredModalOpen(true);
+      return;
+    }
     handleSubmit((data) => {
       pendingData.current = data;
       setIsSaveModalOpen(true);
     })();
   };
 
+  const onSaved = () => {
+    refetchUser();
+    refetchMember();
+    queryClient.invalidateQueries({
+      queryKey: ['business-profile'],
+    });
+    openToast({ message: '저장되었습니다.' });
+    router.push('/my?refresh=true');
+  };
+
   const handleSaveConfirm = () => {
     if (!pendingData.current) return;
-    const data = pendingData.current;
+    const d = pendingData.current;
+    const payload: BusinessProfilePayload = {
+      placeName: d.brand,
+      customerAgeGroupId: d.ageGroupId,
+      businessCategoryId: d.categoryId,
+      businessSubCategoryId: d.subCategoryId,
+      businessDetailCategoryId: d.detailCategoryId,
+      openDate: toYMD(d.startDate),
+      address: d.street || '',
+      placeEmail: d.placeEmail,
+      placePhoneNumber: `${d.phone1}-${d.phone2}-${d.phone3}`,
+    };
+
+    // 1) 회원 정보 업데이트
     updateMember(
       {
-        name: data.name,
-        email: data.email,
-        instagram: data.instagram ?? '',
-        threads: data.threads ?? '',
+        name: d.name,
+        email: d.placeEmail,
+        instagram: d.instagram!,
+        threads: d.threads!,
       },
       {
         onSuccess: () => {
-          updateBusinessProfile(
-            {
-              brand: data.brand,
-              openDate: toYMD(data.startDate),
-              phone1: data.phone1,
-              phone2: data.phone2,
-              phone3: data.phone3,
-              categoryId: data.categoryId,
-              subCategoryId: data.subCategoryId,
-              detailCategoryId: data.detailCategoryId,
-              street: data.street ?? '',
-              ageGroupIds: data.ageGroupIds,
+          const mutateFn = profile.placeName
+            ? updateBP.mutate
+            : createBP.mutate;
+          mutateFn(payload, {
+            onSuccess: () => {
+              queryClient.invalidateQueries({
+                queryKey: ['business-profile'],
+              });
+              onSaved();
             },
-            {
-              onSuccess: () => {
-                refetchUser();
-                refetchMember();
-                refetchBussiness();
-
-                openToast({
-                  message: '저장되었습니다.',
-                });
-                router.push('/my?refresh=true');
-              },
-              onError: () => alert('사업장 정보 저장 중 오류가 발생했습니다.'),
-            },
-          );
+            onError: () => alert('사업장 정보 저장 중 오류가 발생했습니다.'),
+          });
         },
         onError: () => alert('회원 정보 저장 중 오류가 발생했습니다.'),
       },
     );
+
     setIsSaveModalOpen(false);
   };
+
   const handleDeleteClick = () => setIsDeleteModalOpen(true);
   const handleModalClose = () => setIsDeleteModalOpen(false);
   const handleModalConfirm = () => {
@@ -135,72 +157,102 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
   };
 
   return (
-    <div>
+    <FormProvider {...methods}>
       <form className="flex gap-60 pt-56 pb-[165px]">
-        {/* 오른쪽 */}
+        {/* 오른쪽 컬럼: 회원 정보 */}
         <Flex className="flex-1" direction="col" gap={38} align="stretch">
-          {/* 이름 */}
           <div>
             <Label htmlFor="name">이름</Label>
-            <Input {...register('name')} placeholder="이름" />
-            {errors.name && (
-              <p className="text-red-500 text-sm">{errors.name.message}</p>
-            )}
+            <Input
+              id="name"
+              {...register('name', { required: '필수 입력입니다' })}
+              placeholder="이름"
+            />
           </div>
-          {/* 로그인 이메일 */}
+
           <div>
             <Label htmlFor="email">로그인 이메일</Label>
-            <Input {...register('email')} readOnly />
+            <Input
+              id="email"
+              {...register('placeEmail', { required: '필수 입력입니다' })}
+              placeholder="example@mail.com"
+            />
           </div>
-          {/* 연락처 */}
-          <Flex gap={18}>
-            {(['phone1', 'phone2', 'phone3'] as const).map((field, i) => (
-              <div key={field}>
-                <Label htmlFor="phone">연락처</Label>
-                <Input
-                  {...register(field)}
-                  placeholder={i === 0 ? '010' : i === 1 ? '1234' : '5678'}
-                />
-              </div>
-            ))}
-          </Flex>
-          {/* 계정 및 정보 */}
+          {/* 왼쪽: 연락처 라벨 */}
+          <div>
+            <div className="flex-none">
+              <Label htmlFor="phone1">연락처</Label>
+            </div>
+
+            <Flex gap={8}>
+              {(['phone1', 'phone2', 'phone3'] as const).map((field, i) => (
+                <div key={field}>
+                  <Input
+                    id={field}
+                    inputMode="numeric" // 모바일 숫자 키패드
+                    maxLength={4}
+                    onInput={(e: React.FormEvent<HTMLInputElement>) => {
+                      const t = e.currentTarget;
+                      // 비숫자 전부 지우고, 앞 4자리만 남김
+                      t.value = t.value.replace(/\D/g, '').slice(0, 4);
+                    }}
+                    {...register(field, {
+                      required: '필수 입력입니다',
+                      pattern: {
+                        value: /^\d*$/,
+                        message: '숫자만 입력할 수 있습니다',
+                      },
+                      maxLength: {
+                        value: 4,
+                        message: '최대 4자리까지 입력 가능합니다',
+                      },
+                    })}
+                    placeholder={i === 0 ? '010' : i === 1 ? '1234' : '5678'}
+                  />
+                </div>
+              ))}
+            </Flex>
+          </div>
+
           <div>
             <Label htmlFor="instagram">인스타그램 계정</Label>
-            <Input {...register('instagram')} placeholder="@your_account" />
+            <Input
+              id="instagram"
+              {...register('instagram', { required: '필수 입력입니다' })}
+              placeholder="@your_account"
+            />
           </div>
+
           <div>
             <Label htmlFor="threads">스레드 계정</Label>
-            <Input {...register('threads')} placeholder="@your_threads" />
+            <Input
+              id="threads"
+              {...register('threads', { required: '필수 입력입니다' })}
+              placeholder="@your_threads"
+            />
           </div>
         </Flex>
-        {/* 왼쪽 */}
-        <Flex className="flex-1" align="stretch" direction="col" gap={38}>
-          {/* 상호명 */}
+
+        {/* 왼쪽 컬럼: 사업장 정보 */}
+        <Flex className="flex-1" direction="col" gap={38} align="stretch">
           <div>
             <Label htmlFor="brand">상호명</Label>
-            <Input {...register('brand')} placeholder="상호명" />
-            {errors.brand && (
-              <p className="text-red-500 text-sm">{errors.brand.message}</p>
-            )}
+            <Input
+              id="brand"
+              {...register('brand', { required: '필수 입력입니다' })}
+              placeholder="상호명"
+            />
           </div>
-          {/* 사업 시작일 */}
+
           <div>
             <Label htmlFor="startDate">사업 시작일</Label>
-            <SingleDatePicker
-              control={control}
-              name="startDate"
-              // {...register('startDate')}
-            />
-            {errors.startDate && (
-              <p className="text-red-500 text-sm">{errors.startDate.message}</p>
-            )}
+            <SingleDatePicker control={control} name="startDate" />
           </div>
-          {/* 업종 */}
+
           <div>
             <Label>업종</Label>
             <Flex gap={18} align="stretch">
-              {/* 대분류 선택 */}
+              {/* 대분류 */}
               <div className="flex-1">
                 <Controller
                   control={control}
@@ -219,7 +271,7 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
                           id: c.id,
                           label: c.name,
                         }))}
-                        activeId={field.value ?? undefined}
+                        activeId={field.value!}
                         onSelect={(id) => {
                           field.onChange(id as number);
                           methods.setValue('subCategoryId', null);
@@ -231,7 +283,8 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
                   )}
                 />
               </div>
-              {/* 중분류 선택 */}
+
+              {/* 중분류 */}
               <div className="flex-1">
                 <Controller
                   control={control}
@@ -251,7 +304,7 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
                           id: sc.id,
                           label: sc.name,
                         }))}
-                        activeId={field.value ?? undefined}
+                        activeId={field.value!}
                         onSelect={(id) => {
                           field.onChange(id as number);
                           methods.setValue('detailCategoryId', null);
@@ -262,7 +315,8 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
                   )}
                 />
               </div>
-              {/* 소분류 선택 */}
+
+              {/* 소분류 */}
               <div className="flex-1">
                 <Controller
                   control={control}
@@ -282,7 +336,7 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
                           id: dc.id,
                           label: dc.name,
                         }))}
-                        activeId={field.value ?? undefined}
+                        activeId={field.value!}
                         onSelect={(id) => {
                           field.onChange(id as number);
                           closeAllBoxes();
@@ -294,43 +348,38 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
               </div>
             </Flex>
           </div>
-          {/* 주소 */}
+
           <div>
             <Label htmlFor="street">사업장 주소</Label>
-            <Input {...register('street')} placeholder="주소 입력" />
+            <Input
+              id="street"
+              {...register('street', { required: '필수 입력입니다' })}
+              placeholder="주소 입력"
+            />
           </div>
-          {/* 고객 연령층 */}
+
           <div>
-            <Label htmlFor="ageGroupIds">고객 연령층</Label>
+            <Label>고객 연령층</Label>
             <Controller
               control={control}
-              name="ageGroupIds"
+              name="ageGroupId"
               render={({ field }) => (
-                <div className="grid grid-cols-4 grid-rows-2 gap-x-6 gap-y-17">
+                <div className="grid grid-cols-4 gap-6">
                   {ageOptions.map((age) => (
                     <AgeCheckbox
                       key={age.id}
                       label={age.label}
-                      isChecked={field.value.includes(age.id)}
+                      isChecked={field.value === age.id}
+                      onClick={() => field.onChange(age.id)}
                       labelClassName="body-lg-regular"
-                      onClick={() => {
-                        const updated = field.value.includes(age.id)
-                          ? []
-                          : [age.id];
-                        field.onChange(updated);
-                      }}
                     />
                   ))}
                 </div>
               )}
             />
-            {errors.ageGroupIds && (
-              <p className="text-red-500 text-sm">
-                {errors.ageGroupIds.message}
-              </p>
-            )}
           </div>
-          <Flex justify="end" className="mt-6" align="stretch" gap={20}>
+
+          <Flex justify="end" className="mt-6" gap={20}>
             <button
               type="button"
               onClick={handleDeleteClick}
@@ -341,28 +390,47 @@ export const MyPageEditForm = ({ member, profile }: Props) => {
             <button
               type="button"
               onClick={handleSaveClick}
-              disabled={isSubmitting}
-              className="flex-1 h-65 px-6 bg-primary-50 text-white rounded-10 label-xl-medium"
+              // disabled={!isValid || isSubmitting}
+              className="flex-1 h-65 px-6 bg-primary-50 text-white rounded-10 label-xl-medium disabled:opacity-50"
             >
               저장하기
             </button>
           </Flex>
+
+          {/* {!isValid && (
+            <p className="text-red-500 text-center mt-4">
+              필수 항목을 모두 입력해주세요.
+            </p>
+          )} */}
         </Flex>
       </form>
+
+      {/* 회원 탈퇴 모달 */}
       {isDeleteModalOpen && (
         <CheckDeleteAccountModal
           onClose={handleModalClose}
           onConfirm={handleModalConfirm}
         />
       )}
-      {isSaveModalOpen && (
+
+      {/* 필수 항목 미입력 모달 */}
+      {isRequiredModalOpen && (
         <CheckRequiredFieldModal
-          onClose={() => setIsSaveModalOpen(false)}
-          onConfirm={handleSaveConfirm}
-          usePortal={true}
+          usePortal
+          onClose={() => setIsRequiredModalOpen(false)}
         />
       )}
-    </div>
+
+      {/* 저장 확인 모달 */}
+      {isSaveModalOpen && (
+        <SaveConfirmModal
+          usePortal
+          onClose={() => setIsSaveModalOpen(false)}
+          onConfirm={handleSaveConfirm}
+        />
+      )}
+    </FormProvider>
   );
 };
+
 export default MyPageEditForm;

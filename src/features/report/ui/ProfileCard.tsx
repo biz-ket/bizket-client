@@ -5,12 +5,16 @@ import Flex from '@/shared/ui/layout/Flex';
 import { BusinessProfile } from '@/features/report/hooks/useBusinessProfile';
 import Link from 'next/link';
 
+import { useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
+
 interface ProfileCardProps {
   profile: BusinessProfile | { message: string };
 }
 
 const ProfileCard = ({ profile }: ProfileCardProps) => {
   const isEmpty = 'message' in profile;
+  const { data } = useMemberInfo();
+  console.log(data);
   return (
     <div className="relative w-[400px] h-[635px] px-30 py-45 bg-gradient-to-br from-primary-50 to-primary-30 text-white rounded-20 overflow-hidden">
       <div className="relative">
@@ -61,17 +65,13 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
           <span className="text-primary-10 inline-block w-[70px] mr-15">
             스레드
           </span>
-          {isEmpty
-            ? '등록 된 계정 없음'
-            : profile.threadsAccountId
-            ? profile.threadsAccountId
-            : '-'}
+          {data?.threadsAccountId ? data.threadsAccountId : '등록 된 계정 없음'}
         </p>
         <p className="body-md-regular">
           <span className="text-primary-10 inline-block w-[70px] mr-15">
             인스타그램
           </span>
-          {isEmpty ? '등록 된 계정 없음' : profile.instagramAccountId}
+          {data?.instagramAccountId}
         </p>
       </div>
       <Image
