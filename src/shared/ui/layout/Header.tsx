@@ -10,6 +10,7 @@ import Flex from '@/shared/ui/layout/Flex';
 import LoginIcon from '@/shared/ui/icons/LoginIcon';
 import MyIcon from '@/shared/ui/icons/MyIcon';
 import { useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
+import { useTabStore } from '@/shared/store/useTabStore';
 
 const Header = () => {
   const pathname = usePathname();
@@ -18,6 +19,8 @@ const Header = () => {
   const hasHydrated = useAuthStore((s) => s._hasHydrated);
   const token = useAuthStore((s) => s.token);
   const logout = useAuthStore((s) => s.logout);
+
+  const { setActiveTab } = useTabStore();
 
   const isLoggedIn = Boolean(token);
   const { data: member } = useMemberInfo();
@@ -59,7 +62,11 @@ const Header = () => {
               )}
             >
               <li>
-                <Link href="/create" className="body-md-regular">
+                <Link
+                  onClick={() => setActiveTab('create')}
+                  href="/create"
+                  className="body-md-regular"
+                >
                   마케팅 콘텐츠 생성 AI
                 </Link>
               </li>
