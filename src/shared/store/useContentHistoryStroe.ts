@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 interface ContentHistoryState {
   id: number | null;
-  setId: (id: number) => void;
+  setId: (id: number | null) => void;
   clear: () => void;
 }
 
