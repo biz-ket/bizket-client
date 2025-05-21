@@ -1,9 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { profileSchema, ProfileFormValues } from '@/features/profile/schema';
-import { BusinessProfile } from '@/features/report/hooks/useBusinessProfile';
+import {
+  profileSchema,
+  ProfileFormValues,
+} from '@/features/profile/model/profileSchema';
 import { Member } from '@/features/auth/hooks/useMemberInfo';
 import { useEffect } from 'react';
+import { BusinessProfile } from '@/entities/business-profile';
 
 /**
  * useProfileForm 훅

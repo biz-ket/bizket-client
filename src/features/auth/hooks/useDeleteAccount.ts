@@ -14,7 +14,7 @@ export const useDeleteAccount = () => {
     // 삭제 성공 시 캐시 무효화
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['member'] });
-      queryClient.invalidateQueries({ queryKey: ['businessProfile'] });
+      queryClient.invalidateQueries({ queryKey: ['business-profile'] });
     },
   });
 };
