@@ -1,4 +1,3 @@
-// features/my/ui/MemberFields.tsx
 import { UseFormRegister } from 'react-hook-form';
 import Flex from '@/shared/ui/layout/Flex';
 import Label from '@/features/my/ui/Label';

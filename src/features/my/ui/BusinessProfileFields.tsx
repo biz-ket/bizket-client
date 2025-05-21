@@ -1,5 +1,3 @@
-// features/my/ui/BusinessProfileFields.tsx
-
 import {
   Control,
   UseFormRegister,
@@ -15,7 +13,6 @@ import OptionsList, { Option } from '@/features/my/ui/OptionList';
 import OptionSelectBox from '@/features/my/ui/OptionSelectBox';
 import { ProfileFormValues } from '@/features/profile/model/profileSchema';
 
-// CategoryOption 타입 정의 (useBusinessCategories 훅 반환 형태)
 interface CategoryOption {
   id: number;
   name: string;
