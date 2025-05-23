@@ -5,25 +5,25 @@ import { useToast } from '@/shared/context/ToastContext';
 import { useProfileForm } from '@/features/profile/hooks/useProfileForm';
 import { Member } from '@/features/auth/hooks/useMemberInfo';
 import { useUpdateMember } from '@/features/auth/hooks/useUpdateMemberMutation';
-import { useDeleteAccount } from '@/features/auth/hooks/useDeleteAccount';
-import {
-  useBusinessCategories,
-  useSubCategories,
-  useDetailCategories,
-} from '@/features/report/hooks/useBusinessCategories';
-import { useCustomerAgeGroups } from '@/features/report/hooks/useCustomerAgeGroups';
 import { ProfileFormValues } from '@/features/profile/model/profileSchema';
 import {
   BusinessProfile,
   toBusinessProfilePayload,
   useCreateBusinessProfile,
+  useDeleteAccount,
   useUpdateBusinessProfile,
 } from '@/entities/business-profile';
+import {
+  useBusinessCategories,
+  useSubCategories,
+  useDetailCategories,
+} from '@/entities/business-category/model';
+import { useCustomerAgeGroups } from '@/entities/customer-age-group/model';
 
 /**
  * useMyPageEditForm
  * @param member - 사용자 정보
- * @param profile - 비즈니스 프로필 정보 (optional)
+ * @param profile - 비즈니스 프로필 정보
  */
 const useMyPageEditForm = (member: Member, profile?: BusinessProfile) => {
   const router = useRouter();
