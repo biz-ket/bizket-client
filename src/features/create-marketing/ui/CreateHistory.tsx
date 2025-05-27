@@ -25,14 +25,12 @@ const CreateHistory = () => {
   };
 
   useEffect(() => {
-    if (!contents || contents.length === 0 || id !== null) return;
-    setId(contents[0].id);
-  }, [contents, setId, id]);
-
-  useEffect(() => {
     if (!contents || contents.length === 0) return;
-    setId(contents[0].id);
-  }, [activeTab]);
+
+    if (!id) {
+      setId(contents[0].id);
+    }
+  }, [contents, activeTab]);
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const activeCardRef = useRef<HTMLDivElement | null>(null);
@@ -73,14 +71,13 @@ const CreateHistory = () => {
         activeCard.clientHeight / 2;
       scrollContainer.scrollTo({ top: scrollY, behavior: 'smooth' });
     }
-  }, [id]);
+  }, [id, contents]);
 
   return (
     <Flex direction="col" gap={30} className="relative w-full">
       {topVisible && (
         <div className="pointer-events-none absolute top-[114px] left-0 z-10 w-full h-50 bg-gradient-to-b from-white to-transparent" />
       )}
-
       {bottomVisible && (
         <div className="absolute bottom-0 left-0 z-10 w-full pointer-events-none h-50 bg-gradient-to-t from-white to-[rgba(255,255,255,0.6)]" />
       )}
@@ -123,7 +120,7 @@ const CreateHistory = () => {
               <Image
                 width={100}
                 height={110}
-                src={'/images/create-marketing/no-history.png'}
+                src="/images/create-marketing/no-history.png"
                 alt="생성이력 없음"
               />
               <Flex direction="col" gap={2} align="center">
