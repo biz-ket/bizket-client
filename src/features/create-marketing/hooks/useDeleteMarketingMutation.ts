@@ -5,7 +5,8 @@ import { useContentHistoryStore } from '@/shared/store/useContentHistoryStroe';
 import { useMutation } from '@tanstack/react-query';
 
 export const useDeleteMarketingMutation = () => {
-  const { refetch: marketingHistoryRefetch } = useGetMarketingHistoryQuery('');
+  const { contents, refetch: marketingHistoryRefetch } =
+    useGetMarketingHistoryQuery('');
   const { setId } = useContentHistoryStore();
   const { openToast } = useToast();
 
@@ -19,7 +20,7 @@ export const useDeleteMarketingMutation = () => {
       });
 
       setTimeout(() => {
-        setId(null);
+        setId(contents?.[0].id || null);
       }, 300);
     },
   });
