@@ -3,8 +3,8 @@
 import {
   useBusinessCategories,
   useSubCategories,
-} from '@/features/report/hooks/useBusinessCategories';
-import { useBusinessProfile } from '@/features/report/hooks/useBusinessProfile';
+} from '@/entities/business-category/model';
+import { useBusinessProfile } from '@/entities/business-profile';
 import { useSelectBoxStore } from '@/shared/store/useSelectBoxStore';
 import { useEffect, useState } from 'react';
 

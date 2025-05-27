@@ -17,8 +17,6 @@ export const profileSchema = z.object({
   instagram: z.string().optional(),
   street: z.string().min(1, '사업장 주소를 입력해주세요'),
   threads: z.string().nonempty('스레드 주소를 입력해주세요'),
-  // ageGroupIds: z.array(z.number()).nonempty('하나 이상의 연령대를 선택하세요'),
-  // after
   ageGroupId: z.number({ required_error: '고객 연령층을 선택해주세요.' }),
 });
 

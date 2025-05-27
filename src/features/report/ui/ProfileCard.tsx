@@ -2,10 +2,10 @@
 
 import Image from 'next/image';
 import Flex from '@/shared/ui/layout/Flex';
-import { BusinessProfile } from '@/features/report/hooks/useBusinessProfile';
 import Link from 'next/link';
 
 import { useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
+import { BusinessProfile } from '@/entities/business-profile';
 
 interface ProfileCardProps {
   profile: BusinessProfile | { message: string };

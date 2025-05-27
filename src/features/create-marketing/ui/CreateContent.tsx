@@ -28,7 +28,7 @@ import {
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
 import ImageDeleteIcon from '@/features/create-marketing/ui/ImageDeleteIcon';
 import { getClientToken } from '@/shared/utils/getClientToken';
-import { useBusinessProfile } from '@/features/report/hooks/useBusinessProfile';
+import { useBusinessProfile } from '@/entities/business-profile';
 
 const CreateContent = () => {
   const [prompt, setPrompt] = useState('');

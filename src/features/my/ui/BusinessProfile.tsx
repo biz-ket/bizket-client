@@ -4,7 +4,7 @@ import { formatDate } from '../utils/formatDate';
 import UserIcon from './UserIcon';
 import DocumentIcon from './DocumentIcon';
 import MapIcon from './MapIcon';
-import useBusinessProfile from '../hooks/useBusinessProfile';
+import { useBusinessProfile } from '@/entities/business-profile';
 import { useRouter } from 'next/navigation';
 
 const BusinessProfile = () => {

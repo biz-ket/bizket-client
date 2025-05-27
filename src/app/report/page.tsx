@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useMediaInsights } from '@/features/report/hooks/useMediaInsights';
-import { useBusinessProfile } from '@/features/report/hooks/useBusinessProfile';
+import { useBusinessProfile } from '@/entities/business-profile';
 import { useCurrentUser } from '@/features/auth/hooks/useCurrentUser';
 import Container from '@/shared/ui/layout/Container';
 import Flex from '@/shared/ui/layout/Flex';
