@@ -12,7 +12,7 @@ import ToggleIcon from '@/shared/ui/icons/ToggleIcon';
 import Input from '@/shared/ui/input/Input';
 import Flex from '@/shared/ui/layout/Flex';
 import Textarea from '@/shared/ui/textarea/Textarea';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import SelectBox from '@/shared/ui/input/SelectBox';
 import CategorySelectBox from '@/features/create-marketing/ui/CategorySelectBox';
@@ -28,6 +28,7 @@ import {
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
 import ImageDeleteIcon from '@/features/create-marketing/ui/ImageDeleteIcon';
 import { getClientToken } from '@/shared/utils/getClientToken';
+import { useBusinessProfile } from '@/entities/business-profile';
 
 const CreateContent = () => {
   const [prompt, setPrompt] = useState('');
@@ -42,6 +43,7 @@ const CreateContent = () => {
   const [brandName, setBrandName] = useState('');
 
   const { files, previews, addFiles, removeFile } = useFileUpload(3);
+  const { data: businessData } = useBusinessProfile();
 
   const { token, memberId } = useAuthStore();
   const clientToken = getClientToken();
@@ -109,12 +111,12 @@ const CreateContent = () => {
     const data: CreateMarketingRequestType = {
       userType: token ? 'BUSINESS' : 'GUEST',
       memberId: token ? memberId : null,
-      brandName: token ? brandName : null,
-      account: token ? account : null,
+      brandName: token ? brandName || businessData?.placeName : null,
+      account: token ? account || businessData?.instagramAccountId : null,
       industry: token ? selectedCategory : null,
       clientToken: token ? null : clientToken,
       platform: token ? platform : null,
-      targetAgeGroup: null,
+      targetAgeGroup: selectedAge || businessData?.customerAgeGroupLabel,
       prompt,
       emphasisTags: accent,
       imageUrls: files,
@@ -126,6 +128,15 @@ const CreateContent = () => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    setSelectedCategory(
+      `${businessData?.businessCategoryName}-${businessData?.businessSubCategoryName}`,
+    );
+    setBrandName(businessData?.placeName || '');
+    setAccount(businessData?.instagramAccountId || '');
+    setSelectedAge(businessData?.customerAgeGroupLabel || '');
+  }, [businessData]);
 
   return (
     <Flex direction="col" gap={40} className="w-full">
@@ -166,7 +177,7 @@ const CreateContent = () => {
               <InputBox label="상호명" width="151px">
                 <Input
                   placeholder="상호명"
-                  value={brandName}
+                  value={brandName || businessData?.placeName}
                   onChange={handleChangeBrandName}
                   disabled={!token}
                 />
@@ -174,7 +185,7 @@ const CreateContent = () => {
               <InputBox label="계정" width="151px">
                 <Input
                   placeholder="@bizket"
-                  value={account}
+                  value={account || businessData?.instagramAccountId}
                   onChange={handleChangeAccount}
                   disabled={!token}
                 />
@@ -198,11 +209,16 @@ const CreateContent = () => {
               <SelectBox
                 id="age"
                 placeholder="고객 연령층 선택"
-                value={selectedAge}
-                isSelected={!!selectedAge}
+                value={selectedAge || businessData?.customerAgeGroupLabel}
+                isSelected={
+                  !!selectedAge || !!businessData?.customerAgeGroupLabel
+                }
                 disabled={!token}
               >
-                <AgeSelectBox age={selectedAge} handleClick={handleClickAge} />
+                <AgeSelectBox
+                  age={selectedAge || businessData?.customerAgeGroupLabel || ''}
+                  handleClick={handleClickAge}
+                />
               </SelectBox>
             </InputBox>
           </motion.div>

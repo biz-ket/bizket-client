@@ -17,7 +17,7 @@ export function useBusinessCategories() {
   });
 }
 
-export function useSubCategories(categoryId: number) {
+export function useSubCategories(categoryId: number | undefined) {
   return useQuery<CategoryOption[], Error>({
     queryKey: ['business-sub-categories', categoryId],
     queryFn: () =>
