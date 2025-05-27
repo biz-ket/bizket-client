@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation';
 
 const BusinessProfile = () => {
   const { data } = useBusinessProfile();
-  console.log(data);
   const router = useRouter();
 
   const onClickBusinessButton = () => {
@@ -17,26 +16,26 @@ const BusinessProfile = () => {
   };
 
   return (
-    <div className="flex-1 h-full relative overflow-hidden pl-39 pr-19">
+    <div className="relative flex-1 h-full overflow-hidden pl-39 pr-19">
       {data && (
         <>
           <Flex direction="col" gap={23} className="w-full">
-            <Flex direction="col" gap={4} className="w-full relative pt-37">
-              <div className="w-full body-sm-regular text-font-20 relative">
+            <Flex direction="col" gap={4} className="relative w-full pt-37">
+              <div className="relative w-full body-sm-regular text-font-20">
                 {`사업자 정보 >`}
                 <button
                   onClick={onClickBusinessButton}
-                  className="flex justify-center items-center rounded-12 bg-line-20 w-34 h-34 absolute right-0 bottom-0"
+                  className="absolute bottom-0 right-0 flex items-center justify-center rounded-12 bg-line-20 w-34 h-34"
                 >
                   <DocumentIcon fill="#999999" />
                 </button>
               </div>
               <Flex gap={8} align="center" wrap className="max-w-full">
-                <div className="title-md-bold max-w-full truncate">
+                <div className="max-w-full truncate title-md-bold">
                   {data.placeName || '정보 없음'}
                 </div>
                 {data.businessDetailCategoryName && (
-                  <div className="bg-primary-50 text-white label-sm-semibold rounded-20 px-10 py-6">
+                  <div className="px-10 py-6 text-white bg-primary-50 label-sm-semibold rounded-20">
                     {data.businessDetailCategoryName}
                   </div>
                 )}
