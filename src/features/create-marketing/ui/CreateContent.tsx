@@ -130,9 +130,14 @@ const CreateContent = () => {
   };
 
   useEffect(() => {
-    setSelectedCategory(
-      `${businessData?.businessCategoryName}-${businessData?.businessSubCategoryName}`,
-    );
+    if (!businessData) return;
+
+    if (businessData?.businessCategoryName) {
+      setSelectedCategory(
+        `${businessData?.businessCategoryName}-${businessData?.businessSubCategoryName}`,
+      );
+    }
+
     setBrandName(businessData?.placeName || '');
     setAccount(businessData?.instagramAccountId || '');
     setSelectedAge(businessData?.customerAgeGroupLabel || '');
@@ -177,7 +182,7 @@ const CreateContent = () => {
               <InputBox label="상호명" width="151px">
                 <Input
                   placeholder="상호명"
-                  value={brandName || businessData?.placeName}
+                  value={brandName || businessData?.placeName || ''}
                   onChange={handleChangeBrandName}
                   disabled={!token}
                 />
@@ -185,7 +190,7 @@ const CreateContent = () => {
               <InputBox label="계정" width="151px">
                 <Input
                   placeholder="@bizket"
-                  value={account || businessData?.instagramAccountId}
+                  value={account || businessData?.instagramAccountId || ''}
                   onChange={handleChangeAccount}
                   disabled={!token}
                 />
