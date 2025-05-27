@@ -16,7 +16,7 @@ export const useBusinessCategories = () =>
     staleTime: 5 * 60 * 1000,
   });
 
-export const useSubCategories = (categoryId: number) =>
+export const useSubCategories = (categoryId: number | undefined) =>
   useQuery<CategoryOption[], Error>({
     queryKey: ['subCategories', categoryId],
     queryFn: () =>
