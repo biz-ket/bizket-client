@@ -6,7 +6,7 @@ import { DayPicker } from 'react-day-picker';
 import Input from '@/shared/ui/input/Input';
 import Card from '@/features/search-trend/ui/Card';
 import type { Control } from 'react-hook-form';
-import type { ProfileFormValues } from '@/features/profile/schema';
+import type { ProfileFormValues } from '@/features/profile/model/profileSchema';
 
 interface SingleDatePickerProps {
   control: Control<ProfileFormValues>;

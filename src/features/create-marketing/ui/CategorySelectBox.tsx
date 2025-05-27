@@ -1,190 +1,81 @@
 'use client';
 
+import {
+  useBusinessCategories,
+  useSubCategories,
+} from '@/entities/business-category/model';
+import { useBusinessProfile } from '@/entities/business-profile';
 import { useSelectBoxStore } from '@/shared/store/useSelectBoxStore';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface CategorySelectBoxProps {
   onSelect: (value: string) => void;
-  currentValue?: string; // 현재 선택된 값 props 추가
+  currentValue?: string;
 }
 
-// 카테고리 데이터 구조 정의
-interface Category {
-  id: string;
-  name: string;
-  subcategories: string[];
-}
+const CategorySelectBox: React.FC<CategorySelectBoxProps> = ({ onSelect }) => {
+  interface Category {
+    id: number;
+    name: string;
+  }
 
-const CategorySelectBox: React.FC<CategorySelectBoxProps> = ({
-  onSelect,
-  currentValue = '',
-}) => {
-  const categories: Category[] = [
-    {
-      id: 'cook',
-      name: '요식업',
-      subcategories: [
-        '전체',
-        '한식당',
-        '중식당',
-        '양식당',
-        '일식당',
-        '분식점',
-        '카페-베이커리',
-        '치킨-피자',
-        'bars-펍',
-        '기타',
-      ],
-    },
-    {
-      id: 'retail',
-      name: '소매업',
-      subcategories: [
-        '전체',
-        '편의점',
-        '의류-패션',
-        '슈퍼마켓',
-        '잡화점',
-        '문구-서적',
-        '식품점',
-        '화장품',
-        '전자제품',
-        '기타',
-      ],
-    },
-    {
-      id: 'beauty',
-      name: '뷰티-미용업',
-      subcategories: [
-        '전체',
-        '헤어샵',
-        '네일샵',
-        '피부관리실',
-        '메이크업숍',
-        '마사지-스파',
-        '왁싱',
-        '반영구화장',
-        '에스테틱',
-        '기타',
-      ],
-    },
-    {
-      id: 'service',
-      name: '생활서비스',
-      subcategories: [
-        '전체',
-        '세탁소',
-        '청소-방역',
-        '렌터카-카셰어링',
-        '헬스-피트니스',
-        '반려동물 서비스',
-        '주차장',
-        '자동차 정비',
-        '여행사',
-        '기타',
-      ],
-    },
-    {
-      id: 'education',
-      name: '교육-학원',
-      subcategories: [
-        '전체',
-        '어학원',
-        '미술-음악학원',
-        '입시학원',
-        '컴퓨터-IT학원',
-        '댄스-체육학원',
-        '요리학원',
-        '보습학원',
-        '외국어학원',
-        '기타',
-      ],
-    },
-    {
-      id: 'real-estate',
-      name: '부동산-임대업',
-      subcategories: [
-        '전체',
-        '부동산중개소',
-        '임대-렌탈',
-        '창고-사무실',
-        '공간대여',
-        '상가-오피스텔',
-        '주택임대',
-        '컨설팅',
-        '부동산개발',
-        '기타',
-      ],
-    },
-  ];
+  type categoryType = Category | null;
 
-  const [selectedMainIndex, setSelectedMainIndex] = useState(0);
-  const [selectedSubIndex, setSelectedSubIndex] = useState(0);
+  const [selectCategory, setSelectCategory] = useState<categoryType>(null);
+  const [selectSubCategory, setSelectSubCategory] =
+    useState<categoryType>(null);
+
+  const { data: businessData } = useBusinessProfile();
+  const { data: categoryData } = useBusinessCategories();
+  const { data: categorySubData } = useSubCategories(selectCategory?.id);
+
+  const handleChangeCategory = (category: categoryType) => {
+    setSelectCategory(category);
+  };
+
+  const handleChangeSubCategory = (category: categoryType) => {
+    setSelectSubCategory(category);
+  };
 
   const toggleBox = useSelectBoxStore((state) => state.toggleBox);
 
-  useEffect(() => {
-    if (currentValue) {
-      const [categoryName, subcategoryName] = currentValue.split('/');
-
-      const categoryIndex = categories.findIndex(
-        (cat) => cat.name === categoryName,
-      );
-      if (categoryIndex >= 0) {
-        setSelectedMainIndex(categoryIndex);
-
-        const subcategoryIndex = categories[
-          categoryIndex
-        ].subcategories.findIndex((sub) => sub === subcategoryName);
-        if (subcategoryIndex >= 0) {
-          setSelectedSubIndex(subcategoryIndex);
-        } else {
-          setSelectedSubIndex(0);
-        }
-      }
-    }
-  }, [currentValue]);
-
-  const handleMainCategoryClick = (index: number) => {
-    setSelectedMainIndex(index);
-    setSelectedSubIndex(0);
-  };
-
-  const handleSubCategoryClick = (index: number) => {
-    setSelectedSubIndex(index);
-  };
-
   const handleApply = () => {
-    const category = categories[selectedMainIndex];
-    const subcategory = category.subcategories[selectedSubIndex];
+    if (!selectCategory) return;
 
-    if (selectedSubIndex === 0) {
-      onSelect(`${category.name}/전체`);
-    } else {
-      onSelect(`${category.name}/${subcategory}`);
-    }
+    onSelect(`${selectCategory.name}-${selectSubCategory?.name}`);
   };
 
   const handleBack = () => {
     toggleBox('category');
   };
 
+  useEffect(() => {
+    setSelectCategory({
+      id: Number(businessData?.businessCategoryId),
+      name: businessData?.businessCategoryName || '',
+    });
+    setSelectSubCategory({
+      id: Number(businessData?.businessSubCategoryId),
+      name: businessData?.businessSubCategoryName || '',
+    });
+  }, [businessData]);
+
   return (
     <div className="w-full overflow-hidden">
       <div className="flex">
         <div className="w-[140px]">
-          {categories.map((category, index) => (
+          {categoryData?.map((category) => (
             <div
               key={category.id}
               className={`px-12 py-[10.5px] flex justify-between items-center cursor-pointer hover:bg-primary-10 ${
-                selectedMainIndex === index
+                selectCategory?.name === category.name
                   ? 'bg-primary-10 text-primary-50'
                   : ''
               }`}
-              onClick={() => handleMainCategoryClick(index)}
+              onClick={() => handleChangeCategory(category)}
             >
               <span>{category.name}</span>
-              {selectedMainIndex === index && (
+              {selectCategory?.name === category.name && (
                 <svg
                   width="16"
                   height="16"
@@ -207,20 +98,37 @@ const CategorySelectBox: React.FC<CategorySelectBoxProps> = ({
         </div>
 
         <div className="w-[173px]">
-          {categories[selectedMainIndex].subcategories.map(
-            (subcategory, index) => (
+          {categorySubData && categorySubData?.length > 0 && (
+            <div
+              className={`px-12 py-[10.5px] cursor-pointer hover:bg-primary-10 ${
+                '전체' === selectSubCategory?.name
+                  ? 'bg-primary-10 text-primary-50'
+                  : ''
+              }`}
+              onClick={() => handleChangeSubCategory({ id: 999, name: '전체' })}
+            >
+              전체
+            </div>
+          )}
+
+          {categorySubData && categorySubData?.length > 0 ? (
+            categorySubData?.map((subcategory, index) => (
               <div
                 key={index}
                 className={`px-12 py-[10.5px] cursor-pointer hover:bg-primary-10 ${
-                  selectedSubIndex === index
+                  subcategory?.name === selectSubCategory?.name
                     ? 'bg-primary-10 text-primary-50'
                     : ''
                 }`}
-                onClick={() => handleSubCategoryClick(index)}
+                onClick={() => handleChangeSubCategory(subcategory)}
               >
-                {subcategory}
+                {subcategory?.name}
               </div>
-            ),
+            ))
+          ) : (
+            <div className="flex items-center justify-center w-full h-full text-black body-sm-regular">
+              대분류를 선택해주세요.
+            </div>
           )}
         </div>
       </div>

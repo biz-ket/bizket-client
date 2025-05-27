@@ -6,32 +6,35 @@ export interface CategoryOption {
   name: string;
 }
 
-export const useBusinessCategories = () =>
-  useQuery<CategoryOption[], Error>({
-    queryKey: ['businessCategories'],
+export function useBusinessCategories() {
+  return useQuery<CategoryOption[], Error>({
+    queryKey: ['business-categories'],
     queryFn: () =>
       fetchApi('/business/categories', { auth: true }) as Promise<
         CategoryOption[]
       >,
     staleTime: 5 * 60 * 1000,
   });
+}
 
-export const useSubCategories = (categoryId: number) =>
-  useQuery<CategoryOption[], Error>({
-    queryKey: ['subCategories', categoryId],
+export function useSubCategories(categoryId: number | undefined) {
+  return useQuery<CategoryOption[], Error>({
+    queryKey: ['business-sub-categories', categoryId],
     queryFn: () =>
       fetchApi(`/business/categories/${categoryId}/sub-categories`, {
         auth: true,
       }) as Promise<CategoryOption[]>,
     enabled: Boolean(categoryId),
   });
+}
 
-export const useDetailCategories = (subCategoryId: number) =>
-  useQuery<CategoryOption[], Error>({
-    queryKey: ['detailCategories', subCategoryId],
+export function useDetailCategories(subCategoryId: number) {
+  return useQuery<CategoryOption[], Error>({
+    queryKey: ['business-detail-categories', subCategoryId],
     queryFn: () =>
       fetchApi(`/business/sub-categories/${subCategoryId}/detail-categories`, {
         auth: true,
       }) as Promise<CategoryOption[]>,
     enabled: Boolean(subCategoryId),
   });
+}

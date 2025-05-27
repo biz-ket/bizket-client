@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useMediaInsights } from '@/features/report/hooks/useMediaInsights';
-import { useBusinessProfile } from '@/features/report/hooks/useBusinessProfile';
+import { useBusinessProfile } from '@/entities/business-profile';
 import { useCurrentUser } from '@/features/auth/hooks/useCurrentUser';
 import Container from '@/shared/ui/layout/Container';
 import Flex from '@/shared/ui/layout/Flex';
@@ -10,6 +10,7 @@ import Header from '@/features/my/ui/Header';
 import ProfileCard from '@/features/report/ui/ProfileCard';
 import InsightsTable from '@/features/report/ui/InsightsTable';
 import Skeleton from '@/shared/ui/skeleton/Skeleton';
+import InsightsChart from '@/features/report/ui/InsightsChart';
 
 const InsightPage = () => {
   const router = useRouter();
@@ -52,7 +53,7 @@ const InsightPage = () => {
       />
 
       <Container>
-        <Flex direction="col" gap={10} className="w-full pb-80">
+        <Flex direction="col" gap={30} className="w-full pb-80">
           <Flex gap={35} className="w-full pt-90">
             <ProfileCard profile={profileRes.data!} />
             <InsightsTable
@@ -60,6 +61,7 @@ const InsightPage = () => {
               onCreate={() => router.push('/my/edit')}
             />
           </Flex>
+          <InsightsChart insights={insightsRes.data!} />
           <p className="w-full text-right text-gray-400 body-sm-semibold">
             *비즈니스 계정 전환 이후의 데이터만 집계 가능합니다.
           </p>

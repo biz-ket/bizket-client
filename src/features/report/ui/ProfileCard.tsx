@@ -2,10 +2,10 @@
 
 import Image from 'next/image';
 import Flex from '@/shared/ui/layout/Flex';
-import { BusinessProfile } from '@/features/report/hooks/useBusinessProfile';
 import Link from 'next/link';
 
 import { useMemberInfo } from '@/features/auth/hooks/useMemberInfo';
+import { BusinessProfile } from '@/entities/business-profile';
 
 interface ProfileCardProps {
   profile: BusinessProfile | { message: string };
@@ -14,11 +14,11 @@ interface ProfileCardProps {
 const ProfileCard = ({ profile }: ProfileCardProps) => {
   const isEmpty = 'message' in profile;
   const { data } = useMemberInfo();
-  console.log(data);
+
   return (
     <div className="relative w-[400px] h-[635px] px-30 py-45 bg-gradient-to-br from-primary-50 to-primary-30 text-white rounded-20 overflow-hidden">
       <div className="relative">
-        <p className="text-primary-10 mb-40">고객 프로필</p>
+        <p className="mb-40 text-primary-10">고객 프로필</p>
         <Link
           href={'/my/edit'}
           className="absolute right-0 top-[-7px] z-30 cursor-pointer"
@@ -36,7 +36,7 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
           {isEmpty ? '정보없음' : profile.placeName}
         </h2>
         {isEmpty || (
-          <p className="rounded-20 bg-white px-10 py-5 text-primary-50 label-sm-semibold">
+          <p className="px-10 py-5 bg-white rounded-20 text-primary-50 label-sm-semibold">
             {profile.businessSubCategoryName}
           </p>
         )}
@@ -51,17 +51,17 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
           </p>
         </Flex>
       )}
-      <p className="body-md-regular border-b border-white mb-18 pb-15">
+      <p className="border-b border-white body-md-regular mb-18 pb-15">
         {isEmpty ? '프로필 정보를 등록해 주세요' : profile.address}
       </p>
       <div>
-        <p className="body-md-regular mb-8">
+        <p className="mb-8 body-md-regular">
           <span className="text-primary-10 inline-block w-[70px] mr-15">
             팔로워
           </span>
           {isEmpty ? '-' : profile.followerCount}
         </p>
-        <p className="body-md-regular mb-8">
+        <p className="mb-8 body-md-regular">
           <span className="text-primary-10 inline-block w-[70px] mr-15">
             스레드
           </span>
