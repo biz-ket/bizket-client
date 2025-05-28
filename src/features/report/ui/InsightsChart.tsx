@@ -6,14 +6,13 @@ import {
   Line,
   ResponsiveContainer,
   Tooltip,
-  XAxis,
   YAxis,
 } from 'recharts';
 import { MediaWithInsights } from '../hooks/useMediaInsights';
 import { formatDate } from '@/shared/utils/formatDate';
 
 function transformData(data: MediaWithInsights[]) {
-  return data.map((insight) => {
+  return data.slice(0, 25).map((insight) => {
     const { caption, likes, comments, timestamp, platform } = insight;
     return {
       caption,
@@ -52,16 +51,6 @@ const InsightsChart = ({ insights }: InsightsChartProps) => {
       />
       <ResponsiveContainer width="100%" height={500}>
         <ComposedChart data={transformData(insights)}>
-          <XAxis
-            dataKey="caption"
-            tickLine={false}
-            axisLine={{ stroke: '#dddddd' }}
-            className="body-md-regular text-font-20"
-            tickMargin={17}
-            tickFormatter={(value) =>
-              value.length > 12 ? value.slice(0, 12) + '…' : value
-            }
-          />
           <YAxis
             type="number"
             domain={[0, 10]}
